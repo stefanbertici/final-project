@@ -1,5 +1,9 @@
 package ro.ubb.postuniv.musify.controller;
 
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import ro.ubb.postuniv.musify.dto.UserDTO;
 import ro.ubb.postuniv.musify.dto.UserLoginDTO;
 import ro.ubb.postuniv.musify.dto.UserViewDTO;
@@ -8,10 +12,6 @@ import ro.ubb.postuniv.musify.service.UserService;
 import ro.ubb.postuniv.musify.utils.UserChecker;
 import ro.ubb.postuniv.musify.utils.UserRole;
 import ro.ubb.postuniv.musify.utils.UserStatus;
-import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;

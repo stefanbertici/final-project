@@ -1,0 +1,40 @@
+<div class="form-container">
+  <div class="form login">
+    <form [formGroup]="form" (ngSubmit)="onPost()">
+      <div class="title">
+        Login
+      </div>
+
+      <div class="input-container">
+        <input formControlName="email" type="email" name="email" class="input" placeholder="Email">
+      </div>
+      <div class="msg error"
+           *ngIf="getFormControl['email'].invalid && (getFormControl['email'].dirty || getFormControl['email'].touched)">
+        <span *ngIf="getFormControl['email'].errors?.['required']">
+          Email is required
+        </span>
+      </div>
+
+      <div class="input-container">
+        <input formControlName="password" type="password" name="password" class="input"
+               placeholder="Password (Format: Abc@1r)">
+      </div>
+      <div class="msg error"
+           *ngIf="getFormControl['password'].invalid && (getFormControl['password'].dirty || getFormControl['password'].touched)">
+        <span *ngIf="getFormControl['password'].errors?.['required']">
+          Password is required
+        </span>
+        <!--<span *ngIf="getFormControl['password'].errors?.['invalidPattern']">
+          Invalid pattern, please use the following format (Abc@1r)
+        </span>-->
+      </div>
+
+      <button type="submit" id="btnSubmit">Login</button>
+
+      <div class="msg light" *ngIf="status">
+        {{status.message}}
+      </div>
+      <a routerLink="/signup" class="link">Not a member? Signup here</a>
+    </form>
+  </div>
+</div>

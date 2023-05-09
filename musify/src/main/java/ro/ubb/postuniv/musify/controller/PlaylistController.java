@@ -1,13 +1,13 @@
 package ro.ubb.postuniv.musify.controller;
 
-import ro.ubb.postuniv.musify.dto.PlaylistDTO;
-import ro.ubb.postuniv.musify.dto.PlaylistViewDTO;
-import ro.ubb.postuniv.musify.dto.SongViewDTO;
-import ro.ubb.postuniv.musify.service.PlaylistService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ro.ubb.postuniv.musify.dto.PlaylistDTO;
+import ro.ubb.postuniv.musify.dto.PlaylistViewDTO;
+import ro.ubb.postuniv.musify.dto.SongViewDTO;
+import ro.ubb.postuniv.musify.service.PlaylistService;
 
 import javax.validation.Valid;
 import java.util.List;

@@ -1,0 +1,85 @@
+<div class="form-container">
+  <div class="form signup">
+    <form [formGroup]="form" (ngSubmit)="onPost()">
+      <div class="title">
+        Signup
+      </div>
+
+      <div class="input-container">
+        <input formControlName="firstName" type="text" name="first name" class="input" placeholder="First name">
+      </div>
+      <div class="msg error"
+           *ngIf="getFormControl['firstName'].invalid && (getFormControl['firstName'].dirty || getFormControl['firstName'].touched)">
+        <span *ngIf="getFormControl['firstName'].errors?.['required']">
+          First name is required
+        </span>
+      </div>
+
+      <div class="input-container">
+        <input formControlName="lastName" type="text" name="last name" class="input" placeholder="Last name">
+      </div>
+      <div class="msg error"
+           *ngIf="getFormControl['lastName'].invalid && (getFormControl['lastName'].dirty || getFormControl['lastName'].touched)">
+        <span *ngIf="getFormControl['lastName'].errors?.['required']">
+          Last name is required
+        </span>
+      </div>
+
+      <div class="input-container">
+        <input formControlName="email" type="email" name="email" class="input" placeholder="Email">
+      </div>
+      <div class="msg error"
+           *ngIf="getFormControl['email'].invalid && (getFormControl['email'].dirty || getFormControl['email'].touched)">
+        <span *ngIf="getFormControl['email'].errors?.['required']">
+          Email is required
+        </span>
+      </div>
+
+      <div class="input-container">
+        <input formControlName="country" type="text" name="country" class="input" placeholder="Country">
+      </div>
+      <div class="msg error"
+           *ngIf="getFormControl['country'].invalid && (getFormControl['country'].dirty || getFormControl['country'].touched)">
+        <span *ngIf="getFormControl['country'].errors?.['required']">
+          Country is required
+        </span>
+      </div>
+
+      <div class="input-container">
+        <input formControlName="password" type="password" name="password" class="input"
+               placeholder="Password (Format: Abc@1r)">
+      </div>
+      <div class="msg error"
+           *ngIf="getFormControl['password'].invalid && (getFormControl['password'].dirty || getFormControl['password'].touched)">
+        <span *ngIf="getFormControl['password'].errors?.['required']">
+          Password is required
+        </span>
+        <!--<span *ngIf="getFormControl['password'].errors?.['invalidPattern']">
+          Invalid pattern, please use the following format (Abc@1r)
+        </span>-->
+      </div>
+
+      <div class="input-container">
+        <input formControlName="confirmPassword" type="password" name="confirm password" class="input"
+               placeholder="Confirm Password">
+      </div>
+      <div class="msg error"
+           *ngIf="getFormControl['confirmPassword'].invalid && (getFormControl['confirmPassword'].dirty || getFormControl['confirmPassword'].touched)">
+        <span *ngIf="getFormControl['confirmPassword'].errors?.['required']">
+          Password confirmation is required
+        </span>
+        <span *ngIf="getFormControl['confirmPassword'].errors?.['mustMatch']">
+          Passwords do not match
+        </span>
+      </div>
+
+      <button type="submit" id="btnSubmit" [disabled]="form.invalid">Signup</button>
+
+      <div class="msg light" *ngIf="status">
+        {{status.message}}
+      </div>
+
+      <a routerLink="/login" class="link">Already a member? Login here</a>
+    </form>
+  </div>
+</div>
