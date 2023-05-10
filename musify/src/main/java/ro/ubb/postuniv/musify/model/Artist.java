@@ -8,11 +8,6 @@ import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-/* for base hibernate operations, not used in the latest version of this project
-@NamedQueries({
-        @NamedQuery(name = "findAllArtists", query = "from Artist"),
-        @NamedQuery(name = "findArtistById", query = "from Artist where id = :id")
-})*/
 @Getter
 @Setter
 @Entity

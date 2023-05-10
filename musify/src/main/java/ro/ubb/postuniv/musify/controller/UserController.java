@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.ubb.postuniv.musify.dto.UserDTO;
 import ro.ubb.postuniv.musify.dto.UserLoginDTO;
+import ro.ubb.postuniv.musify.dto.UserLoginViewDTO;
 import ro.ubb.postuniv.musify.dto.UserViewDTO;
 import ro.ubb.postuniv.musify.exception.UnauthorizedException;
 import ro.ubb.postuniv.musify.service.UserService;
@@ -41,9 +42,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody @Valid UserLoginDTO userLoginDTO) {
-        String token = userService.loginUser(userLoginDTO);
-        return new ResponseEntity<>(token, HttpStatus.OK);
+    public ResponseEntity<UserLoginViewDTO> loginUser(@RequestBody @Valid UserLoginDTO userLoginDTO) {
+        UserLoginViewDTO userLoginViewDTO = userService.loginUser(userLoginDTO);
+        return new ResponseEntity<>(userLoginViewDTO, HttpStatus.OK);
     }
 
     @GetMapping("/403")

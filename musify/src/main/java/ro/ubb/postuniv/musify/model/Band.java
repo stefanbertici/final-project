@@ -9,11 +9,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/* for base hibernate operations, not used in the latest version of this project
-@NamedQueries({
-        @NamedQuery(name = "findAllBands", query = "from Band"),
-        @NamedQuery(name = "findBandById", query = "from Band where id = :id")
-})*/
 @Getter
 @Setter
 @Entity

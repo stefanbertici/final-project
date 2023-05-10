@@ -3,6 +3,8 @@ import {SignupService} from "../../services/signup.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Status} from "../../models/status";
 import {patternMatch} from "../../validators/patternMatch.validator";
+import {AuthService} from "../../services/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -13,10 +15,8 @@ export class LoginComponent implements OnInit {
 
   form!: FormGroup;
   status!: Status;
-  userEmail!: string;
-  token!: string;
 
-  constructor(private signupService: SignupService, private formBuilder: FormBuilder) {
+  constructor(private signupService: SignupService, private authService: AuthService, private formBuilder: FormBuilder, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -27,6 +27,10 @@ export class LoginComponent implements OnInit {
       'email': ['', Validators.required],
       'password': ['', [Validators.required, patternMatch(pattern)]],
     })
+
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['./dashboard']);
+    }
   }
 
   get getFormControl() {
@@ -38,15 +42,12 @@ export class LoginComponent implements OnInit {
 
     this.signupService.login(this.form.value).subscribe({
       next: (res) => {
-        this.userEmail = this.form.controls["email"].value;
-        this.token = res;
+        this.authService.addFullName(res.fullName);
+        this.authService.addAccessToken(res.accessToken);
         this.status.code = 1;
         this.status.message = "logged in successfully!";
-        this.form.reset();
-
-        console.log(this.userEmail);
-        console.log(this.token);
-      },
+        this.router.navigate(['./dashboard']);
+        },
       error: (err) => {
         console.log("Server side error: " + err.message);
         this.status.code = 0;

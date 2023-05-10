@@ -1,5 +1,6 @@
 package ro.ubb.postuniv.musify.service;
 
+import ro.ubb.postuniv.musify.dto.UserLoginViewDTO;
 import ro.ubb.postuniv.musify.mapper.UserMapper;
 import ro.ubb.postuniv.musify.dto.UserDTO;
 import ro.ubb.postuniv.musify.dto.UserLoginDTO;
@@ -64,7 +65,7 @@ public class UserService {
     }
 
     @Transactional
-    public String loginUser(UserLoginDTO userLoginDTO) {
+    public UserLoginViewDTO loginUser(UserLoginDTO userLoginDTO) {
         Optional<User> optional = userRepository.findUserByEmail(userLoginDTO.getEmail());
         String encryptedInputPassword = getEncryptedPassword(userLoginDTO.getPassword());
 
@@ -81,7 +82,8 @@ public class UserService {
             throw new UnauthorizedException("It looks like your account has been deactivated :(\n Please contact our customer support department");
         }
 
-        return JwtUtils.generateToken(user.getId(), user.getEmail(), user.getRole());
+        String accessToken = JwtUtils.generateToken(user.getId(), user.getEmail(), user.getRole());
+        return userMapper.toLoginViewDto(user, accessToken);
     }
 
     public String logoutUser(String header) {
