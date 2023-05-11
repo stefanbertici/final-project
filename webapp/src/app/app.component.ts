@@ -1,6 +1,4 @@
 import {Component} from '@angular/core';
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {SignupService} from "./services/signup.service";
 import {Router} from "@angular/router";
 import {AuthService} from "./services/auth.service";
 
@@ -14,14 +12,8 @@ export class AppComponent {
   isLoggedIn!: boolean;
 
   constructor(
-    private modalService: NgbModal,
-    private signupService: SignupService,
     private router: Router,
     private authService: AuthService) {
-  }
-
-  public open(modal: any): void {
-    this.modalService.open(modal);
   }
 
   checkLoggedInUser() {
@@ -29,7 +21,7 @@ export class AppComponent {
   }
 
   logout() {
-    this.signupService.logout().subscribe({
+    this.authService.logout().subscribe({
       next: (res) => {
         console.log(res);
         this.authService.removeAllSavedData();

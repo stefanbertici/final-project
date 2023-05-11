@@ -1,11 +1,14 @@
 package ro.ubb.postuniv.musify.service;
 
-import ro.ubb.postuniv.musify.dto.UserLoginViewDTO;
-import ro.ubb.postuniv.musify.mapper.UserMapper;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ro.ubb.postuniv.musify.dto.UserDTO;
 import ro.ubb.postuniv.musify.dto.UserLoginDTO;
+import ro.ubb.postuniv.musify.dto.UserLoginViewDTO;
 import ro.ubb.postuniv.musify.dto.UserViewDTO;
 import ro.ubb.postuniv.musify.exception.UnauthorizedException;
+import ro.ubb.postuniv.musify.mapper.UserMapper;
 import ro.ubb.postuniv.musify.model.User;
 import ro.ubb.postuniv.musify.repository.UserRepository;
 import ro.ubb.postuniv.musify.security.InMemoryTokenBlacklist;
@@ -14,9 +17,6 @@ import ro.ubb.postuniv.musify.utils.RepositoryChecker;
 import ro.ubb.postuniv.musify.utils.UserChecker;
 import ro.ubb.postuniv.musify.utils.UserRole;
 import ro.ubb.postuniv.musify.utils.UserStatus;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;

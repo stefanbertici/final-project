@@ -29,18 +29,15 @@ export class SignupComponent implements OnInit {
       'lastName': ['', Validators.required],
       'email': ['', Validators.required],
       'country': ['', Validators.required],
-      'password': ['', [Validators.required, patternMatch(pattern)]],
+      'password': ['', Validators.required],  //patternMatch(pattern) -> also add this if needed
       'confirmPassword': ['', Validators.required],
     }, {
       validator: passwordsMatch('password', 'confirmPassword')
     })
   }
 
-  get getFormControl() {
-    return this.form.controls;
-  }
-
   onPost() {
+    console.log("clicked signup")
     this.status = {code: 0, message: "registering..."};
 
     this.signupService.signup(this.form.value).subscribe({
@@ -56,5 +53,9 @@ export class SignupComponent implements OnInit {
         this.status.message = "it looks like there was an error :(";
       }
     })
+  }
+
+  get getFormControl() {
+    return this.form.controls;
   }
 }

@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
   form!: FormGroup;
   status!: Status;
 
-  constructor(private signupService: SignupService, private authService: AuthService, private formBuilder: FormBuilder, private router: Router) {
+  constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -33,14 +33,10 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  get getFormControl() {
-    return this.form.controls;
-  }
-
   onPost() {
     this.status = {code: 0, message: "logging in..."};
 
-    this.signupService.login(this.form.value).subscribe({
+    this.authService.login(this.form.value).subscribe({
       next: (res) => {
         this.authService.addFullName(res.fullName);
         this.authService.addAccessToken(res.accessToken);
@@ -54,5 +50,9 @@ export class LoginComponent implements OnInit {
         this.status.message = "it looks like there was an error :(";
       }
     })
+  }
+
+  get getFormControl() {
+    return this.form.controls;
   }
 }

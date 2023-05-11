@@ -1,11 +1,29 @@
 import {Injectable} from '@angular/core';
+import {UserLoginDTO} from "../models/userLoginDTO";
+import {UserLoginViewDTO} from "../models/userLoginViewDTO";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor() {
+  private baseUrl = "http://localhost:8080/user"
+
+  constructor(private http: HttpClient) {
+  }
+
+  login(userLoginDTO: UserLoginDTO) {
+    return this.http.post<UserLoginViewDTO>(this.baseUrl + '/login', userLoginDTO);
+  }
+
+  logout() {
+    const token: string = this.getAccessToken() ?? "";
+
+    return this.http.post(this.baseUrl + '/logout', null, {
+      headers: new HttpHeaders({'Authorization': 'Bearer ' + token}),
+      responseType: 'text'
+    });
   }
 
   isLoggedIn() {
