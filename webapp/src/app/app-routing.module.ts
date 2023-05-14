@@ -5,14 +5,15 @@ import {SignupComponent} from "./components/signup/signup.component";
 import {DashboardComponent} from "./components/dashboard/dashboard.component";
 import {UserComponent} from "./components/user/user.component";
 import {AdminComponent} from "./components/admin/admin.component";
+import {AuthGuard} from "./services/auth.guard";
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
-  {path: 'dashboard', component: DashboardComponent},
-  {path: 'user-page', component: UserComponent},
-  {path: 'admin-page', component: AdminComponent},
+  {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
+  {path: 'user-page', component: UserComponent, canActivate: [AuthGuard]},
+  {path: 'admin-page', component: AdminComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({

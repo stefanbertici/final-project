@@ -9,6 +9,7 @@ import {AuthService} from "./services/auth.service";
 })
 export class AppComponent {
 
+  role?: string;
   isLoggedIn!: boolean;
 
   constructor(
@@ -18,12 +19,12 @@ export class AppComponent {
 
   checkLoggedInUser() {
     this.isLoggedIn = this.authService.isLoggedIn();
+    this.role = this.authService.getUserRole();
   }
 
   logout() {
     this.authService.logout().subscribe({
       next: (res) => {
-        console.log(res);
         this.authService.removeAllSavedData();
         this.router.navigate(['./login'])
       },

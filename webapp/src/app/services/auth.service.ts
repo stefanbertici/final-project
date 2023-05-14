@@ -1,7 +1,9 @@
 import {Injectable} from '@angular/core';
 import {UserLoginDTO} from "../models/userLoginDTO";
 import {UserLoginViewDTO} from "../models/userLoginViewDTO";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
+import {JwtHelperService} from "@auth0/angular-jwt";
+import {devOnlyGuardedExpression} from "@angular/compiler";
 
 @Injectable({
   providedIn: 'root'
@@ -18,12 +20,7 @@ export class AuthService {
   }
 
   logout() {
-    const token: string = this.getAccessToken() ?? "";
-
-    return this.http.post(this.baseUrl + '/logout', null, {
-      headers: new HttpHeaders({'Authorization': 'Bearer ' + token}),
-      responseType: 'text'
-    });
+    return this.http.post(this.baseUrl + '/logout', null, {responseType: 'text'});
   }
 
   isLoggedIn() {
@@ -59,6 +56,19 @@ export class AuthService {
 
   getFullName() {
     return localStorage.getItem('fullName');
+  }
+
+  getUserRole() {
+    const helper = new JwtHelperService();
+    let decodedAccessToken;
+
+    try {
+      decodedAccessToken = helper.decodeToken(this.getAccessToken() ?? '');
+
+      return decodedAccessToken.role;
+    } catch (err) {
+      return null;
+    }
   }
 
   removeAllSavedData() {

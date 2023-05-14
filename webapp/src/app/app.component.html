@@ -12,7 +12,7 @@
       <a routerLink="/user-page" routerLinkActive="active">User</a>
     </li>
 
-    <li>
+    <li *ngIf="role == 'admin'">
       <a routerLink="/admin-page" routerLinkActive="active">Admin</a>
     </li>
 
