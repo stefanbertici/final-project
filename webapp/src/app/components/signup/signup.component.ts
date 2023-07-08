@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {SignupService} from "../../services/signup.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {patternMatch} from "../../validators/patternMatch.validator";
 import {passwordsMatch} from "../../validators/passwordsMatch.validator";
 import {Status} from "../../models/status";
 import {UserViewDTO} from "../../models/userViewDTO";
@@ -29,7 +28,7 @@ export class SignupComponent implements OnInit {
       'lastName': ['', Validators.required],
       'email': ['', Validators.required],
       'country': ['', Validators.required],
-      'password': ['', Validators.required],  //patternMatch(pattern) -> also add this if needed
+      'password': ['', Validators.required],
       'confirmPassword': ['', Validators.required],
     }, {
       validator: passwordsMatch('password', 'confirmPassword')

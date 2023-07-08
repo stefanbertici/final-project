@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {SignupService} from "../../services/signup.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Status} from "../../models/status";
-import {patternMatch} from "../../validators/patternMatch.validator";
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
 
@@ -20,12 +18,9 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // must be at least 6 character long, must contain 1 uppercase, 1 lowercase, 1 digit and 1 special character
-    const pattern = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*[#$^+=!*()@%&]).{6,}$');
-
     this.form = this.formBuilder.group({
       'email': ['', Validators.required],
-      'password': ['', [Validators.required, patternMatch(pattern)]],
+      'password': ['', Validators.required],
     })
 
     if (this.authService.isLoggedIn()) {

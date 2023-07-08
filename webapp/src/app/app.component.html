@@ -1,26 +1,19 @@
-<nav *ngIf="isLoggedIn">
-  <div class="logoContainer">
-    Musify music management
+<section class="hero is-primary">
+  <div class="hero-body">
+    <p class="title">
+      Musify
+    </p>
+    <p class="subtitle">
+      your personal music management app
+    </p>
+    <div *ngIf="isLoggedIn">
+      <button class="button" routerLink="/dashboard" routerLinkActive="active">Dashboard</button>
+      <button class="button" routerLink="/user-page" routerLinkActive="active">User</button>
+      <button class="button" *ngIf="role == 'admin'" routerLink="/admin-page" routerLinkActive="active">Admin</button>
+      <button class="button" (click)="logout()" style="cursor: pointer">Logout</button>
+    </div>
   </div>
-
-  <ul>
-    <li>
-      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-    </li>
-
-    <li>
-      <a routerLink="/user-page" routerLinkActive="active">User</a>
-    </li>
-
-    <li *ngIf="role == 'admin'">
-      <a routerLink="/admin-page" routerLinkActive="active">Admin</a>
-    </li>
-
-    <li>
-      <a (click)="logout()" style="cursor: pointer">Logout</a>
-    </li>
-  </ul>
-</nav>
+</section>
 
 <router-outlet (activate)="checkLoggedInUser()">
   <!-- site content goes here-->

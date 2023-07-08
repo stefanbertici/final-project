@@ -27,7 +27,7 @@ import {RequestInterceptor} from "./interceptors/request.interceptor";
     AppRoutingModule,
     NgbModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
