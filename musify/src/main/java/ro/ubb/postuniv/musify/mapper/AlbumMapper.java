@@ -1,6 +1,6 @@
 package ro.ubb.postuniv.musify.mapper;
 
-import ro.ubb.postuniv.musify.dto.AlbumDTO;
+import ro.ubb.postuniv.musify.dto.AlbumDto;
 import ro.ubb.postuniv.musify.model.Album;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,9 +13,9 @@ public interface AlbumMapper {
     @Mapping(target = "songIds", expression = "java(album.getSongIds())")
     @Mapping(target = "artistId", expression = "java(album.getArtistId())")
     @Mapping(target = "bandId", expression = "java(album.getBandId())")
-    AlbumDTO toDto(Album album);
+    AlbumDto toDto(Album album);
 
-    List<AlbumDTO> toDtos(List<Album> albums);
+    List<AlbumDto> toDtos(List<Album> albums);
 
-    Album toEntity(AlbumDTO albumDTO);
+    Album toEntity(AlbumDto albumDto);
 }

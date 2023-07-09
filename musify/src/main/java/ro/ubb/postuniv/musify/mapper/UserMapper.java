@@ -1,8 +1,8 @@
 package ro.ubb.postuniv.musify.mapper;
 
-import ro.ubb.postuniv.musify.dto.UserDTO;
-import ro.ubb.postuniv.musify.dto.UserLoginViewDTO;
-import ro.ubb.postuniv.musify.dto.UserViewDTO;
+import ro.ubb.postuniv.musify.dto.UserDto;
+import ro.ubb.postuniv.musify.dto.UserLoginViewDto;
+import ro.ubb.postuniv.musify.dto.UserViewDto;
 import ro.ubb.postuniv.musify.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,16 +13,16 @@ import java.util.List;
 public interface UserMapper {
 
     @Mapping(target = "fullName", expression = "java(user.getFullName())")
-    UserViewDTO toViewDto(User user);
+    UserViewDto toViewDto(User user);
 
-    List<UserViewDTO> toViewDtos(List<User> users);
+    List<UserViewDto> toViewDtos(List<User> users);
 
-    UserDTO toDto(User user);
+    UserDto toDto(User user);
 
-    List<UserDTO> toDtos(List<User> users);
+    List<UserDto> toDtos(List<User> users);
 
     @Mapping(target = "fullName", expression = "java(user.getFullName())")
-    UserLoginViewDTO toLoginViewDto(User user, String accessToken);
+    UserLoginViewDto toLoginViewDto(User user, String accessToken);
 
-    User toEntity(UserDTO userDTO);
+    User toEntity(UserDto userDto);
 }

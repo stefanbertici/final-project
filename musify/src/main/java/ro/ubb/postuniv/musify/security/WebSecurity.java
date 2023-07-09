@@ -16,6 +16,7 @@ import java.util.List;
 
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
+
     private final InMemoryTokenBlacklist tokenBlacklist;
 
     @Autowired
@@ -28,7 +29,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
                 .antMatchers("/**/swagger-resources", "/**/swagger-resources/**", "/**/swagger-ui",
-                        "/**/swagger-ui/**", "/**/swagger-ui.html", "/**/swagger-ui.html/**", "/**/v3/api-docs/**").permitAll() // TODO remove /** after testing phase
+                        "/**/swagger-ui/**", "/**/swagger-ui.html", "/**/swagger-ui.html/**", "/**/v3/api-docs/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/user/register", "/user/login").permitAll()
                 .antMatchers(HttpMethod.GET, "/user/403").permitAll()
                 .anyRequest().authenticated()

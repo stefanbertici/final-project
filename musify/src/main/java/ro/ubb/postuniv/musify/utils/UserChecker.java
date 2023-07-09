@@ -1,9 +1,12 @@
 package ro.ubb.postuniv.musify.utils;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import ro.ubb.postuniv.musify.model.Playlist;
 import ro.ubb.postuniv.musify.model.User;
 import ro.ubb.postuniv.musify.security.JwtUtils;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserChecker {
 
     public static boolean isCurrentUserNotAdmin() {

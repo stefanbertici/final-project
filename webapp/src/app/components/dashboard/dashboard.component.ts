@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {AuthService} from "../../services/auth.service";
 
 @Component({
@@ -6,14 +6,9 @@ import {AuthService} from "../../services/auth.service";
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
-
-  userFullName: string = this.authService.getFullName() ?? "";
+export class DashboardComponent {
 
   constructor(private authService: AuthService) {
-  }
-
-  ngOnInit(): void {
   }
 
 }

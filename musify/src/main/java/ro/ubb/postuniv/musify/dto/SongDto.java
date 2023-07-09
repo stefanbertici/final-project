@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
@@ -13,12 +14,13 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SongViewDTO {
+public class SongDto {
+
     private Integer id;
+    @NotBlank(message = "Title cannot be blank")
     private String title;
-    private List<String> alternativeTitles;
     private Time duration;
     private Date createdDate;
-    private List<String> composers;
-    private List<String> albums;
+    private List<String> alternativeTitles;
+    private List<Integer> composersIds;
 }

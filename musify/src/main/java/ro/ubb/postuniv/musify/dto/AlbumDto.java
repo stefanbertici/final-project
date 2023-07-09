@@ -14,7 +14,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AlbumDTO {
+public class AlbumDto {
+
     private Integer id;
     private Integer artistId;
     private Integer bandId;
@@ -27,12 +28,13 @@ public class AlbumDTO {
     private List<Integer> songIds;
 
     @JsonIgnore
-    public boolean isOnlyOneOwnerIdSet() {
-        boolean artistSet, bandSet;
+    public boolean isTwoOwnersIdSet() {
+        boolean artistSet;
+        boolean bandSet;
 
         artistSet = artistId != null && artistId != 0;
         bandSet = bandId != null && bandId != 0;
 
-        return (artistSet && !bandSet) || (!artistSet && bandSet);
+        return artistSet && bandSet;
     }
 }

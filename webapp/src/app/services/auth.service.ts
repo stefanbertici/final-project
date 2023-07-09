@@ -1,26 +1,24 @@
 import {Injectable} from '@angular/core';
-import {UserLoginDTO} from "../models/userLoginDTO";
-import {UserLoginViewDTO} from "../models/userLoginViewDTO";
+import {UserLoginDto} from "../models/userLoginDto";
+import {UserLoginViewDto} from "../models/userLoginViewDto";
 import {HttpClient} from "@angular/common/http";
 import {JwtHelperService} from "@auth0/angular-jwt";
-import {devOnlyGuardedExpression} from "@angular/compiler";
+import {API_URL} from "../utils/constants";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private baseUrl = "http://localhost:8080/user"
-
   constructor(private http: HttpClient) {
   }
 
-  login(userLoginDTO: UserLoginDTO) {
-    return this.http.post<UserLoginViewDTO>(this.baseUrl + '/login', userLoginDTO);
+  login(userLoginDto: UserLoginDto) {
+    return this.http.post<UserLoginViewDto>(API_URL + '/user/login', userLoginDto);
   }
 
   logout() {
-    return this.http.post(this.baseUrl + '/logout', null, {responseType: 'text'});
+    return this.http.post(API_URL + '/user/logout', null, {responseType: 'text'});
   }
 
   isLoggedIn() {
@@ -58,6 +56,19 @@ export class AuthService {
     return localStorage.getItem('fullName');
   }
 
+  getUserId() {
+    const helper = new JwtHelperService();
+    let decodedAccessToken;
+
+    try {
+      decodedAccessToken = helper.decodeToken(this.getAccessToken() ?? '');
+
+      return decodedAccessToken.id;
+    } catch (err) {
+      return null;
+    }
+  }
+
   getUserRole() {
     const helper = new JwtHelperService();
     let decodedAccessToken;
@@ -70,6 +81,7 @@ export class AuthService {
       return null;
     }
   }
+
 
   removeAllSavedData() {
     localStorage.removeItem('accessToken');

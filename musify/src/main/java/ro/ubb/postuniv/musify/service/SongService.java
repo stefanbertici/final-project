@@ -1,9 +1,9 @@
 package ro.ubb.postuniv.musify.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.ubb.postuniv.musify.dto.SongDTO;
+import ro.ubb.postuniv.musify.dto.SongDto;
 import ro.ubb.postuniv.musify.mapper.SongMapper;
 import ro.ubb.postuniv.musify.model.AlternativeSongTitle;
 import ro.ubb.postuniv.musify.model.Artist;
@@ -16,8 +16,9 @@ import ro.ubb.postuniv.musify.utils.RepositoryChecker;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SongService {
+
     private final RepositoryChecker repositoryChecker;
     private final SongRepository songRepository;
     private final ArtistRepository artistRepository;
@@ -25,37 +26,37 @@ public class SongService {
     private final SongMapper songMapper;
 
     @Transactional
-    public SongDTO createSong(SongDTO songDTO) {
-        Song song = songMapper.toEntity(songDTO);
+    public SongDto createSong(SongDto songDto) {
+        Song song = songMapper.toEntity(songDto);
         song = songRepository.save(song);
 
-        if (!songDTO.getAlternativeTitles().isEmpty()) {
-            addAlternativeTitles(song, songDTO);
+        if (!songDto.getAlternativeTitles().isEmpty()) {
+            addAlternativeTitles(song, songDto);
         }
 
-        if (!songDTO.getComposersIds().isEmpty()) {
-            addComposersById(song, songDTO);
+        if (!songDto.getComposersIds().isEmpty()) {
+            addComposersById(song, songDto);
         }
 
         return songMapper.toDto(song);
     }
 
     @Transactional
-    public SongDTO updateSong(Integer id, SongDTO songDTO) {
+    public SongDto updateSong(Integer id, SongDto songDto) {
         Song song = repositoryChecker.getSongIfExists(id);
 
-        song.setTitle(songDTO.getTitle());
-        song.setDuration(songDTO.getDuration());
-        song.setCreatedDate(songDTO.getCreatedDate());
+        song.setTitle(songDto.getTitle());
+        song.setDuration(songDto.getDuration());
+        song.setCreatedDate(songDto.getCreatedDate());
 
-        if (!songDTO.getAlternativeTitles().isEmpty()) {
+        if (!songDto.getAlternativeTitles().isEmpty()) {
             clearAlternativeTitles(song);
-            addAlternativeTitles(song, songDTO);
+            addAlternativeTitles(song, songDto);
         }
 
-        if (!songDTO.getComposersIds().isEmpty()) {
+        if (!songDto.getComposersIds().isEmpty()) {
             clearComposers(song);
-            addComposersById(song, songDTO);
+            addComposersById(song, songDto);
         }
 
         return songMapper.toDto(song);
@@ -69,15 +70,15 @@ public class SongService {
         song.getComposers().clear();
     }
 
-    private void addComposersById(Song song, SongDTO songDTO) {
-        List<Artist> artists = (List<Artist>) artistRepository.findAllById(songDTO.getComposersIds());
+    private void addComposersById(Song song, SongDto songDto) {
+        List<Artist> artists = (List<Artist>) artistRepository.findAllById(songDto.getComposersIds());
         for (Artist artist : artists) {
             artist.addComposedSong(song);
         }
     }
 
-    private void addAlternativeTitles(Song song, SongDTO songDTO) {
-        for (String title : songDTO.getAlternativeTitles()) {
+    private void addAlternativeTitles(Song song, SongDto songDto) {
+        for (String title : songDto.getAlternativeTitles()) {
             AlternativeSongTitle newTitle = new AlternativeSongTitle();
             newTitle.setAlternativeTitle(title);
             newTitle = alternativeSongTitleRepository.save(newTitle);

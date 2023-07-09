@@ -14,6 +14,7 @@ import java.util.Set;
 @Entity
 @Table(name = "bands")
 public class Band{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

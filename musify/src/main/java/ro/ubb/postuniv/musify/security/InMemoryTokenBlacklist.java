@@ -7,6 +7,7 @@ import java.util.Set;
 
 @Component
 public class InMemoryTokenBlacklist {
+
     private final Set<String> tokens;
 
     public InMemoryTokenBlacklist() {

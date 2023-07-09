@@ -1,6 +1,6 @@
 package ro.ubb.postuniv.musify.utils;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ro.ubb.postuniv.musify.exception.ResourceNotFoundException;
 import ro.ubb.postuniv.musify.exception.UnauthorizedException;
@@ -10,24 +10,16 @@ import ro.ubb.postuniv.musify.security.JwtUtils;
 
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Component
 public class RepositoryChecker {
+
     private final UserRepository userRepository;
     private final AlbumRepository albumRepository;
     private final ArtistRepository artistRepository;
     private final BandRepository bandRepository;
     private final PlaylistRepository playlistRepository;
     private final SongRepository songRepository;
-
-    @Autowired
-    public RepositoryChecker(UserRepository userRepository, AlbumRepository albumRepository, ArtistRepository artistRepository, BandRepository bandRepository, PlaylistRepository playlistRepository, SongRepository songRepository) {
-        this.userRepository = userRepository;
-        this.albumRepository = albumRepository;
-        this.artistRepository = artistRepository;
-        this.bandRepository = bandRepository;
-        this.playlistRepository = playlistRepository;
-        this.songRepository = songRepository;
-    }
 
     public User getUserIfExists(Integer id) {
         Optional<User> optional = userRepository.findById(id);
@@ -45,6 +37,13 @@ public class RepositoryChecker {
         }
 
         return optional.get();
+    }
+
+    public void checkIfEmailIsTaken(Integer id, String email) {
+        Optional<User> optional = userRepository.findUserByEmail(email);
+        if (optional.isPresent() && !id.equals(optional.get().getId())) {
+            throw new IllegalArgumentException("Given e-mail address is already taken");
+        }
     }
 
     public Album getAlbumIfExists(Integer id) {

@@ -22,6 +22,14 @@ export class AppComponent {
     this.role = this.authService.getUserRole();
   }
 
+  getUserFullName() {
+    return this.authService.getFullName();
+  }
+
+  getUserId() {
+    return this.authService.getUserId();
+  }
+
   logout() {
     this.authService.logout().subscribe({
       next: (res) => {

@@ -6,17 +6,17 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserViewDTOTest {
+class UserViewDtoTest {
 
     @Test
     public void givenValidUserViewDto_whenSerializingAndDeserializing_thenResultIsSame() throws JsonProcessingException {
-        UserViewDTO userViewDTO = new UserViewDTO(1, "Stefan", "Bertici", "Stefan Bertici",
+        UserViewDto userViewDto = new UserViewDto(1, "Stefan", "Bertici", "Stefan Bertici",
                 "me@gmail.com", "Romania", "admin", "active");
 
         ObjectMapper mapper = new ObjectMapper();
-        String valueAsString = mapper.writeValueAsString(userViewDTO);
-        UserViewDTO deserializedUserViewDto = mapper.readValue(valueAsString, UserViewDTO.class);
+        String valueAsString = mapper.writeValueAsString(userViewDto);
+        UserViewDto deserializedUserViewDto = mapper.readValue(valueAsString, UserViewDto.class);
 
-        assertEquals(userViewDTO, deserializedUserViewDto);
+        assertEquals(userViewDto, deserializedUserViewDto);
     }
 }

@@ -1,9 +1,10 @@
 package ro.ubb.postuniv.musify.service;
 
-import ro.ubb.postuniv.musify.dto.AlbumDTO;
+import lombok.RequiredArgsConstructor;
+import ro.ubb.postuniv.musify.dto.AlbumDto;
+import ro.ubb.postuniv.musify.dto.ArtistDto;
 import ro.ubb.postuniv.musify.mapper.AlbumMapper;
 import ro.ubb.postuniv.musify.mapper.ArtistMapper;
-import ro.ubb.postuniv.musify.dto.ArtistDTO;
 import ro.ubb.postuniv.musify.model.Artist;
 import ro.ubb.postuniv.musify.repository.ArtistRepository;
 import ro.ubb.postuniv.musify.utils.RepositoryChecker;
@@ -15,38 +16,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ArtistService {
+
     private final RepositoryChecker repositoryChecker;
     private final ArtistRepository artistRepository;
     private final ArtistMapper artistMapper;
     private final AlbumMapper albumMapper;
 
     @Transactional
-    public List<AlbumDTO> readAlbumsByArtistId(Integer id) {
+    public List<AlbumDto> readAlbumsByArtistId(Integer id) {
         Artist artist = repositoryChecker.getArtistIfExists(id);
 
         return albumMapper.toDtos(new ArrayList<>(artist.getArtistAlbums()));
     }
 
     @Transactional
-    public ArtistDTO createArtist(ArtistDTO artistDTO) {
-        Artist artist = artistMapper.toEntity(artistDTO);
+    public ArtistDto createArtist(ArtistDto artistDto) {
+        Artist artist = artistMapper.toEntity(artistDto);
         artist = artistRepository.save(artist);
 
         return artistMapper.toDto(artist);
     }
 
     @Transactional
-    public ArtistDTO updateArtist(Integer id, ArtistDTO artistDTO) {
+    public ArtistDto updateArtist(Integer id, ArtistDto artistDto) {
         Artist artist = repositoryChecker.getArtistIfExists(id);
 
-        artist.setFirstName(artistDTO.getFirstName());
-        artist.setLastName(artistDTO.getLastName());
-        artist.setStageName(artistDTO.getStageName());
-        artist.setBirthday(artistDTO.getBirthday());
-        artist.setActivityStartDate(artistDTO.getActivityStartDate());
-        artist.setActivityEndDate(artistDTO.getActivityEndDate());
+        artist.setFirstName(artistDto.getFirstName());
+        artist.setLastName(artistDto.getLastName());
+        artist.setStageName(artistDto.getStageName());
+        artist.setBirthday(artistDto.getBirthday());
+        artist.setActivityStartDate(artistDto.getActivityStartDate());
+        artist.setActivityEndDate(artistDto.getActivityEndDate());
 
         return artistMapper.toDto(artist);
     }

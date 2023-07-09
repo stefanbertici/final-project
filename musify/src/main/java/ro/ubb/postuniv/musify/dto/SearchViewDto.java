@@ -11,9 +11,10 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SearchViewDTO {
-    private List<ArtistDTO> artists;
-    private List<BandDTO> bands;
-    private List<AlbumDTO> albums;
-    private List<SongViewDTO> songs;
+public class SearchViewDto {
+
+    private List<ArtistDto> artists;
+    private List<BandDto> bands;
+    private List<AlbumDto> albums;
+    private List<SongViewDto> songs;
 }

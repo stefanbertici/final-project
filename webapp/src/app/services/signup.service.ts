@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {UserDTO} from "../models/userDTO";
-import {UserViewDTO} from "../models/userViewDTO";
+import {UserDto} from "../models/userDto";
+import {UserViewDto} from "../models/userViewDto";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class SignupService {
   constructor(private http: HttpClient) {
   }
 
-  signup(userDTO: UserDTO) {
-    return this.http.post<UserViewDTO>(this.baseUrl + '/register', userDTO);
+  signup(userDto: UserDto) {
+    return this.http.post<UserViewDto>(this.baseUrl + '/register', userDto);
   }
 }

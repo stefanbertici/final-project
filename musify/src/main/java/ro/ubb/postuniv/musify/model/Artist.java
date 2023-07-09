@@ -13,6 +13,7 @@ import java.util.Set;
 @Entity
 @Table(name = "artists")
 public class Artist {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

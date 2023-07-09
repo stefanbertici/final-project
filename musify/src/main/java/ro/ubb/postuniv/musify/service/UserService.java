@@ -1,12 +1,12 @@
 package ro.ubb.postuniv.musify.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.ubb.postuniv.musify.dto.UserDTO;
-import ro.ubb.postuniv.musify.dto.UserLoginDTO;
-import ro.ubb.postuniv.musify.dto.UserLoginViewDTO;
-import ro.ubb.postuniv.musify.dto.UserViewDTO;
+import ro.ubb.postuniv.musify.dto.UserDto;
+import ro.ubb.postuniv.musify.dto.UserLoginDto;
+import ro.ubb.postuniv.musify.dto.UserLoginViewDto;
+import ro.ubb.postuniv.musify.dto.UserViewDto;
 import ro.ubb.postuniv.musify.exception.UnauthorizedException;
 import ro.ubb.postuniv.musify.mapper.UserMapper;
 import ro.ubb.postuniv.musify.model.User;
@@ -25,38 +25,39 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserService {
+
     private final RepositoryChecker repositoryChecker;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final InMemoryTokenBlacklist inMemoryTokenBlacklist;
 
     @Transactional
-    public List<UserViewDTO> readAllUsers() {
+    public List<UserViewDto> readAllUsers() {
         List<User> users = userRepository.findAll();
 
         return userMapper.toViewDtos(users);
     }
 
     @Transactional
-    public UserViewDTO readUserById(int id) {
+    public UserViewDto readUserById(int id) {
         User user = repositoryChecker.getUserIfExists(id);
 
         return userMapper.toViewDto(user);
     }
 
     @Transactional
-    public UserViewDTO registerUser(UserDTO userDTO) {
-        Optional<User> optional = userRepository.findUserByEmail(userDTO.getEmail());
+    public UserViewDto registerUser(UserDto userDto) {
+        Optional<User> optional = userRepository.findUserByEmail(userDto.getEmail());
         if (optional.isPresent()) {
-            throw new IllegalArgumentException("Email " + userDTO.getEmail() + " is already registered");
+            throw new IllegalArgumentException("Email " + userDto.getEmail() + " is already registered");
         }
 
-        User user = userMapper.toEntity(userDTO);
+        User user = userMapper.toEntity(userDto);
         user = userRepository.save(user);
 
-        String encryptedPassword = getEncryptedPassword(userDTO.getPassword());
+        String encryptedPassword = getEncryptedPassword(userDto.getPassword());
         user.setEncryptedPassword(encryptedPassword);
         user.setRole("user");
         user.setStatus("active");
@@ -65,9 +66,9 @@ public class UserService {
     }
 
     @Transactional
-    public UserLoginViewDTO loginUser(UserLoginDTO userLoginDTO) {
-        Optional<User> optional = userRepository.findUserByEmail(userLoginDTO.getEmail());
-        String encryptedInputPassword = getEncryptedPassword(userLoginDTO.getPassword());
+    public UserLoginViewDto loginUser(UserLoginDto userLoginDto) {
+        Optional<User> optional = userRepository.findUserByEmail(userLoginDto.getEmail());
+        String encryptedInputPassword = getEncryptedPassword(userLoginDto.getPassword());
 
         if (optional.isEmpty()) {
             throw new UnauthorizedException("Incorrect email or password");
@@ -93,25 +94,27 @@ public class UserService {
     }
 
     @Transactional
-    public UserViewDTO updateUser(Integer id, UserDTO userDTO) {
+    public UserViewDto updateUser(Integer id, UserDto userDto) {
         User user = repositoryChecker.getUserIfExists(id);
+
+        repositoryChecker.checkIfEmailIsTaken(id, userDto.getEmail());
 
         if (UserChecker.isCurrentUserNotAdmin() && !UserChecker.isOperationOnSelf(id)) {
             throw new UnauthorizedException("Users can only update their own info");
         }
 
-        user.setFirstName(userDTO.getFirstName());
-        user.setLastName(userDTO.getLastName());
-        user.setEmail(userDTO.getEmail());
-        String encryptedPassword = getEncryptedPassword(userDTO.getPassword());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setEmail(userDto.getEmail());
+        String encryptedPassword = getEncryptedPassword(userDto.getPassword());
         user.setEncryptedPassword(encryptedPassword);
-        user.setCountry(userDTO.getCountry());
+        user.setCountry(userDto.getCountry());
 
         return userMapper.toViewDto(user);
     }
 
     @Transactional
-    public UserViewDTO updateUserRole(Integer id, UserRole role) {
+    public UserViewDto updateUserRole(Integer id, UserRole role) {
         String newRole = "";
 
         if (role == UserRole.ADMIN) {
@@ -127,7 +130,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserViewDTO updateUserStatus(Integer id, UserStatus status) {
+    public UserViewDto updateUserStatus(Integer id, UserStatus status) {
         String newStatus = "";
 
         if (status == UserStatus.ACTIVE) {

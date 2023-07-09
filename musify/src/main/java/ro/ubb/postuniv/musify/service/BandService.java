@@ -1,7 +1,10 @@
 package ro.ubb.postuniv.musify.service;
 
-import ro.ubb.postuniv.musify.dto.AlbumDTO;
-import ro.ubb.postuniv.musify.dto.BandDTO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ro.ubb.postuniv.musify.dto.AlbumDto;
+import ro.ubb.postuniv.musify.dto.BandDto;
 import ro.ubb.postuniv.musify.mapper.AlbumMapper;
 import ro.ubb.postuniv.musify.mapper.BandMapper;
 import ro.ubb.postuniv.musify.model.Artist;
@@ -9,17 +12,15 @@ import ro.ubb.postuniv.musify.model.Band;
 import ro.ubb.postuniv.musify.repository.ArtistRepository;
 import ro.ubb.postuniv.musify.repository.BandRepository;
 import ro.ubb.postuniv.musify.utils.RepositoryChecker;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BandService {
+
     private final RepositoryChecker repositoryChecker;
     private final BandRepository bandRepository;
     private final ArtistRepository artistRepository;
@@ -27,36 +28,36 @@ public class BandService {
     private final AlbumMapper albumMapper;
 
     @Transactional
-    public List<AlbumDTO> readAlbumsByBandId(Integer id) {
+    public List<AlbumDto> readAlbumsByBandId(Integer id) {
         Band band = repositoryChecker.getBandIfExists(id);
 
         return albumMapper.toDtos(new ArrayList<>(band.getBandAlbums()));
     }
 
     @Transactional
-    public BandDTO createBand(BandDTO bandDTO) {
-        Band band = bandMapper.toEntity(bandDTO);
+    public BandDto createBand(BandDto bandDto) {
+        Band band = bandMapper.toEntity(bandDto);
         band = bandRepository.save(band);
 
-        if (!bandDTO.getBandMembersIds().isEmpty()) {
-            addMembersById(band, bandDTO);
+        if (!bandDto.getBandMembersIds().isEmpty()) {
+            addMembersById(band, bandDto);
         }
 
         return bandMapper.toDto(band);
     }
 
     @Transactional
-    public BandDTO updateBand(Integer id, BandDTO bandDTO) {
+    public BandDto updateBand(Integer id, BandDto bandDto) {
         Band band = repositoryChecker.getBandIfExists(id);
 
-        band.setBandName(bandDTO.getBandName());
-        band.setLocation(bandDTO.getLocation());
-        band.setActivityStartDate(bandDTO.getActivityStartDate());
-        band.setActivityEndDate(bandDTO.getActivityEndDate());
+        band.setBandName(bandDto.getBandName());
+        band.setLocation(bandDto.getLocation());
+        band.setActivityStartDate(bandDto.getActivityStartDate());
+        band.setActivityEndDate(bandDto.getActivityEndDate());
 
-        if (!bandDTO.getBandMembersIds().isEmpty()) {
+        if (!bandDto.getBandMembersIds().isEmpty()) {
             clearMembers(band);
-            addMembersById(band, bandDTO);
+            addMembersById(band, bandDto);
         }
 
         return bandMapper.toDto(band);
@@ -71,8 +72,8 @@ public class BandService {
         band.getArtists().clear();
     }
 
-    public void addMembersById(Band band, BandDTO bandDTO) {
-        List<Artist> artists = (List<Artist>) artistRepository.findAllById(bandDTO.getBandMembersIds());
+    public void addMembersById(Band band, BandDto bandDto) {
+        List<Artist> artists = (List<Artist>) artistRepository.findAllById(bandDto.getBandMembersIds());
         for (Artist artist : artists) {
             band.addArtist(artist);
         }

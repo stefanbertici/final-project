@@ -7,7 +7,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class UserViewDTO {
+public class UserLoginViewDto {
+
     private Integer id;
     private String firstName;
     private String lastName;
@@ -16,4 +17,5 @@ public class UserViewDTO {
     private String country;
     private String role;
     private String status;
+    private String accessToken;
 }

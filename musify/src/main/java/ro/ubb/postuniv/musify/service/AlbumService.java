@@ -1,7 +1,10 @@
 package ro.ubb.postuniv.musify.service;
 
-import ro.ubb.postuniv.musify.dto.AlbumDTO;
-import ro.ubb.postuniv.musify.dto.SongViewDTO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ro.ubb.postuniv.musify.dto.AlbumDto;
+import ro.ubb.postuniv.musify.dto.SongViewDto;
 import ro.ubb.postuniv.musify.mapper.AlbumMapper;
 import ro.ubb.postuniv.musify.mapper.SongMapper;
 import ro.ubb.postuniv.musify.model.Album;
@@ -11,15 +14,13 @@ import ro.ubb.postuniv.musify.model.Song;
 import ro.ubb.postuniv.musify.repository.AlbumRepository;
 import ro.ubb.postuniv.musify.repository.SongRepository;
 import ro.ubb.postuniv.musify.utils.RepositoryChecker;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AlbumService {
+
     private final RepositoryChecker repositoryChecker;
     private final AlbumRepository albumRepository;
     private final SongRepository songRepository;
@@ -27,7 +28,7 @@ public class AlbumService {
     private final SongMapper songMapper;
 
     @Transactional
-    public List<SongViewDTO> readSongsByAlbumId(Integer id) {
+    public List<SongViewDto> readSongsByAlbumId(Integer id) {
         Album album = repositoryChecker.getAlbumIfExists(id);
         List<Song> songs = album.getSongs();
 
@@ -35,48 +36,48 @@ public class AlbumService {
     }
 
     @Transactional
-    public AlbumDTO createAlbum(AlbumDTO albumDTO) {
-        if (!albumDTO.isOnlyOneOwnerIdSet()) {
+    public AlbumDto createAlbum(AlbumDto albumDto) {
+        if (albumDto.isTwoOwnersIdSet()) {
             throw new IllegalArgumentException("One of artist id or band id must be set, the other must remain null");
         }
 
-        Album album = albumMapper.toEntity(albumDTO);
+        Album album = albumMapper.toEntity(albumDto);
         album = albumRepository.save(album);
 
-        addArtistOrBandById(album, albumDTO);
+        addArtistOrBandById(album, albumDto);
 
-        if (!albumDTO.getSongIds().isEmpty()) {
-            addSongsById(album, albumDTO);
+        if (!albumDto.getSongIds().isEmpty()) {
+            addSongsById(album, albumDto);
         }
 
         return albumMapper.toDto(album);
     }
 
     @Transactional
-    public AlbumDTO updateAlbum(Integer id, AlbumDTO albumDTO) {
-        if (!albumDTO.isOnlyOneOwnerIdSet()) {
+    public AlbumDto updateAlbum(Integer id, AlbumDto albumDto) {
+        if (albumDto.isTwoOwnersIdSet()) {
             throw new IllegalArgumentException("One of artist id or band id must be set, the other must remain null");
         }
 
         Album album = repositoryChecker.getAlbumIfExists(id);
 
-        addArtistOrBandById(album, albumDTO);
-        album.setTitle(albumDTO.getTitle());
-        album.setDescription(albumDTO.getDescription());
-        album.setGenre(albumDTO.getGenre());
-        album.setReleaseDate(albumDTO.getReleaseDate());
-        album.setLabel(albumDTO.getLabel());
+        addArtistOrBandById(album, albumDto);
+        album.setTitle(albumDto.getTitle());
+        album.setDescription(albumDto.getDescription());
+        album.setGenre(albumDto.getGenre());
+        album.setReleaseDate(albumDto.getReleaseDate());
+        album.setLabel(albumDto.getLabel());
 
-        if (!albumDTO.getSongIds().isEmpty()) {
+        if (!albumDto.getSongIds().isEmpty()) {
             clearSongs(album);
-            addSongsById(album, albumDTO);
+            addSongsById(album, albumDto);
         }
 
         return albumMapper.toDto(album);
     }
 
-    private void addSongsById(Album album, AlbumDTO albumDTO) {
-        List<Song> songs = (List<Song>) songRepository.findAllById(albumDTO.getSongIds());
+    private void addSongsById(Album album, AlbumDto albumDto) {
+        List<Song> songs = (List<Song>) songRepository.findAllById(albumDto.getSongIds());
         for (Song song : songs) {
             if (!album.getSongs().contains(song)) {
                 album.addSong(song);
@@ -92,13 +93,13 @@ public class AlbumService {
         album.getSongs().clear();
     }
 
-    private void addArtistOrBandById(Album album, AlbumDTO albumDTO) {
-        if (albumDTO.getArtistId() != null && albumDTO.getArtistId() != 0) {
-            Integer id = albumDTO.getArtistId();
+    private void addArtistOrBandById(Album album, AlbumDto albumDto) {
+        if (albumDto.getArtistId() != null && albumDto.getArtistId() != 0) {
+            Integer id = albumDto.getArtistId();
             Artist artist = repositoryChecker.getArtistIfExists(id);
             artist.addAlbum(album);
-        } else if (albumDTO.getBandId() != null && albumDTO.getBandId() != 0) {
-            Integer id = albumDTO.getBandId();
+        } else if (albumDto.getBandId() != null && albumDto.getBandId() != 0) {
+            Integer id = albumDto.getBandId();
             Band band = repositoryChecker.getBandIfExists(id);
             band.addAlbum(album);
         }

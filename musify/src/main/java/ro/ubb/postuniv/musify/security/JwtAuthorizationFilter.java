@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
+
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String HEADER_STRING = "Authorization";
     private final InMemoryTokenBlacklist tokenBlackList;
@@ -47,7 +48,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     private UsernamePasswordAuthenticationToken getAuthentication(String token) {
         if (token != null) {
             Map<String, Object> userInfo = JwtUtils.validateToken(token);
-
             String id = String.valueOf(userInfo.get("id"));
             String email = (String) userInfo.get("email");
             String role = (String) userInfo.get("role");

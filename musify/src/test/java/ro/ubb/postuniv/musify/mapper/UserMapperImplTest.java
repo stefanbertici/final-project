@@ -1,6 +1,6 @@
 package ro.ubb.postuniv.musify.mapper;
 
-import ro.ubb.postuniv.musify.dto.UserViewDTO;
+import ro.ubb.postuniv.musify.dto.UserViewDto;
 import ro.ubb.postuniv.musify.model.User;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,16 +22,16 @@ class UserMapperImplTest {
     }
 
     @Test
-    @DisplayName("User entity to user view DTO test")
+    @DisplayName("User entity to user view Dto test")
     public void givenNullUser_whenMappingToUserViewDto_thenReturnNull() {
         UserMapper userMapper = new UserMapperImpl();
-        UserViewDTO userViewDTO = userMapper.toViewDto(null);
+        UserViewDto userViewDto = userMapper.toViewDto(null);
 
-        assertNull(userViewDTO);
+        assertNull(userViewDto);
     }
 
     @Test
-    @DisplayName("User entity to user view DTO test")
+    @DisplayName("User entity to user view Dto test")
     public void givenValidUser_whenMappingToUserViewDto_thenReturnCorrectValidDto() {
         Integer id = 1;
         String firstName = "Stefan";
@@ -53,8 +53,8 @@ class UserMapperImplTest {
         user.setStatus(status);
 
         UserMapper userMapper = new UserMapperImpl();
-        UserViewDTO userViewDTO = userMapper.toViewDto(user);
+        UserViewDto userViewDto = userMapper.toViewDto(user);
 
-        assertEquals(userViewDTO.getFullName(), firstName + " " + lastName);
+        assertEquals(userViewDto.getFullName(), firstName + " " + lastName);
     }
 }

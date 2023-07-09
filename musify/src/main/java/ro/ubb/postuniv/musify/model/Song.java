@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "songs")
 public class Song {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -40,28 +41,28 @@ public class Song {
         return alternativeSongTitles
                 .stream()
                 .map(AlternativeSongTitle::getAlternativeTitle)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<String> getAlbumsTitlesList() {
         return albums
                 .stream()
                 .map(Album::getTitle)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<Integer> getComposersIdsList() {
         return composers
                 .stream()
                 .map(Artist::getId)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<String> getComposersStageNamesList() {
         return composers
                 .stream()
                 .map(Artist::getStageName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public void addAlternativeSongTitle(AlternativeSongTitle alternativeSongTitle) {

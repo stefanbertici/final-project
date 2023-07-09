@@ -7,8 +7,12 @@
       your personal music management app
     </p>
     <div *ngIf="isLoggedIn">
+      <p class="heading">
+        Welcome back, {{getUserFullName()}}!
+      </p>
+
       <button class="button" routerLink="/dashboard" routerLinkActive="active">Dashboard</button>
-      <button class="button" routerLink="/user-page" routerLinkActive="active">User</button>
+      <button class="button" [routerLink]="['/user-page', getUserId()]" routerLinkActive="active">User</button>
       <button class="button" *ngIf="role == 'admin'" routerLink="/admin-page" routerLinkActive="active">Admin</button>
       <button class="button" (click)="logout()" style="cursor: pointer">Logout</button>
     </div>

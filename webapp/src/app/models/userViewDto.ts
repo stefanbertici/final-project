@@ -1,4 +1,4 @@
-export interface UserLoginViewDTO {
+export interface UserViewDto {
   id: number;
   firstName: string;
   lastName: string;
@@ -7,5 +7,4 @@ export interface UserLoginViewDTO {
   country: string;
   role: string;
   status: string;
-  accessToken: string;
 }

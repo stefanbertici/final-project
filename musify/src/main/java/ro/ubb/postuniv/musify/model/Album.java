@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "albums")
 public class Album {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

@@ -12,6 +12,7 @@ import java.util.*;
 @Entity
 @Table(name = "playlists")
 public class Playlist {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

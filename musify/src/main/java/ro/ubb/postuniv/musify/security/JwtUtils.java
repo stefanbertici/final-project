@@ -57,7 +57,7 @@ public class JwtUtils {
     }
 
     public static String extractTokenFromHeader(String header) {
-        return header.replaceAll("Bearer ", "").trim();
+        return header.replace("Bearer ", "").trim();
     }
 
     public static Integer getCurrentUserId() {
@@ -67,7 +67,7 @@ public class JwtUtils {
             return (Integer) ((Map<String, Object>) principal).get("id");
         }
 
-        throw new RuntimeException("Something went wrong!");
+        throw new RuntimeException("Could not get current user's id from security context");
     }
 
     public static String getCurrentUserEmail() {
@@ -77,7 +77,7 @@ public class JwtUtils {
             return (String) ((Map<String, Object>) principal).get("email");
         }
 
-        throw new RuntimeException("Something went wrong!");
+        throw new RuntimeException("Could not get current user's email from security context");
     }
 
     public static String getCurrentUserRole() {
@@ -87,6 +87,6 @@ public class JwtUtils {
             return (String) ((Map<String, Object>) principal).get("role");
         }
 
-        throw new RuntimeException("Something went wrong!");
+        throw new RuntimeException("Could not get current user's role from security context");
     }
 }

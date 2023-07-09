@@ -12,7 +12,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BandDTO {
+public class BandDto {
+
     private Integer id;
     @NotBlank(message = "Band name cannot be blank")
     private String bandName;

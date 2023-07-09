@@ -10,6 +10,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "alternative_song_titles")
 public class AlternativeSongTitle {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

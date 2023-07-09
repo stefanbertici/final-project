@@ -12,7 +12,8 @@ import java.sql.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArtistDTO {
+public class ArtistDto {
+
     private Integer id;
     private String firstName;
     private String lastName;

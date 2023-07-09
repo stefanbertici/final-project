@@ -5,7 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {AdminComponent} from './components/admin/admin.component';
-import {UserComponent} from './components/user/user.component';
+import {UserPageComponent} from './components/user-page/user-page.component';
 import {LoginComponent} from './components/login/login.component';
 import {SignupComponent} from './components/signup/signup.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -18,7 +18,7 @@ import {RequestInterceptor} from "./interceptors/request.interceptor";
     AppComponent,
     DashboardComponent,
     AdminComponent,
-    UserComponent,
+    UserPageComponent,
     LoginComponent,
     SignupComponent
   ],
