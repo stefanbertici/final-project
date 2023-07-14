@@ -5,6 +5,7 @@ import {ActivatedRoute} from "@angular/router";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {passwordsMatch} from "../../validators/passwordsMatch.validator";
 import {Status} from "../../models/status";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-user',
@@ -17,10 +18,8 @@ export class UserPageComponent implements OnInit {
   userId: number = 0;
   status!: Status;
 
-  constructor(private userService: UserService, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder) {
-    this.activatedRoute.params.subscribe((params) => {
-      this.userId = params['id'];
-    });
+  constructor(private authService: AuthService, private userService: UserService, private activatedRoute: ActivatedRoute, private formBuilder: FormBuilder) {
+    this.userId = this.authService.getUserId();
   }
 
   ngOnInit(): void {

@@ -19,7 +19,7 @@
     <properties>
         <java.version>17</java.version>
         <!--hibernate version is for getting rid of a recent bug that occurs when querying with contains/like etc.-->
-        <hibernate.version>5.6.5.Final</hibernate.version>
+        <!--<hibernate.version>5.6.5.Final</hibernate.version>-->
     </properties>
 
     <dependencies>
@@ -50,9 +50,10 @@
         </dependency>
 
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
             <version>8.0.33</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>

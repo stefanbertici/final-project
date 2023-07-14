@@ -12,6 +12,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {RequestInterceptor} from "./interceptors/request.interceptor";
+import { AddPlaylistComponent } from './components/playlist/add-playlist/add-playlist.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import {RequestInterceptor} from "./interceptors/request.interceptor";
     AdminComponent,
     UserPageComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    AddPlaylistComponent
   ],
   imports: [
     BrowserModule,

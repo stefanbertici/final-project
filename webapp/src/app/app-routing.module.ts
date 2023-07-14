@@ -6,14 +6,16 @@ import {DashboardComponent} from "./components/dashboard/dashboard.component";
 import {UserPageComponent} from "./components/user-page/user-page.component";
 import {AdminComponent} from "./components/admin/admin.component";
 import {authGuard} from "./guards/auth.guard";
+import {AddPlaylistComponent} from "./components/playlist/add-playlist/add-playlist.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'dashboard', component: DashboardComponent, canActivate: [authGuard]},
-  {path: 'user-page/:id', component: UserPageComponent, canActivate: [authGuard]},
+  {path: 'user-page', component: UserPageComponent, canActivate: [authGuard]},
   {path: 'admin-page', component: AdminComponent, canActivate: [authGuard]},
+  {path: 'playlists/add', component: AddPlaylistComponent, canActivate: [authGuard]},
 ];
 
 @NgModule({

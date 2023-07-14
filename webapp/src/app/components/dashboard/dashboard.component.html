@@ -1,1 +1,86 @@
-Dashboard works!
+<div class="container">
+  <h1 class="heading">Created playlists</h1>
+  <button class="button is-primary" [routerLink]="['/playlists/add']">Create</button>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Operations</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let playlist of ownedPlaylists; let i = index">
+      <td>{{i + 1}}</td>
+      <td>{{playlist.name}}</td>
+      <td>{{playlist.type}}</td>
+      <td>
+        <div class="columns">
+          <div class="column">
+            <a [routerLink]="['/playlists/details', playlist.id]">
+              <span class="icon">
+                <i class="fa-solid fa-circle-info"></i>
+              </span>
+            </a>
+          </div>
+
+          <div class="column">
+            <a [routerLink]="['/playlists/edit', playlist.id]">
+              <span class="icon">
+                <i class="fa-solid fa-square-pen"></i>
+              </span>
+            </a>
+          </div>
+
+          <div class="column">
+            <a (click)="startDelete(playlist.id)">
+              <span class="icon">
+                <i class="fa-solid fa-trash-can"></i>
+              </span>
+            </a>
+          </div>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h1 class="heading">Followed playlists</h1>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Operations</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let playlist of followedPlaylists; let i = index">
+        <td>{{i + 1}}</td>
+        <td>{{playlist.name}}</td>
+        <td>{{playlist.type}}</td>
+        <td>
+          <div class="columns">
+            <div class="column">
+              <a [routerLink]="['/playlists/details', playlist.id]">
+                <span class="icon">
+                  <i class="fa-solid fa-circle-info"></i>
+                </span>
+              </a>
+            </div>
+
+            <div class="column">
+              <a (click)="startUnfollow(playlist.id)">
+                <span class="icon">
+                  <i class="fa-solid fa-minus"></i>
+                </span>
+              </a>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
