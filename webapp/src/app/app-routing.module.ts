@@ -7,6 +7,8 @@ import {UserPageComponent} from "./components/user-page/user-page.component";
 import {AdminComponent} from "./components/admin/admin.component";
 import {authGuard} from "./guards/auth.guard";
 import {AddPlaylistComponent} from "./components/playlist/add-playlist/add-playlist.component";
+import {EditPlaylistComponent} from "./components/playlist/edit-playlist/edit-playlist.component";
+import {DetailsPlaylistComponent} from "./components/playlist/details-playlist/details-playlist.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -16,6 +18,8 @@ const routes: Routes = [
   {path: 'user-page', component: UserPageComponent, canActivate: [authGuard]},
   {path: 'admin-page', component: AdminComponent, canActivate: [authGuard]},
   {path: 'playlists/add', component: AddPlaylistComponent, canActivate: [authGuard]},
+  {path: 'playlists/edit/:id', component: EditPlaylistComponent, canActivate: [authGuard]},
+  {path: 'playlists/details/:id', component: DetailsPlaylistComponent, canActivate: [authGuard]},
 ];
 
 @NgModule({

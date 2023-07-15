@@ -24,6 +24,11 @@ public class PlaylistController {
         return new ResponseEntity<>(playlistService.readUserPlaylists(), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<PlaylistViewDto> readPlaylistById(@PathVariable Integer id) {
+        return new ResponseEntity<>(playlistService.readPlaylistById(id), HttpStatus.OK);
+    }
+
     @GetMapping("/{id}/songs")
     public ResponseEntity<List<SongViewDto>> readSongsByPlaylistId(@PathVariable Integer id) {
         return new ResponseEntity<>(playlistService.readSongsByPlaylistId(id), HttpStatus.OK);

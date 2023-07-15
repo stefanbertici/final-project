@@ -21,6 +21,7 @@ import ro.ubb.postuniv.musify.utils.UserChecker;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,8 +29,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PlaylistService {
-
     private final RepositoryChecker repositoryChecker;
+
     private final PlaylistRepository playlistRepository;
     private final UserRepository userRepository;
     private final PlaylistMapper playlistMapper;
@@ -49,7 +50,16 @@ public class PlaylistService {
 
         followedPlaylists.forEach(playlist -> result.add(playlistMapper.toDto(playlist)));
 
-        return result;
+        return result.stream()
+                .sorted(Comparator.comparing(PlaylistDto::getName))
+                .toList();
+    }
+
+    @Transactional
+    public PlaylistViewDto readPlaylistById(Integer id) {
+        Playlist playlist = repositoryChecker.getPlaylistIfExists(id);
+
+        return playlistMapper.toViewDto(playlist);
     }
 
     @Transactional

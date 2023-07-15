@@ -13,6 +13,8 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {RequestInterceptor} from "./interceptors/request.interceptor";
 import { AddPlaylistComponent } from './components/playlist/add-playlist/add-playlist.component';
+import { EditPlaylistComponent } from './components/playlist/edit-playlist/edit-playlist.component';
+import { DetailsPlaylistComponent } from './components/playlist/details-playlist/details-playlist.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { AddPlaylistComponent } from './components/playlist/add-playlist/add-pla
     UserPageComponent,
     LoginComponent,
     SignupComponent,
-    AddPlaylistComponent
+    AddPlaylistComponent,
+    EditPlaylistComponent,
+    DetailsPlaylistComponent
   ],
   imports: [
     BrowserModule,

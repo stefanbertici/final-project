@@ -7,6 +7,8 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.util.*;
 
+import static java.util.Optional.ofNullable;
+
 @Getter
 @Setter
 @Entity
@@ -38,7 +40,9 @@ public class Playlist {
     private List<Song> songsInPlaylist = new ArrayList<>();
 
     public Integer getOwnerUserId() {
-        return ownerUser.getId();
+        return ofNullable(ownerUser)
+                .map(User::getId)
+                .orElse(0);
     }
 
     public void addSong(Song song) {

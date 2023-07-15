@@ -1,0 +1,53 @@
+<div *ngIf="playlistViewDto">
+  <h1 class="heading">Details for playlist "{{playlistViewDto.name}}"</h1>
+
+  <p>
+    <strong>Id:</strong>
+    <span>{{playlistViewDto.id}}</span>
+  </p>
+  <p>
+    <strong>Name:</strong>
+    <span>{{playlistViewDto.name}}</span>
+  </p>
+  <p>
+    <strong>Type:</strong>
+    <span>{{playlistViewDto.type}}</span>
+  </p>
+  <p>
+    <strong>Date created:</strong>
+    <span>{{playlistViewDto.createdDate}}</span>
+  </p>
+  <p>
+    <strong>Date updated:</strong>
+    <span>{{playlistViewDto.updatedDate}}</span>
+  </p>
+  <p>
+    <strong>Owner user id:</strong>
+    <span>{{playlistViewDto.ownerUserId}}</span>
+  </p>
+
+  <br>
+  <strong>Songs:</strong>
+  <div class="table-container">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Title</th>
+        <th>Duration</th>
+        <th>Composers</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let song of playlistViewDto.songs; let i = index">
+        <td>{{i + 1}}</td>
+        <td>{{song.title}}</td>
+        <td>{{song.duration}}</td>
+        <td>{{song.composers}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <button class="button is-link is-light" [routerLink]="['/dashboard']">Back</button>
+</div>

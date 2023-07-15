@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Status} from "../../../models/status";
 import {PlaylistService} from "../../../services/playlist.service";
 import {AuthService} from "../../../services/auth.service";
-import {PlaylistViewDto} from "../../../models/playlistViewDto";
+import {PlaylistDto} from "../../../models/playlistDto";
 
 @Component({
   selector: 'app-add-playlist',
@@ -13,7 +13,7 @@ import {PlaylistViewDto} from "../../../models/playlistViewDto";
 export class AddPlaylistComponent implements OnInit {
 
   form!: FormGroup;
-  playlistViewDto!: PlaylistViewDto;
+  playlistDto!: PlaylistDto;
   status!: Status;
 
   constructor(private authService: AuthService, private playlistService: PlaylistService, private formBuilder: FormBuilder) {
@@ -35,14 +35,14 @@ export class AddPlaylistComponent implements OnInit {
     this.status = {code: 0, message: "adding..."};
     let name: string = this.form.value.name;
     let type: string = this.form.value.type;
-    let playlist: PlaylistViewDto = {
+    let playlist: PlaylistDto = {
       id: 0, name: name, type: type, createdDate: new Date(),
       updatedDate: new Date(), ownerUserId: this.authService.getUserId()
     };
 
-    this.playlistService.addPlaylist(playlist).subscribe({
+    this.playlistService.add(playlist).subscribe({
       next: (res) => {
-        this.playlistViewDto = res;
+        this.playlistDto = res;
         this.status.code = 1;
         this.status.message = "added successfully!";
         this.form.reset();
