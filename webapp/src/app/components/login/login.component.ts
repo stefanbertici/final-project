@@ -36,13 +36,13 @@ export class LoginComponent implements OnInit {
         this.authService.addFullName(res.fullName);
         this.authService.addAccessToken(res.accessToken);
         this.status.code = 1;
-        this.status.message = "logged in successfully!";
+        this.status.message = "logged in!";
         this.router.navigate(['./dashboard']);
         },
       error: (err) => {
         console.log("Server side error: " + err.message);
         this.status.code = 0;
-        this.status.message = "it looks like there was an error :(";
+        this.status.message = "It looks like there was an error :(";
       }
     })
   }

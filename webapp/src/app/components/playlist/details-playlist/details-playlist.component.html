@@ -1,53 +1,85 @@
-<div *ngIf="playlistViewDto">
-  <h1 class="heading">Details for playlist "{{playlistViewDto.name}}"</h1>
+<div class="container">
+  <div *ngIf="playlistViewDto">
+    <p>
+      <strong>Id:</strong>
+      <span>{{playlistViewDto.id}}</span>
+    </p>
+    <p>
+      <strong>Name:</strong>
+      <span>{{playlistViewDto.name}}</span>
+    </p>
+    <p>
+      <strong>Type:</strong>
+      <span>{{playlistViewDto.type}}</span>
+    </p>
+    <p>
+      <strong>Date created:</strong>
+      <span>{{playlistViewDto.createdDate}}</span>
+    </p>
+    <p>
+      <strong>Date updated:</strong>
+      <span>{{playlistViewDto.updatedDate}}</span>
+    </p>
+    <p>
+      <strong>Owner user:</strong>
+      <span>{{playlistViewDto.ownerUserName}}</span>
+    </p>
 
-  <p>
-    <strong>Id:</strong>
-    <span>{{playlistViewDto.id}}</span>
-  </p>
-  <p>
-    <strong>Name:</strong>
-    <span>{{playlistViewDto.name}}</span>
-  </p>
-  <p>
-    <strong>Type:</strong>
-    <span>{{playlistViewDto.type}}</span>
-  </p>
-  <p>
-    <strong>Date created:</strong>
-    <span>{{playlistViewDto.createdDate}}</span>
-  </p>
-  <p>
-    <strong>Date updated:</strong>
-    <span>{{playlistViewDto.updatedDate}}</span>
-  </p>
-  <p>
-    <strong>Owner user id:</strong>
-    <span>{{playlistViewDto.ownerUserId}}</span>
-  </p>
+    <br>
+    <strong>Songs:</strong>
+    <div class="table-container">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Artist</th>
+          <th>Title</th>
+          <th>Duration</th>
+          <th>Composers</th>
+          <th>Operations</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let song of playlistViewDto.songs; let i = index">
+          <td>{{i + 1}}</td>
+          <td>{{song.artist}}</td>
+          <td>{{song.title}}</td>
+          <td>{{song.duration}}</td>
+          <td>{{song.composers}}</td>
+          <td>
+            <div class="columns">
+              <div class="column">
+                <a (click)="startRemove(song.id)">
+              <span class="icon">
+                <i class="fa-solid fa-trash-can"></i>
+              </span>
+                </a>
+              </div>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
 
-  <br>
-  <strong>Songs:</strong>
-  <div class="table-container">
-    <table class="table">
-      <thead>
-      <tr>
-        <th>#</th>
-        <th>Title</th>
-        <th>Duration</th>
-        <th>Composers</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let song of playlistViewDto.songs; let i = index">
-        <td>{{i + 1}}</td>
-        <td>{{song.title}}</td>
-        <td>{{song.duration}}</td>
-        <td>{{song.composers}}</td>
-      </tr>
-      </tbody>
-    </table>
+    <button class="button is-link is-light" [routerLink]="['/dashboard']">Back</button>
   </div>
 
-  <button class="button is-link is-light" [routerLink]="['/dashboard']">Back</button>
+  <div id="modal-delete-playlist" class="modal" [ngClass]="{'is-active': selectedSongIdForRemove}">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Confirm remove</p>
+      </header>
+
+      <div class="modal-card-body">
+        <p>Are you sure you want to remove this song from the playlist?</p>
+      </div>
+
+      <div class="modal-card-foot">
+        <button class="button is-danger" (click)="confirmRemove()">Remove</button>
+        <button class="button is-light" (click)="cancelRemove()">Cancel</button>
+      </div>
+    </div>
+  </div>
 </div>

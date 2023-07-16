@@ -9,6 +9,7 @@ import {authGuard} from "./guards/auth.guard";
 import {AddPlaylistComponent} from "./components/playlist/add-playlist/add-playlist.component";
 import {EditPlaylistComponent} from "./components/playlist/edit-playlist/edit-playlist.component";
 import {DetailsPlaylistComponent} from "./components/playlist/details-playlist/details-playlist.component";
+import {AddSongToPlaylistComponent} from "./components/playlist/add-song-to-playlist/add-song-to-playlist.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -20,6 +21,7 @@ const routes: Routes = [
   {path: 'playlists/add', component: AddPlaylistComponent, canActivate: [authGuard]},
   {path: 'playlists/edit/:id', component: EditPlaylistComponent, canActivate: [authGuard]},
   {path: 'playlists/details/:id', component: DetailsPlaylistComponent, canActivate: [authGuard]},
+  {path: 'playlists/add-song/:id', component: AddSongToPlaylistComponent, canActivate: [authGuard]},
 ];
 
 @NgModule({

@@ -5,6 +5,7 @@ import {Status} from "../../../models/status";
 import {PlaylistService} from "../../../services/playlist.service";
 import {ActivatedRoute} from "@angular/router";
 import {PlaylistViewDto} from "../../../models/playlistViewDto";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-edit-playlist',
@@ -13,12 +14,13 @@ import {PlaylistViewDto} from "../../../models/playlistViewDto";
 })
 export class EditPlaylistComponent implements OnInit {
 
-  form!: FormGroup;
   playlistId: number = 0;
-  playlistDto!: PlaylistDto;
+  playlistViewDto!: PlaylistViewDto;
+  form!: FormGroup;
   status!: Status;
 
-  constructor(private activatedRoute: ActivatedRoute, private playlistService: PlaylistService, private formBuilder: FormBuilder) {
+  constructor(private activatedRoute: ActivatedRoute, private authService: AuthService,
+              private playlistService: PlaylistService, private formBuilder: FormBuilder) {
     this.activatedRoute.params.subscribe((params) => {
       this.playlistId = params['id'];
     });
@@ -31,7 +33,7 @@ export class EditPlaylistComponent implements OnInit {
     });
 
     this.playlistService.getById(this.playlistId).subscribe((data: PlaylistViewDto) => {
-      this.playlistDto = data;
+      this.playlistViewDto = data;
       this.form.patchValue({
         name: data.name,
         type: data.type
@@ -46,18 +48,19 @@ export class EditPlaylistComponent implements OnInit {
   onPost() {
     console.log("clicked update playlist")
     this.status = {code: 0, message: "updating"};
-    this.playlistDto.name = this.form.value.name;
-    this.playlistDto.type = this.form.value.type;
+    let playlistDto: PlaylistDto = {id: this.playlistId, name: this.form.value.name, type: this.form.value.type,
+      createdDate: new Date(), updatedDate: new Date(), ownerUserId: this.authService.getUserId()}
 
-    this.playlistService.update(this.playlistId, this.playlistDto).subscribe({
+
+    this.playlistService.update(this.playlistId, playlistDto).subscribe({
       next: (res) => {
         this.status.code = 1;
-        this.status.message = "updated playlist successfully!";
+        this.status.message = "Playlist updated!";
       },
       error: (err) => {
         console.log("Server side error: " + err.message);
         this.status.code = 0;
-        this.status.message = "it looks like there was an error :(";
+        this.status.message = "It looks like there was an error :(";
       }
     })
   }

@@ -15,6 +15,7 @@ public interface SongMapper {
     @Mapping(target = "alternativeTitles", expression = "java(song.getAlternativeSongTitlesList())")
     SongDto toDto(Song song);
 
+    @Mapping(target = "artist", expression = "java(song.getArtistName())")
     @Mapping(target = "alternativeTitles", expression = "java(song.getAlternativeSongTitlesList())")
     @Mapping(target = "albums", expression = "java(song.getAlbumsTitlesList())")
     @Mapping(target = "composers", expression = "java(song.getComposersStageNamesList())")

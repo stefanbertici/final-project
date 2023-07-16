@@ -18,7 +18,7 @@ public interface PlaylistMapper {
 
     List<PlaylistDto> toDtos(List<Playlist> playlists);
 
-    @Mapping(target = "ownerUserId", expression = "java(playlist.getOwnerUserId())")
+    @Mapping(target = "ownerUserName", expression = "java(playlist.getOwnerUser().getFullName())")
     @Mapping(target = "songs", expression = "java(getSongViewDtos(playlist.getSongsInPlaylist()))")
     PlaylistViewDto toViewDto(Playlist playlist);
 

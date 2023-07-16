@@ -8,6 +8,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -73,5 +74,23 @@ public class Song {
     public void removeAlternativeSongTitle(AlternativeSongTitle alternativeSongTitle) {
         alternativeSongTitles.remove(alternativeSongTitle);
         alternativeSongTitle.setSong(null);
+    }
+
+    public String getArtistName() {
+        StringBuilder sb = new StringBuilder();
+
+        this.albums.forEach(a -> {
+            if (Objects.nonNull(a.getArtist()) && !sb.toString().contains(a.getArtist().getStageName())) {
+                sb.append(a.getArtist().getStageName()).append(", ");
+            }
+
+            if (Objects.nonNull(a.getBand()) && !sb.toString().contains(a.getBand().getBandName())) {
+                sb.append(a.getBand().getBandName()).append(", ");
+            }
+        });
+
+        sb.deleteCharAt(sb.lastIndexOf(", "));
+
+        return sb.toString();
     }
 }

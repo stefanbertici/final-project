@@ -19,6 +19,6 @@ public class PlaylistViewDto {
     private String type;
     private Date createdDate;
     private Date updatedDate;
-    private Integer ownerUserId;
+    private String ownerUserName;
     private List<SongViewDto> songs;
 }

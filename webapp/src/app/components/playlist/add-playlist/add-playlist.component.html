@@ -1,36 +1,38 @@
-<form [formGroup]="form" (ngSubmit)="onPost()">
-  <div class="field">
-    <label class="label">Name</label>
-    <div class="control">
-      <input class="input" formControlName="name" type="text" placeholder="My playlist" required>
-    </div>
-    <div class="notification"
-         *ngIf="getFormControl['name'].invalid && (getFormControl['name'].dirty || getFormControl['name'].touched)">
-      <p class="help is-danger" *ngIf="getFormControl['name'].errors?.['required']">
-        Name is required
-      </p>
-    </div>
-  </div>
-
-  <div class="field">
-    <label class="label">Type</label>
-    <div class="control">
-      <div class="select">
-        <select formControlName="type">
-          <option value="private">private</option>
-          <option value="public">public</option>
-        </select>
+<div class="container">
+  <form [formGroup]="form" (ngSubmit)="onPost()">
+    <div class="field">
+      <label class="label">Name</label>
+      <div class="control">
+        <input class="input" formControlName="name" type="text" placeholder="My playlist" required>
+      </div>
+      <div class="notification"
+           *ngIf="getFormControl['name'].invalid && (getFormControl['name'].dirty || getFormControl['name'].touched)">
+        <p class="help is-danger" *ngIf="getFormControl['name'].errors?.['required']">
+          Name is required
+        </p>
       </div>
     </div>
-  </div>
 
-  <div class="field is-grouped">
-    <div class="control">
-      <button type="submit" class="button is-primary" [disabled]="form.invalid">Create</button>
-      <button class="button is-link is-light" [routerLink]="['/dashboard']">Back</button>
+    <div class="field">
+      <label class="label">Type</label>
+      <div class="control">
+        <div class="select">
+          <select formControlName="type">
+            <option value="private">private</option>
+            <option value="public">public</option>
+          </select>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="help is-dark" *ngIf="status">
-    {{status.message}}
-  </div>
-</form>
+
+    <div class="field is-grouped">
+      <div class="control">
+        <button type="submit" class="button is-primary" [disabled]="form.invalid">Create</button>
+        <button type="button" class="button is-link is-light" [routerLink]="['/dashboard']">Back</button>
+      </div>
+    </div>
+    <div class="help is-dark" *ngIf="status">
+      {{status.message}}
+    </div>
+  </form>
+</div>

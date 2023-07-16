@@ -44,7 +44,7 @@ public class Album {
         return songs
                 .stream()
                 .map(Song::getId)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public Integer getArtistId() {

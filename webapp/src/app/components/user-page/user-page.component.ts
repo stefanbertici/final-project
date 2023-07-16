@@ -56,12 +56,12 @@ export class UserPageComponent implements OnInit {
     this.userService.updateUser(this.userId, this.form.value).subscribe({
       next: (res) => {
         this.status.code = 1;
-        this.status.message = "updated user info successfully!";
+        this.status.message = "User info updated!";
       },
       error: (err) => {
         console.log("Server side error: " + err.message);
         this.status.code = 0;
-        this.status.message = "it looks like there was an error :(";
+        this.status.message = "It looks like there was an error :(";
       }
     })
   }

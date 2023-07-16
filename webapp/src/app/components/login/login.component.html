@@ -1,64 +1,66 @@
-<form [formGroup]="form" (ngSubmit)="onPost()">
-  <div class="field">
-    <label class="label">Email</label>
-    <div class="control has-icons-left has-icons-right">
-      <input
-        class="input"
-        formControlName="email"
-        type="email"
-        placeholder="me@mydomain.com"
-        required
-        pattern="^[-\w.]+@([-\w]+\.)+[-\w]{2,4}$"
-      >
-      <span class="icon is-small is-left">
+<div class="container">
+  <form [formGroup]="form" (ngSubmit)="onPost()">
+    <div class="field">
+      <label class="label">Email</label>
+      <div class="control has-icons-left has-icons-right">
+        <input
+          class="input"
+          formControlName="email"
+          type="email"
+          placeholder="me@mydomain.com"
+          required
+          pattern="^[-\w.]+@([-\w]+\.)+[-\w]{2,4}$"
+        >
+        <span class="icon is-small is-left">
         <i class="fas fa-envelope"></i>
       </span>
-      <span class="icon is-small is-right">
+        <span class="icon is-small is-right">
         <i class="fas fa-exclamation-triangle"></i>
       </span>
+      </div>
+      <div class="notification"
+           *ngIf="getFormControl['email'].invalid && (getFormControl['email'].dirty || getFormControl['email'].touched)">
+        <p class="help is-danger" *ngIf="getFormControl['email'].errors?.['required']">
+          Email is required
+        </p>
+        <p class="help is-danger" *ngIf="getFormControl['email'].errors?.['pattern']">
+          Invalid pattern, please use the following format (address@domain.topleveldomain)
+        </p>
+      </div>
     </div>
-    <div class="notification"
-         *ngIf="getFormControl['email'].invalid && (getFormControl['email'].dirty || getFormControl['email'].touched)">
-      <p class="help is-danger" *ngIf="getFormControl['email'].errors?.['required']">
-        Email is required
-      </p>
-      <p class="help is-danger" *ngIf="getFormControl['email'].errors?.['pattern']">
-        Invalid pattern, please use the following format (address@domain.topleveldomain)
-      </p>
-    </div>
-  </div>
 
-  <div class="field">
-    <label class="label">Password</label>
-    <div class="control">
-      <input
-        class="input"
-        formControlName="password"
-        type="password"
-        placeholder="Password (Format: Abc@1r)"
-        required
-        pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?\d)(?=.*[#$^+=!*()@%&]).{6,}$"
-      >
+    <div class="field">
+      <label class="label">Password</label>
+      <div class="control">
+        <input
+          class="input"
+          formControlName="password"
+          type="password"
+          placeholder="Password (Format: Abc@1r)"
+          required
+          pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?\d)(?=.*[#$^+=!*()@%&]).{6,}$"
+        >
+      </div>
+      <div class="notification"
+           *ngIf="getFormControl['password'].invalid && (getFormControl['password'].dirty || getFormControl['password'].touched)">
+        <p class="help is-danger" *ngIf="getFormControl['password'].errors?.['required']">
+          Password is required
+        </p>
+        <p class="help is-danger" *ngIf="getFormControl['password'].errors?.['pattern']">
+          Invalid pattern, please use the following format (Abc@1r)
+        </p>
+      </div>
     </div>
-    <div class="notification"
-         *ngIf="getFormControl['password'].invalid && (getFormControl['password'].dirty || getFormControl['password'].touched)">
-      <p class="help is-danger" *ngIf="getFormControl['password'].errors?.['required']">
-        Password is required
-      </p>
-      <p class="help is-danger" *ngIf="getFormControl['password'].errors?.['pattern']">
-        Invalid pattern, please use the following format (Abc@1r)
-      </p>
-    </div>
-  </div>
 
-  <div class="field">
-    <div class="control">
-      <button type="submit" class="button is-primary" [disabled]="form.invalid">Log in</button>
+    <div class="field">
+      <div class="control">
+        <button type="submit" class="button is-primary" [disabled]="form.invalid">Log in</button>
+      </div>
+      <div class="help is-dark" *ngIf="status">
+        {{status.message}}
+      </div>
     </div>
-    <div class="help is-dark" *ngIf="status">
-      {{status.message}}
-    </div>
-  </div>
 
-  <a routerLink="/signup" class="link">Not a member? Click here to sign up.</a>
-</form>
+    <a routerLink="/signup" class="link">Not a member? Click here to sign up.</a>
+  </form>
+</div>

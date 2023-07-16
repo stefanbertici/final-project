@@ -44,13 +44,13 @@ export class SignupComponent implements OnInit {
       next: (res) => {
         this.userViewDto = res;
         this.status.code = 1;
-        this.status.message = "registered successfully!";
+        this.status.message = "Registered!";
         this.form.reset();
       },
       error: (err) => {
         console.log("Server side error: " + err.message);
         this.status.code = 0;
-        this.status.message = "it looks like there was an error :(";
+        this.status.message = "It looks like there was an error :(";
       }
     })
   }

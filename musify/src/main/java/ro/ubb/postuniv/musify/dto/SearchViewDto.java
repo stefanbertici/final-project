@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class SearchViewDto {
 
+    private List<PlaylistDto> playlists;
     private List<ArtistDto> artists;
     private List<BandDto> bands;
     private List<AlbumDto> albums;

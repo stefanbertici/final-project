@@ -16,6 +16,8 @@ import java.util.List;
 public class SongViewDto {
 
     private Integer id;
+    // artist in this context can mean an actual singular artist or a band
+    private String artist;
     private String title;
     private List<String> alternativeTitles;
     private Time duration;

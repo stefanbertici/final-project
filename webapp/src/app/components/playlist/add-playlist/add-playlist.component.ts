@@ -16,7 +16,8 @@ export class AddPlaylistComponent implements OnInit {
   playlistDto!: PlaylistDto;
   status!: Status;
 
-  constructor(private authService: AuthService, private playlistService: PlaylistService, private formBuilder: FormBuilder) {
+  constructor(private authService: AuthService, private playlistService: PlaylistService,
+              private formBuilder: FormBuilder) {
   }
 
   ngOnInit(): void {
@@ -44,13 +45,13 @@ export class AddPlaylistComponent implements OnInit {
       next: (res) => {
         this.playlistDto = res;
         this.status.code = 1;
-        this.status.message = "added successfully!";
+        this.status.message = "Playlist created!!";
         this.form.reset();
       },
       error: (err) => {
         console.log("Server side error: " + err.message);
         this.status.code = 0;
-        this.status.message = "it looks like there was an error :(";
+        this.status.message = "It looks like there was an error :(";
       }
     })
   }

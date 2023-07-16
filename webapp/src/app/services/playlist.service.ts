@@ -17,7 +17,7 @@ export class PlaylistService {
   }
 
   getById(id: number) {
-    return this.httpClient.get<PlaylistViewDto>(`${API_URL}/playlist/${id}`)
+    return this.httpClient.get<PlaylistViewDto>(`${API_URL}/playlist/${id}`);
   }
 
   add(playlistDto: PlaylistDto) {
@@ -30,5 +30,21 @@ export class PlaylistService {
 
   delete(id: number) {
     return this.httpClient.delete(`${API_URL}/playlist/${id}`);
+  }
+
+  unfollow(id: number) {
+    return this.httpClient.post<PlaylistDto>(`${API_URL}/playlist/${id}/unfollow`, null);
+  }
+
+  follow(id: number) {
+    return this.httpClient.post<PlaylistDto>(`${API_URL}/playlist/${id}/follow`, null);
+  }
+
+  addSong(playlistId: number, songId: number) {
+    return this.httpClient.post<PlaylistViewDto>(`${API_URL}/playlist/${playlistId}/add/song/${songId}`, null);
+  }
+
+  removeSong(playlistId: number, songId: number) {
+    return this.httpClient.post<PlaylistViewDto>(`${API_URL}/playlist/${playlistId}/remove/song/${songId}`, null);
   }
 }
