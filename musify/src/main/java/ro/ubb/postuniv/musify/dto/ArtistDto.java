@@ -1,5 +1,6 @@
 package ro.ubb.postuniv.musify.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,4 +23,9 @@ public class ArtistDto {
     private Date birthday;
     private String activityStartDate;
     private String activityEndDate;
+
+    @JsonIgnore
+    public boolean isNotValidActivityDates() {
+        return !(activityStartDate.matches("^\\d{1,4}$") && activityEndDate.matches("^(\\d{1,4}|present)$"));
+    }
 }

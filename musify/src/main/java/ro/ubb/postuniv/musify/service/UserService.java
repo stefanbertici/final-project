@@ -34,7 +34,7 @@ public class UserService {
     private final InMemoryTokenBlacklist inMemoryTokenBlacklist;
 
     @Transactional
-    public List<UserViewDto> readAllUsers() {
+    public List<UserViewDto> readAll() {
         List<User> users = userRepository.findAll();
 
         return userMapper.toViewDtos(users);
@@ -48,7 +48,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserViewDto registerUser(UserDto userDto) {
+    public UserViewDto register(UserDto userDto) {
         Optional<User> optional = userRepository.findUserByEmail(userDto.getEmail());
         if (optional.isPresent()) {
             throw new IllegalArgumentException("Email " + userDto.getEmail() + " is already registered");
@@ -66,7 +66,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserLoginViewDto loginUser(UserLoginDto userLoginDto) {
+    public UserLoginViewDto login(UserLoginDto userLoginDto) {
         Optional<User> optional = userRepository.findUserByEmail(userLoginDto.getEmail());
         String encryptedInputPassword = getEncryptedPassword(userLoginDto.getPassword());
 
@@ -87,14 +87,14 @@ public class UserService {
         return userMapper.toLoginViewDto(user, accessToken);
     }
 
-    public String logoutUser(String header) {
+    public String logout(String header) {
         String token = JwtUtils.extractTokenFromHeader(header);
         inMemoryTokenBlacklist.blacklist(token);
         return "Logout successful";
     }
 
     @Transactional
-    public UserViewDto updateUser(Integer id, UserDto userDto) {
+    public UserViewDto update(Integer id, UserDto userDto) {
         User user = repositoryChecker.getUserIfExists(id);
 
         repositoryChecker.checkIfEmailIsTaken(id, userDto.getEmail());

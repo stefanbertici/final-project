@@ -7,7 +7,6 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -33,7 +32,7 @@ public class Album {
     @JoinColumn(name = "band_id")
     private Band band;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(name = "albums_songs",
             joinColumns = { @JoinColumn(name = "album_id") },
             inverseJoinColumns = { @JoinColumn(name = "song_id") })
@@ -41,8 +40,7 @@ public class Album {
     private List<Song> songs = new ArrayList<>();
 
     public List<Integer> getSongIds() {
-        return songs
-                .stream()
+        return songs.stream()
                 .map(Song::getId)
                 .toList();
     }
@@ -65,7 +63,7 @@ public class Album {
 
     public void addSong(Song song) {
         if(songs.contains(song)){
-            throw new IllegalArgumentException("Song already in the playlist");
+            throw new IllegalArgumentException("Song already in the album");
         }
 
         songs.add(song);

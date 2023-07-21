@@ -36,7 +36,7 @@ public class AlbumService {
     }
 
     @Transactional
-    public AlbumDto createAlbum(AlbumDto albumDto) {
+    public AlbumDto create(AlbumDto albumDto) {
         if (albumDto.isTwoOwnersIdSet()) {
             throw new IllegalArgumentException("One of artist id or band id must be set, the other must remain null");
         }
@@ -54,7 +54,7 @@ public class AlbumService {
     }
 
     @Transactional
-    public AlbumDto updateAlbum(Integer id, AlbumDto albumDto) {
+    public AlbumDto update(Integer id, AlbumDto albumDto) {
         if (albumDto.isTwoOwnersIdSet()) {
             throw new IllegalArgumentException("One of artist id or band id must be set, the other must remain null");
         }

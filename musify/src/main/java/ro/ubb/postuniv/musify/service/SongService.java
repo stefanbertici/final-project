@@ -26,7 +26,7 @@ public class SongService {
     private final SongMapper songMapper;
 
     @Transactional
-    public SongDto createSong(SongDto songDto) {
+    public SongDto create(SongDto songDto) {
         Song song = songMapper.toEntity(songDto);
         song = songRepository.save(song);
 
@@ -42,7 +42,7 @@ public class SongService {
     }
 
     @Transactional
-    public SongDto updateSong(Integer id, SongDto songDto) {
+    public SongDto update(Integer id, SongDto songDto) {
         Song song = repositoryChecker.getSongIfExists(id);
 
         song.setTitle(songDto.getTitle());

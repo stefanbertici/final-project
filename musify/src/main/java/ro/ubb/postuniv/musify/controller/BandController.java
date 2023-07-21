@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.ubb.postuniv.musify.dto.AlbumDto;
 import ro.ubb.postuniv.musify.dto.BandDto;
-import ro.ubb.postuniv.musify.exception.UnauthorizedException;
 import ro.ubb.postuniv.musify.service.BandService;
 import ro.ubb.postuniv.musify.utils.UserChecker;
 
@@ -15,7 +14,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/band")
+@RequestMapping("/bands")
 public class BandController {
 
     private final BandService bandService;
@@ -25,21 +24,15 @@ public class BandController {
         return new ResponseEntity<>(bandService.readAlbumsByBandId(id), HttpStatus.OK);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<BandDto> createBand(@RequestBody @Valid BandDto bandDto) {
-        if (UserChecker.isCurrentUserNotAdmin()) {
-            throw new UnauthorizedException("Only admins can create new bands");
-        }
-
-        return new ResponseEntity<>(bandService.createBand(bandDto), HttpStatus.CREATED);
+    @PostMapping()
+    public ResponseEntity<BandDto> create(@RequestBody @Valid BandDto bandDto) {
+        UserChecker.validateAdminRole();
+        return new ResponseEntity<>(bandService.create(bandDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BandDto> updateBand(@PathVariable Integer id, @RequestBody @Valid BandDto bandDto) {
-        if (UserChecker.isCurrentUserNotAdmin()) {
-            throw new UnauthorizedException("Only admins can update bands");
-        }
-
-        return new ResponseEntity<>(bandService.updateBand(id, bandDto), HttpStatus.OK);
+    public ResponseEntity<BandDto> update(@PathVariable Integer id, @RequestBody @Valid BandDto bandDto) {
+        UserChecker.validateAdminRole();
+        return new ResponseEntity<>(bandService.update(id, bandDto), HttpStatus.OK);
     }
 }

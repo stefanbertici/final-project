@@ -35,7 +35,7 @@ public class BandService {
     }
 
     @Transactional
-    public BandDto createBand(BandDto bandDto) {
+    public BandDto create(BandDto bandDto) {
         Band band = bandMapper.toEntity(bandDto);
         band = bandRepository.save(band);
 
@@ -47,7 +47,7 @@ public class BandService {
     }
 
     @Transactional
-    public BandDto updateBand(Integer id, BandDto bandDto) {
+    public BandDto update(Integer id, BandDto bandDto) {
         Band band = repositoryChecker.getBandIfExists(id);
 
         band.setBandName(bandDto.getBandName());

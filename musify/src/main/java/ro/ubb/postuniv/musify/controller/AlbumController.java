@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.ubb.postuniv.musify.dto.AlbumDto;
 import ro.ubb.postuniv.musify.dto.SongViewDto;
-import ro.ubb.postuniv.musify.exception.UnauthorizedException;
 import ro.ubb.postuniv.musify.service.AlbumService;
 import ro.ubb.postuniv.musify.utils.UserChecker;
 
@@ -15,31 +14,25 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/album")
+@RequestMapping("/albums")
 public class AlbumController {
 
     private final AlbumService albumService;
 
     @GetMapping("/{id}/songs")
-    public ResponseEntity<List<SongViewDto>> readSongsByAlbumId(@PathVariable Integer id) {
+    public ResponseEntity<List<SongViewDto>> readByAlbumId(@PathVariable Integer id) {
         return new ResponseEntity<>(albumService.readSongsByAlbumId(id), HttpStatus.OK);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<AlbumDto> createAlbum(@RequestBody @Valid AlbumDto albumDto) {
-        if (UserChecker.isCurrentUserNotAdmin()) {
-            throw new UnauthorizedException("Only admins can create new albums");
-        }
-
-        return new ResponseEntity<>(albumService.createAlbum(albumDto), HttpStatus.CREATED);
+    @PostMapping()
+    public ResponseEntity<AlbumDto> create(@RequestBody @Valid AlbumDto albumDto) {
+        UserChecker.validateAdminRole();
+        return new ResponseEntity<>(albumService.create(albumDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AlbumDto> updateAlbum(@PathVariable Integer id, @RequestBody @Valid AlbumDto albumDto) {
-        if (UserChecker.isCurrentUserNotAdmin()) {
-            throw new UnauthorizedException("Only admins can update albums");
-        }
-
-        return new ResponseEntity<>(albumService.updateAlbum(id, albumDto), HttpStatus.OK);
+    public ResponseEntity<AlbumDto> update(@PathVariable Integer id, @RequestBody @Valid AlbumDto albumDto) {
+        UserChecker.validateAdminRole();
+        return new ResponseEntity<>(albumService.update(id, albumDto), HttpStatus.OK);
     }
 }

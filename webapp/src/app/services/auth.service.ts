@@ -14,11 +14,11 @@ export class AuthService {
   }
 
   login(userLoginDto: UserLoginDto) {
-    return this.http.post<UserLoginViewDto>(API_URL + '/user/login', userLoginDto);
+    return this.http.post<UserLoginViewDto>(`${API_URL}/users/login`, userLoginDto);
   }
 
   logout() {
-    return this.http.post(API_URL + '/user/logout', null, {responseType: 'text'});
+    return this.http.post(`${API_URL}/users/logout`, null, {responseType: 'text'});
   }
 
   isLoggedIn() {

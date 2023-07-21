@@ -37,7 +37,7 @@ public class PlaylistService {
     private final SongMapper songMapper;
 
     @Transactional
-    public List<PlaylistDto> readUserPlaylists() {
+    public List<PlaylistDto> readAll() {
         User user = repositoryChecker.getCurrentUser();
 
         Set<Playlist> ownedPlaylists = user.getOwnedPlaylists();
@@ -56,7 +56,7 @@ public class PlaylistService {
     }
 
     @Transactional
-    public PlaylistViewDto readPlaylistById(Integer id) {
+    public PlaylistViewDto readById(Integer id) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(id);
 
         return playlistMapper.toViewDto(playlist);
@@ -74,7 +74,7 @@ public class PlaylistService {
     }
 
     @Transactional
-    public PlaylistDto createPlaylist(PlaylistDto playlistDto) {
+    public PlaylistDto create(PlaylistDto playlistDto) {
         if (playlistDto.isNotPrivateOrPublic()) {
             throw new IllegalArgumentException("Playlist type must be \"private\" or \"public\"");
         }
@@ -92,7 +92,7 @@ public class PlaylistService {
     }
 
     @Transactional
-    public PlaylistDto updatePlaylist(Integer id, PlaylistDto playlistDto) {
+    public PlaylistDto update(Integer id, PlaylistDto playlistDto) {
         if (playlistDto.isNotPrivateOrPublic()) {
             throw new IllegalArgumentException("Playlist type must be \"private\" or \"public\"");
         }
@@ -194,7 +194,7 @@ public class PlaylistService {
     }
 
     @Transactional
-    public PlaylistDto deletePlaylist(Integer id) {
+    public PlaylistDto delete(Integer id) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(id);
 
         User user = userRepository.findById(JwtUtils.getCurrentUserId())
@@ -218,7 +218,7 @@ public class PlaylistService {
     }
 
     @Transactional
-    public PlaylistDto followPlaylist(Integer id) {
+    public PlaylistDto follow(Integer id) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(id);
 
         User user = userRepository.findById(JwtUtils.getCurrentUserId())
@@ -242,7 +242,7 @@ public class PlaylistService {
     }
 
     @Transactional
-    public PlaylistDto unfollowPlaylist(Integer id) {
+    public PlaylistDto unfollow(Integer id) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(id);
 
         User user = userRepository.findById(JwtUtils.getCurrentUserId())

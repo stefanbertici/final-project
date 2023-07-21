@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.13</version>
+        <version>2.7.14</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -18,8 +18,6 @@
 
     <properties>
         <java.version>17</java.version>
-        <!--hibernate version is for getting rid of a recent bug that occurs when querying with contains/like etc.-->
-        <!--<hibernate.version>5.6.5.Final</hibernate.version>-->
     </properties>
 
     <dependencies>

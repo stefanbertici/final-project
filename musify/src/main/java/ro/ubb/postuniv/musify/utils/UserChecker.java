@@ -2,12 +2,19 @@ package ro.ubb.postuniv.musify.utils;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import ro.ubb.postuniv.musify.exception.UnauthorizedException;
 import ro.ubb.postuniv.musify.model.Playlist;
 import ro.ubb.postuniv.musify.model.User;
 import ro.ubb.postuniv.musify.security.JwtUtils;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserChecker {
+
+    public static void validateAdminRole() {
+        if (UserChecker.isCurrentUserNotAdmin()) {
+            throw new UnauthorizedException("Only admins can perform this operation");
+        }
+    }
 
     public static boolean isCurrentUserNotAdmin() {
         return !JwtUtils.getCurrentUserRole().equals("admin");

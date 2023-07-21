@@ -1,0 +1,136 @@
+<div class="container">
+  <form [formGroup]="form" (ngSubmit)="onPost()">
+    <div class="field">
+      <label class="label">First name</label>
+      <div class="control">
+        <input
+          class="input"
+          formControlName="firstName"
+          type="text"
+          placeholder="Joe"
+          required
+        >
+      </div>
+      <div class="notification"
+           *ngIf="getFormControl['firstName'].invalid && (getFormControl['firstName'].dirty || getFormControl['firstName'].touched)">
+        <p class="help is-danger" *ngIf="getFormControl['firstName'].errors?.['required']">
+          First name is required
+        </p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Last name</label>
+      <div class="control">
+        <input
+          class="input"
+          formControlName="lastName"
+          type="text"
+          placeholder="Big"
+          required
+        >
+      </div>
+      <div class="notification"
+           *ngIf="getFormControl['lastName'].invalid && (getFormControl['lastName'].dirty || getFormControl['lastName'].touched)">
+        <p class="help is-danger" *ngIf="getFormControl['lastName'].errors?.['required']">
+          Last name is required
+        </p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Stage name</label>
+      <div class="control">
+        <input
+          class="input"
+          formControlName="stageName"
+          type="text"
+          placeholder="Mr. Biggie"
+          required
+        >
+      </div>
+      <div class="notification"
+           *ngIf="getFormControl['stageName'].invalid && (getFormControl['stageName'].dirty || getFormControl['stageName'].touched)">
+        <p class="help is-danger" *ngIf="getFormControl['stageName'].errors?.['required']">
+          Stage name is required
+        </p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Birthday</label>
+      <div class="control">
+        <input
+          class="input"
+          formControlName="birthday"
+          type="date"
+          required
+        >
+      </div>
+      <div class="notification"
+           *ngIf="getFormControl['birthday'].invalid && (getFormControl['birthday'].dirty || getFormControl['birthday'].touched)">
+        <p class="help is-danger" *ngIf="getFormControl['birthday'].errors?.['required']">
+          Birthday is required
+        </p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Activity start date</label>
+      <div class="control">
+        <input
+          class="input"
+          formControlName="activityStartDate"
+          type="text"
+          placeholder="1993"
+          required
+          pattern="^\d{1,4}$"
+        >
+      </div>
+      <div class="notification"
+           *ngIf="getFormControl['activityStartDate'].invalid && (getFormControl['activityStartDate'].dirty || getFormControl['activityStartDate'].touched)">
+        <p class="help is-danger" *ngIf="getFormControl['activityStartDate'].errors?.['required']">
+          Activity start date is required
+        </p>
+        <p class="help is-danger" *ngIf="getFormControl['activityStartDate'].errors?.['pattern']">
+          Invalid pattern, please use the following format (1234)
+        </p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Activity end date</label>
+      <div class="control">
+        <input
+          class="input"
+          formControlName="activityEndDate"
+          type="text"
+          placeholder="2023/present"
+          required
+          pattern="^(\d{1,4}|present)$"
+        >
+      </div>
+      <div class="notification"
+           *ngIf="getFormControl['activityEndDate'].invalid && (getFormControl['activityEndDate'].dirty || getFormControl['activityEndDate'].touched)">
+        <p class="help is-danger" *ngIf="getFormControl['activityEndDate'].errors?.['required']">
+          Activity end date is required
+        </p>
+        <p class="help is-danger" *ngIf="getFormControl['activityEndDate'].errors?.['pattern']">
+          Invalid pattern, please use the following format (1234|present)
+        </p>
+      </div>
+    </div>
+
+    <br>
+    <div class="field">
+      <div class="control">
+        <button type="submit" class="button is-primary" [disabled]="form.invalid">Create</button>
+        <button type="button" class="button is-link is-light" [routerLink]="['/admin-page/artists']">Back</button>
+      </div>
+    </div>
+
+    <div class="help is-dark" *ngIf="status">
+      {{status.message}}
+    </div>
+  </form>
+</div>

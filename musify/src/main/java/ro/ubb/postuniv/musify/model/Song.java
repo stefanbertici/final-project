@@ -2,6 +2,7 @@ package ro.ubb.postuniv.musify.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import ro.ubb.postuniv.musify.exception.ResourceNotFoundException;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -10,7 +11,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -46,8 +46,7 @@ public class Song {
     }
 
     public List<String> getAlbumsTitlesList() {
-        return albums
-                .stream()
+        return albums.stream()
                 .map(Album::getTitle)
                 .toList();
     }
@@ -74,6 +73,11 @@ public class Song {
     public void removeAlternativeSongTitle(AlternativeSongTitle alternativeSongTitle) {
         alternativeSongTitles.remove(alternativeSongTitle);
         alternativeSongTitle.setSong(null);
+    }
+
+    public void removeFromPlaylists() {
+        this.getPlaylists().forEach(p -> p.getSongsInPlaylist().remove(this));
+        this.playlists.clear();
     }
 
     public String getArtistName() {

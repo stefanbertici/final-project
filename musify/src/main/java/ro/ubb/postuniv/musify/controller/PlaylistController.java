@@ -14,19 +14,19 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/playlist")
+@RequestMapping("/playlists")
 public class PlaylistController {
 
     private final PlaylistService playlistService;
 
-    @GetMapping("/")
-    public ResponseEntity<List<PlaylistDto>> readUserPlaylists() {
-        return new ResponseEntity<>(playlistService.readUserPlaylists(), HttpStatus.OK);
+    @GetMapping()
+    public ResponseEntity<List<PlaylistDto>> readAll() {
+        return new ResponseEntity<>(playlistService.readAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PlaylistViewDto> readPlaylistById(@PathVariable Integer id) {
-        return new ResponseEntity<>(playlistService.readPlaylistById(id), HttpStatus.OK);
+    public ResponseEntity<PlaylistViewDto> readById(@PathVariable Integer id) {
+        return new ResponseEntity<>(playlistService.readById(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}/songs")
@@ -34,19 +34,19 @@ public class PlaylistController {
         return new ResponseEntity<>(playlistService.readSongsByPlaylistId(id), HttpStatus.OK);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<PlaylistDto> createPlaylist(@RequestBody @Valid PlaylistDto playlistDto) {
-        return new ResponseEntity<>(playlistService.createPlaylist(playlistDto), HttpStatus.CREATED);
+    @PostMapping()
+    public ResponseEntity<PlaylistDto> create(@RequestBody @Valid PlaylistDto playlistDto) {
+        return new ResponseEntity<>(playlistService.create(playlistDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PlaylistDto> updatePlaylist(@PathVariable Integer id, @RequestBody @Valid PlaylistDto playlistDto) {
-        return new ResponseEntity<>(playlistService.updatePlaylist(id, playlistDto), HttpStatus.OK);
+    public ResponseEntity<PlaylistDto> update(@PathVariable Integer id, @RequestBody @Valid PlaylistDto playlistDto) {
+        return new ResponseEntity<>(playlistService.update(id, playlistDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<PlaylistDto> deletePlaylist(@PathVariable Integer id) {
-        return new ResponseEntity<>(playlistService.deletePlaylist(id), HttpStatus.OK);
+    public ResponseEntity<PlaylistDto> delete(@PathVariable Integer id) {
+        return new ResponseEntity<>(playlistService.delete(id), HttpStatus.OK);
     }
 
     @PostMapping("/{playlistId}/add/song/{songId}")
@@ -70,12 +70,12 @@ public class PlaylistController {
     }
 
     @PostMapping("/{id}/follow")
-    public ResponseEntity<PlaylistDto> followPlaylist(@PathVariable Integer id) {
-        return new ResponseEntity<>(playlistService.followPlaylist(id), HttpStatus.OK);
+    public ResponseEntity<PlaylistDto> follow(@PathVariable Integer id) {
+        return new ResponseEntity<>(playlistService.follow(id), HttpStatus.OK);
     }
 
     @PostMapping("/{id}/unfollow")
-    public ResponseEntity<PlaylistDto> unfollowPlaylist(@PathVariable Integer id) {
-        return new ResponseEntity<>(playlistService.unfollowPlaylist(id), HttpStatus.OK);
+    public ResponseEntity<PlaylistDto> unfollow(@PathVariable Integer id) {
+        return new ResponseEntity<>(playlistService.unfollow(id), HttpStatus.OK);
     }
 }

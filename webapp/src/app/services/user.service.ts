@@ -12,15 +12,15 @@ export class UserService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getUsers() {
-    return this.httpClient.get<UserViewDto[]>(`${API_URL}/user`);
+  getAll() {
+    return this.httpClient.get<UserViewDto[]>(`${API_URL}/users`);
   }
 
-  getUser(id: number) {
-    return this.httpClient.get<UserViewDto>(`${API_URL}/user/${id}`);
+  getById(id: number) {
+    return this.httpClient.get<UserViewDto>(`${API_URL}/users/${id}`);
   }
 
-  updateUser(id: number, userDto: UserDto) {
-    return this.httpClient.put<UserViewDto>(`${API_URL}/user/${id}`, userDto);
+  update(id: number, userDto: UserDto) {
+    return this.httpClient.put<UserViewDto>(`${API_URL}/users/${id}`, userDto);
   }
 }
