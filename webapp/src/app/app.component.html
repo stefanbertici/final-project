@@ -1,25 +1,45 @@
 <section class="hero is-primary">
   <div class="hero-body">
-    <p class="title">
-      Musify
-    </p>
-    <p class="subtitle">
-      your personal music management app
-    </p>
-    <div *ngIf="isLoggedIn">
-      <p class="heading">
-        Welcome back, {{getUserFullName()}}!
-      </p>
+    <div class="columns is-centered has-text-left">
+      <div class="column is-two-fifths">
+        <p class="title">
+          Musify
+        </p>
+        <p class="subtitle">
+          your personal music management app
+        </p>
+        <div *ngIf="isLoggedIn">
+          <p class="heading">
+            Welcome back, {{getUserFullName()}}!
+          </p>
 
-      <button class="button" routerLink="/dashboard" routerLinkActive="active">Dashboard</button>
-      <button class="button" routerLink="/user-page" routerLinkActive="active">User</button>
-      <button class="button" *ngIf="role == 'admin'" routerLink="/admin-page" routerLinkActive="active">Admin</button>
-      <button class="button" (click)="logout()">Logout</button>
+          <button class="button" routerLink="/dashboard" routerLinkActive="active">Dashboard</button>
+          <button class="button" routerLink="/user-page" routerLinkActive="active">User</button>
+          <button class="button" *ngIf="role == 'admin'" routerLink="/admin-page/users" routerLinkActive="active">Admin
+          </button>
+          <button class="button" (click)="logout()">Logout</button>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
 <section class="section">
-  <router-outlet (activate)="checkLoggedInUser()">
-    <!-- site content goes here-->
-  </router-outlet>
+  <div class="columns is-centered">
+    <div class="column is-three-fifths">
+      <router-outlet (activate)="checkLoggedInUser()">
+        <!-- site content goes here-->
+      </router-outlet>
+    </div>
+  </div>
 </section>
+
+<footer class="footer">
+  <div class="content has-text-centered">
+    <p>
+      <strong>Musify</strong> by <strong>Stefan Bertici</strong>. The source code is up on GitHub
+      <a href="https://github.com/stefanbertici/final-project">@stefanbertici/final-project</a>.
+      The website and it's contents were used for learning purposes.
+    </p>
+  </div>
+</footer>
