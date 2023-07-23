@@ -10,6 +10,5 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 
     @Override
     List<User> findAll();
-
     Optional<User> findUserByEmail(String email);
 }

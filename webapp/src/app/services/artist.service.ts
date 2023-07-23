@@ -20,15 +20,15 @@ export class ArtistService {
     return this.httpClient.get<ArtistDto>(`${API_URL}/artists/${id}`);
   }
 
-  delete(id: number) {
-    return this.httpClient.delete(`${API_URL}/artists/${id}`);
-  }
-
-  add(artistDto: ArtistDto) {
-    return this.httpClient.post<ArtistDto>(`${API_URL}/artists/`, artistDto);
+  create(artistDto: ArtistDto) {
+    return this.httpClient.post<ArtistDto>(`${API_URL}/artists`, artistDto);
   }
 
   update(id: number, artistDto: ArtistDto) {
     return this.httpClient.put<ArtistDto>(`${API_URL}/artists/${id}`, artistDto);
+  }
+
+  delete(id: number) {
+    return this.httpClient.delete(`${API_URL}/artists/${id}`);
   }
 }
