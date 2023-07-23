@@ -39,7 +39,7 @@ export class AddArtistComponent implements OnInit {
     console.log("clicked add artist")
     this.status = {code: 0, message: "adding..."};
 
-    this.artistService.add(this.form.value).subscribe({
+    this.artistService.create(this.form.value).subscribe({
       next: (res) => {
         this.artistDto = res;
         this.status.code = 1;

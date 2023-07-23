@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Getter
@@ -20,8 +20,8 @@ public class SongViewDto {
     private String artist;
     private String title;
     private List<String> alternativeTitles;
-    private Time duration;
-    private Date createdDate;
+    private LocalTime duration;
+    private LocalDate createdDate;
     private List<String> composers;
     private List<String> albums;
 }

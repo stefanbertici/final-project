@@ -82,8 +82,8 @@ public class PlaylistService {
         User user = repositoryChecker.getCurrentUser();
 
         Playlist playlist = playlistMapper.toEntity(playlistDto);
-        playlist.setCreatedDate(Date.valueOf(LocalDate.now()));
-        playlist.setUpdatedDate(Date.valueOf(LocalDate.now()));
+        playlist.setCreatedDate(LocalDate.now());
+        playlist.setUpdatedDate(LocalDate.now());
         playlist = playlistRepository.save(playlist);
 
         user.addOwnedPlaylist(playlist);
@@ -105,7 +105,7 @@ public class PlaylistService {
 
         playlist.setName(playlistDto.getName());
         playlist.setType(playlistDto.getType());
-        playlist.setUpdatedDate(Date.valueOf(LocalDate.now()));
+        playlist.setUpdatedDate(LocalDate.now());
 
         return playlistMapper.toDto(playlist);
     }
@@ -121,7 +121,7 @@ public class PlaylistService {
 
         if (!playlist.getSongsInPlaylist().contains(song)) {
             playlist.addSong(song);
-            playlist.setUpdatedDate(Date.valueOf(LocalDate.now()));
+            playlist.setUpdatedDate(LocalDate.now());
         }
 
         return playlistMapper.toViewDto(playlist);
@@ -138,7 +138,7 @@ public class PlaylistService {
 
         if (playlist.getSongsInPlaylist().contains(song)) {
             playlist.removeSong(song);
-            playlist.setUpdatedDate(Date.valueOf(LocalDate.now()));
+            playlist.setUpdatedDate(LocalDate.now());
         }
 
         return playlistMapper.toViewDto(playlist);
@@ -160,7 +160,7 @@ public class PlaylistService {
             }
         }
 
-        playlist.setUpdatedDate(Date.valueOf(LocalDate.now()));
+        playlist.setUpdatedDate(LocalDate.now());
 
         return playlistMapper.toViewDto(playlist);
     }
@@ -186,7 +186,7 @@ public class PlaylistService {
         if (!oldPosition.equals(newPosition)) {
             songs.remove(song);
             songs.add(newPosition - 1, song);
-            playlist.setUpdatedDate(Date.valueOf(LocalDate.now()));
+            playlist.setUpdatedDate(LocalDate.now());
             playlistRepository.save(playlist);
         }
 

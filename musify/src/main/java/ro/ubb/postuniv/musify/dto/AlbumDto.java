@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -23,7 +23,7 @@ public class AlbumDto {
     private String title;
     private String description;
     private String genre;
-    private Date releaseDate;
+    private LocalDate releaseDate;
     private String label;
     private List<Integer> songIds;
 

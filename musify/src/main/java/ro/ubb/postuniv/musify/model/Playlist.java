@@ -4,8 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.util.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static java.util.Optional.ofNullable;
 
@@ -21,9 +24,9 @@ public class Playlist {
     private String name;
     private String type;
     @Column(name = "created_date")
-    private Date createdDate;
+    private LocalDate createdDate;
     @Column(name = "updated_date")
-    private Date updatedDate;
+    private LocalDate updatedDate;
 
     @ManyToOne
     @JoinColumn(name = "owner_user_id")

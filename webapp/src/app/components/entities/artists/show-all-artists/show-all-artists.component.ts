@@ -15,10 +15,10 @@ export class ShowAllArtistsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadActivities();
+    this.loadArtists();
   }
 
-  private loadActivities() {
+  private loadArtists() {
     this.artistService.getAll().subscribe((data: ArtistViewDto[]) => this.artists = data);
   }
 
@@ -31,7 +31,7 @@ export class ShowAllArtistsComponent implements OnInit {
       this.artistService.delete(this.selectedArtistId).subscribe(data => {
         alert("Artist deleted!");
         this.selectedArtistId = undefined;
-        this.loadActivities();
+        this.loadArtists();
       });
     }
   }

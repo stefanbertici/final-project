@@ -21,10 +21,10 @@ export class ShowAllUsersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadActivities();
+    this.loadUsers();
   }
 
-  private loadActivities() {
+  private loadUsers() {
     this.userService.getAll().subscribe((data: UserViewDto[]) => this.users = data);
   }
 
@@ -53,7 +53,7 @@ export class ShowAllUsersComponent implements OnInit {
       this.userService.delete(this.selectedUserIdForDelete).subscribe(data => {
         alert("User deleted!");
         this.selectedUserIdForDelete = undefined;
-        this.loadActivities();
+        this.loadUsers();
       });
     }
   }
@@ -71,7 +71,7 @@ export class ShowAllUsersComponent implements OnInit {
       this.userService.promote(this.selectedUserIdForPromote).subscribe(data => {
         alert("User promoted to admin!");
         this.selectedUserIdForPromote = undefined;
-        this.loadActivities();
+        this.loadUsers();
       });
     }
   }
@@ -89,7 +89,7 @@ export class ShowAllUsersComponent implements OnInit {
       this.userService.demote(this.selectedUserIdForDemote).subscribe(data => {
         alert("User demoted to user!");
         this.selectedUserIdForDemote = undefined;
-        this.loadActivities();
+        this.loadUsers();
       });
     }
   }
@@ -107,7 +107,7 @@ export class ShowAllUsersComponent implements OnInit {
       this.userService.activate(this.selectedUserIdForActivate).subscribe(data => {
         alert("User activated!");
         this.selectedUserIdForActivate = undefined;
-        this.loadActivities();
+        this.loadUsers();
       });
     }
   }
@@ -125,7 +125,7 @@ export class ShowAllUsersComponent implements OnInit {
       this.userService.deactivate(this.selectedUserIdForDeactivate).subscribe(data => {
         alert("User deactivated!");
         this.selectedUserIdForDeactivate = undefined;
-        this.loadActivities();
+        this.loadUsers();
       });
     }
   }

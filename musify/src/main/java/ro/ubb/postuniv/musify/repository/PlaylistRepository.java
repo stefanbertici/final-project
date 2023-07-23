@@ -9,5 +9,7 @@ import java.util.List;
 @Repository
 public interface PlaylistRepository extends CrudRepository<Playlist, Integer> {
 
+    @Override
+    List<Playlist> findAll();
     List<Playlist> findAllByNameContainingIgnoreCase(String searchTerm);
 }

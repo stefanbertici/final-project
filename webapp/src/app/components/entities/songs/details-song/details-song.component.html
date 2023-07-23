@@ -1,0 +1,31 @@
+<div class="container">
+  <div *ngIf="song">
+    <p>
+      <strong>Id:</strong>
+      <span>{{song.id}}</span>
+    </p>
+    <p>
+      <strong>Artist:</strong>
+      <span>{{song.artist}}</span>
+    </p>
+    <p>
+      <strong>Title:</strong>
+      <span>{{song.title}}</span>
+    </p>
+    <p>
+      <strong>Duration:</strong>
+      <span>{{song.duration}}</span>
+    </p>
+    <p>
+      <strong>Albums:</strong>
+      <span>{{song.albums}}</span>
+    </p>
+    <p>
+      <strong>Creation date:</strong>
+      <span>{{song.createdDate}}</span>
+    </p>
+
+    <br>
+    <button class="button is-link is-light" [routerLink]="['/admin-page/songs']">Back</button>
+  </div>
+</div>

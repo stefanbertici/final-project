@@ -2,8 +2,8 @@
   <label class="label">Admin options</label>
   <button class="button" routerLink="/admin-page/users" routerLinkActive="active">Users</button>
   <button class="button" routerLink="/admin-page/artists" routerLinkActive="active">Artists</button>
-  <button class="button" routerLink="/dashboard" routerLinkActive="active">Albums</button>
-  <button class="button" routerLink="/dashboard" routerLinkActive="active">Songs</button>
+  <button class="button" routerLink="/admin-page/albums" routerLinkActive="active">Albums</button>
+  <button class="button" routerLink="/admin-page/songs" routerLinkActive="active">Songs</button>
   <br><br>
   <label class="label">Users</label>
   <button class="button is-primary" [routerLink]="['/admin-page/users/add']">Create</button>
@@ -15,6 +15,7 @@
         <th>Email</th>
         <th>Role</th>
         <th>Status</th>
+        <th>Operations</th>
       </tr>
       </thead>
       <tbody>

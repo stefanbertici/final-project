@@ -1,7 +1,5 @@
-import { Component } from '@angular/core';
-import {ArtistDto} from "../../../../models/artistDto";
+import {Component} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {ArtistService} from "../../../../services/artist.service";
 import {UserViewDto} from "../../../../models/userViewDto";
 import {UserService} from "../../../../services/user.service";
 

@@ -2,11 +2,10 @@ package ro.ubb.postuniv.musify.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import ro.ubb.postuniv.musify.exception.ResourceNotFoundException;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -22,9 +21,9 @@ public class Song {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
-    private Time duration;
+    private LocalTime duration;
     @Column(name = "created_date")
-    private Date createdDate;
+    private LocalDate createdDate;
 
     @OneToMany(mappedBy = "song")
     Set<AlternativeSongTitle> alternativeSongTitles = new HashSet<>();
@@ -93,7 +92,11 @@ public class Song {
             }
         });
 
-        sb.deleteCharAt(sb.lastIndexOf(", "));
+        if (!sb.isEmpty()) {
+            sb.deleteCharAt(sb.lastIndexOf(", "));
+        } else {
+            sb.append("Song not yet added to an album");
+        }
 
         return sb.toString();
     }

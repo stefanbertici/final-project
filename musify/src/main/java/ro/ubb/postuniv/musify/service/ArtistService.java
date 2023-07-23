@@ -8,6 +8,7 @@ import ro.ubb.postuniv.musify.dto.ArtistDto;
 import ro.ubb.postuniv.musify.dto.ArtistViewDto;
 import ro.ubb.postuniv.musify.mapper.AlbumMapper;
 import ro.ubb.postuniv.musify.mapper.ArtistMapper;
+import ro.ubb.postuniv.musify.mapper.SongMapper;
 import ro.ubb.postuniv.musify.model.Album;
 import ro.ubb.postuniv.musify.model.Artist;
 import ro.ubb.postuniv.musify.model.Band;
@@ -27,6 +28,7 @@ public class ArtistService {
     private final AlbumRepository albumRepository;
     private final ArtistMapper artistMapper;
     private final AlbumMapper albumMapper;
+    private final SongMapper songMapper;
 
     @Transactional
     public List<AlbumDto> readAlbumsByArtistId(Integer id) {
@@ -37,10 +39,7 @@ public class ArtistService {
 
     @Transactional
     public List<ArtistViewDto> readAll() {
-        List<Artist> artists = new ArrayList<>();
-        artistRepository.findAll().forEach(artists::add);
-
-        return artists.stream()
+        return artistRepository.findAll().stream()
                 .map(artistMapper::toViewDto)
                 .sorted(Comparator.comparing(ArtistViewDto::getStageName))
                 .toList();

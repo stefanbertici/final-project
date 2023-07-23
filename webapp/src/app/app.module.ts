@@ -26,6 +26,10 @@ import {ShowAllUsersComponent} from './components/entities/users/show-all-users/
 import { DetailsUserComponent } from './components/entities/users/details-user/details-user.component';
 import { AddUserComponent } from './components/entities/users/add-user/add-user.component';
 import { EditUserComponent } from './components/entities/users/edit-user/edit-user.component';
+import { ShowAllSongsComponent } from './components/entities/songs/show-all-songs/show-all-songs.component';
+import { DetailsSongComponent } from './components/entities/songs/details-song/details-song.component';
+import { EditSongComponent } from './components/entities/songs/edit-song/edit-song.component';
+import { AddSongComponent } from './components/entities/songs/add-song/add-song.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +50,11 @@ import { EditUserComponent } from './components/entities/users/edit-user/edit-us
     ShowAllUsersComponent,
     DetailsUserComponent,
     AddUserComponent,
-    EditUserComponent
+    EditUserComponent,
+    ShowAllSongsComponent,
+    DetailsSongComponent,
+    EditSongComponent,
+    AddSongComponent
   ],
   imports: [
     BrowserModule,

@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.ubb.postuniv.musify.dto.SongDto;
+import ro.ubb.postuniv.musify.dto.SongViewDto;
 import ro.ubb.postuniv.musify.mapper.SongMapper;
+import ro.ubb.postuniv.musify.model.Album;
 import ro.ubb.postuniv.musify.model.AlternativeSongTitle;
 import ro.ubb.postuniv.musify.model.Artist;
 import ro.ubb.postuniv.musify.model.Song;
@@ -13,53 +15,98 @@ import ro.ubb.postuniv.musify.repository.ArtistRepository;
 import ro.ubb.postuniv.musify.repository.SongRepository;
 import ro.ubb.postuniv.musify.utils.RepositoryChecker;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+import static java.util.Optional.ofNullable;
 
 @Service
 @RequiredArgsConstructor
 public class SongService {
-
     private final RepositoryChecker repositoryChecker;
+
     private final SongRepository songRepository;
     private final ArtistRepository artistRepository;
     private final AlternativeSongTitleRepository alternativeSongTitleRepository;
     private final SongMapper songMapper;
 
     @Transactional
-    public SongDto create(SongDto songDto) {
-        Song song = songMapper.toEntity(songDto);
-        song = songRepository.save(song);
-
-        if (!songDto.getAlternativeTitles().isEmpty()) {
-            addAlternativeTitles(song, songDto);
-        }
-
-        if (!songDto.getComposersIds().isEmpty()) {
-            addComposersById(song, songDto);
-        }
-
-        return songMapper.toDto(song);
+    public List<SongViewDto> readAll() {
+        return songRepository.findAll().stream()
+                .map(songMapper::toViewDto)
+                .toList();
     }
 
     @Transactional
-    public SongDto update(Integer id, SongDto songDto) {
+    public SongViewDto readById(Integer id) {
+        Song song = repositoryChecker.getSongIfExists(id);
+
+        return songMapper.toViewDto(song);
+    }
+
+    @Transactional
+    public List<SongViewDto> readAllByArtistId(Integer id) {
+        Artist artist = repositoryChecker.getArtistIfExists(id);
+
+        return artist.getArtistAlbums().stream()
+                .map(Album::getSongs)
+                .flatMap(Collection::stream)
+                .filter(distinctByKey(Song::getId))
+                .map(songMapper::toViewDto)
+                .toList();
+    }
+
+    @Transactional
+    public SongViewDto create(SongDto songDto) {
+        Song song = songMapper.toEntity(songDto);
+        songRepository.save(song);
+
+        ofNullable(songDto.getAlternativeTitles())
+                .ifPresent(titles -> {
+                    if (!titles.isEmpty()) {
+                        addAlternativeTitles(song, songDto);
+                    }
+                });
+
+        ofNullable(songDto.getComposersIds())
+                .ifPresent(composerIds -> {
+                    if (!composerIds.isEmpty()) {
+                        addComposersById(song, songDto);
+                    }
+                });
+
+        return songMapper.toViewDto(song);
+    }
+
+    @Transactional
+    public SongViewDto update(Integer id, SongDto songDto) {
         Song song = repositoryChecker.getSongIfExists(id);
 
         song.setTitle(songDto.getTitle());
         song.setDuration(songDto.getDuration());
         song.setCreatedDate(songDto.getCreatedDate());
 
-        if (!songDto.getAlternativeTitles().isEmpty()) {
-            clearAlternativeTitles(song);
-            addAlternativeTitles(song, songDto);
-        }
+        ofNullable(songDto.getAlternativeTitles())
+                .ifPresent(titles -> {
+                    if (!titles.isEmpty()) {
+                        clearAlternativeTitles(song);
+                        addAlternativeTitles(song, songDto);
+                    }
+                });
 
-        if (!songDto.getComposersIds().isEmpty()) {
-            clearComposers(song);
-            addComposersById(song, songDto);
-        }
+        ofNullable(songDto.getComposersIds())
+                .ifPresent(composerIds -> {
+                    if (!composerIds.isEmpty()) {
+                        clearComposers(song);
+                        addComposersById(song, songDto);
+                    }
+                });
 
-        return songMapper.toDto(song);
+        return songMapper.toViewDto(song);
     }
 
     private void clearComposers(Song song) {
@@ -89,5 +136,10 @@ public class SongService {
     private void clearAlternativeTitles(Song song) {
         alternativeSongTitleRepository.deleteAll(song.getAlternativeSongTitles());
         song.getAlternativeSongTitles().clear();
+    }
+
+    private <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        Set<Object> seen = ConcurrentHashMap.newKeySet();
+        return t -> seen.add(keyExtractor.apply(t));
     }
 }

@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class Album {
     private String description;
     private String genre;
     @Column(name = "release_date")
-    private Date releaseDate;
+    private LocalDate releaseDate;
     private String label;
 
     @ManyToOne
