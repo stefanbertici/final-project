@@ -27,7 +27,7 @@ public class User {
     private String role;
     private String status;
 
-    @OneToMany(mappedBy = "ownerUser")
+    @OneToMany(mappedBy = "ownerUser", cascade = CascadeType.REMOVE)
     Set<Playlist> ownedPlaylists = new HashSet<>();
 
     @ManyToMany()

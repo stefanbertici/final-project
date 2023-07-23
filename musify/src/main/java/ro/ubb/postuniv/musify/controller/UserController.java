@@ -51,7 +51,7 @@ public class UserController {
     public ResponseEntity<String> unauthenticated() {
         return new ResponseEntity<>("Please log in first", HttpStatus.UNAUTHORIZED);
     }
-    
+
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@RequestHeader(name = "Authorization") String header) {
         String response = userService.logout(header);
@@ -90,5 +90,11 @@ public class UserController {
         UserChecker.validateAdminRole();
         UserViewDto user = userService.updateUserStatus(id, UserStatus.INACTIVE);
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<UserViewDto> delete(@PathVariable Integer id) {
+        UserChecker.validateAdminRole();
+        return new ResponseEntity<>(userService.delete(id), HttpStatus.OK);
     }
 }

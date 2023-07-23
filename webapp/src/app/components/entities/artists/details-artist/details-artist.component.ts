@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {ArtistDto} from "../../../../models/artistDto";
 import {ActivatedRoute} from "@angular/router";
 import {ArtistService} from "../../../../services/artist.service";
-import {PlaylistViewDto} from "../../../../models/playlistViewDto";
 
 @Component({
   selector: 'app-details-artist',
@@ -23,7 +22,6 @@ export class DetailsArtistComponent implements OnInit {
   ngOnInit(): void {
     this.artistService.getById(this.artistId).subscribe((data: ArtistDto) => {
       this.artistDto = data;
-      console.log(this.artistDto.birthday)
     });
   }
 }

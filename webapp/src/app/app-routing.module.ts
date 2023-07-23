@@ -17,6 +17,10 @@ import {ShowAllArtistsComponent} from "./components/entities/artists/show-all-ar
 import {AddArtistComponent} from "./components/entities/artists/add-artist/add-artist.component";
 import {DetailsArtistComponent} from "./components/entities/artists/details-artist/details-artist.component";
 import {EditArtistComponent} from "./components/entities/artists/edit-artist/edit-artist.component";
+import {ShowAllUsersComponent} from "./components/entities/users/show-all-users/show-all-users.component";
+import {DetailsUserComponent} from "./components/entities/users/details-user/details-user.component";
+import {AddUserComponent} from "./components/entities/users/add-user/add-user.component";
+import {EditUserComponent} from "./components/entities/users/edit-user/edit-user.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -33,6 +37,10 @@ const routes: Routes = [
   {path: 'admin-page/artists/add', component: AddArtistComponent, canActivate: [authGuard, adminGuard]},
   {path: 'admin-page/artists/details/:id', component: DetailsArtistComponent, canActivate: [authGuard, adminGuard]},
   {path: 'admin-page/artists/edit/:id', component: EditArtistComponent, canActivate: [authGuard, adminGuard]},
+  {path: 'admin-page/users', component: ShowAllUsersComponent, canActivate: [authGuard, adminGuard]},
+  {path: 'admin-page/users/add', component: AddUserComponent, canActivate: [authGuard, adminGuard]},
+  {path: 'admin-page/users/details/:id', component: DetailsUserComponent, canActivate: [authGuard, adminGuard]},
+  {path: 'admin-page/users/edit/:id', component: EditUserComponent, canActivate: [authGuard, adminGuard]},
 ];
 
 @NgModule({

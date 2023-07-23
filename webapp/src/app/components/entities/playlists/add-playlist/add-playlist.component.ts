@@ -45,7 +45,7 @@ export class AddPlaylistComponent implements OnInit {
       next: (res) => {
         this.playlistDto = res;
         this.status.code = 1;
-        this.status.message = "Playlist created!!";
+        this.status.message = "Playlist created!";
         this.form.reset();
       },
       error: (err) => {

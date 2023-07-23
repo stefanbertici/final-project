@@ -1,0 +1,150 @@
+<div class="container">
+  <form [formGroup]="form" (ngSubmit)="onPost()">
+    <div class="field">
+      <label class="label">First name</label>
+      <div class="control">
+        <input
+          class="input"
+          formControlName="firstName"
+          type="text"
+          placeholder="John"
+          required
+        >
+      </div>
+      <div class="notification"
+           *ngIf="getFormControl['firstName'].invalid && (getFormControl['firstName'].dirty || getFormControl['firstName'].touched)">
+        <p class="help is-danger" *ngIf="getFormControl['firstName'].errors?.['required']">
+          First name is required
+        </p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Last name</label>
+      <div class="control">
+        <input
+          class="input"
+          formControlName="lastName"
+          type="text"
+          placeholder="Doe"
+          required
+        >
+      </div>
+      <div class="notification"
+           *ngIf="getFormControl['lastName'].invalid && (getFormControl['lastName'].dirty || getFormControl['lastName'].touched)">
+        <p class="help is-danger" *ngIf="getFormControl['lastName'].errors?.['required']">
+          Last name is required
+        </p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Email</label>
+      <div class="control has-icons-left has-icons-right">
+        <input
+          class="input"
+          formControlName="email"
+          type="email"
+          placeholder="me@mydomain.com"
+          required
+          pattern="^[-\w.]+@([-\w]+\.)+[-\w]{2,4}$"
+        >
+        <span class="icon is-small is-left">
+        <i class="fas fa-envelope"></i>
+      </span>
+        <span class="icon is-small is-right">
+        <i class="fas fa-exclamation-triangle"></i>
+      </span>
+      </div>
+      <div class="notification"
+           *ngIf="getFormControl['email'].invalid && (getFormControl['email'].dirty || getFormControl['email'].touched)">
+        <p class="help is-danger" *ngIf="getFormControl['email'].errors?.['required']">
+          Email is required
+        </p>
+        <p class="help is-danger" *ngIf="getFormControl['email'].errors?.['pattern']">
+          Invalid pattern, please use the following format (address@domain.topleveldomain)
+        </p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Country</label>
+      <div class="control">
+        <input
+          class="input"
+          formControlName="country"
+          type="text"
+          placeholder="Musicland"
+          required
+        >
+      </div>
+      <div class="notification"
+           *ngIf="getFormControl['country'].invalid && (getFormControl['country'].dirty || getFormControl['country'].touched)">
+        <p class="help is-danger" *ngIf="getFormControl['country'].errors?.['required']">
+          Country is required
+        </p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Password</label>
+      <div class="control">
+        <input
+          class="input"
+          formControlName="password"
+          type="password"
+          placeholder="Password (Format: Abc@1r)"
+          required
+          pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?\d)(?=.*[#$^+=!*()@%&]).{6,}$"
+        >
+      </div>
+      <div class="notification"
+           *ngIf="getFormControl['password'].invalid && (getFormControl['password'].dirty || getFormControl['password'].touched)">
+        <p class="help is-danger" *ngIf="getFormControl['password'].errors?.['required']">
+          Password is required
+        </p>
+        <p class="help is-danger" *ngIf="getFormControl['password'].errors?.['pattern']">
+          Invalid pattern, please use the following format (Abc@1r)
+        </p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Confirm password</label>
+      <div class="control">
+        <input
+          class="input"
+          formControlName="confirmPassword"
+          type="password"
+          placeholder="Password (Format: Abc@1r)"
+          required
+          pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?\d)(?=.*[#$^+=!*()@%&]).{6,}$"
+        >
+      </div>
+      <div class="notification"
+           *ngIf="getFormControl['confirmPassword'].invalid && (getFormControl['confirmPassword'].dirty || getFormControl['confirmPassword'].touched)">
+        <p class="help is-danger" *ngIf="getFormControl['confirmPassword'].errors?.['required']">
+          Password is required
+        </p>
+        <p class="help is-danger" *ngIf="getFormControl['confirmPassword'].errors?.['pattern']">
+          Invalid pattern, please use the following format (Abc@1r)
+        </p>
+        <p class="help is-danger" *ngIf="getFormControl['confirmPassword'].errors?.['mustMatch']">
+          Passwords must match
+        </p>
+      </div>
+    </div>
+
+    <br>
+    <div class="field">
+      <div class="control">
+        <button type="submit" class="button is-primary" [disabled]="form.invalid">Save changes</button>
+        <button type="button" class="button is-link is-light" [routerLink]="['/admin-page/users']">Back</button>
+      </div>
+    </div>
+
+    <div class="help is-dark" *ngIf="status">
+      {{status.message}}
+    </div>
+  </form>
+</div>

@@ -12,14 +12,20 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {RequestInterceptor} from "./interceptors/request.interceptor";
-import { AddPlaylistComponent } from './components/entities/playlists/add-playlist/add-playlist.component';
-import { EditPlaylistComponent } from './components/entities/playlists/edit-playlist/edit-playlist.component';
-import { DetailsPlaylistComponent } from './components/entities/playlists/details-playlist/details-playlist.component';
-import { AddSongToPlaylistComponent } from './components/entities/playlists/add-song-to-playlist/add-song-to-playlist.component';
-import { ShowAllArtistsComponent } from './components/entities/artists/show-all-artists/show-all-artists.component';
-import { AddArtistComponent } from './components/entities/artists/add-artist/add-artist.component';
-import { DetailsArtistComponent } from './components/entities/artists/details-artist/details-artist.component';
-import { EditArtistComponent } from './components/entities/artists/edit-artist/edit-artist.component';
+import {AddPlaylistComponent} from './components/entities/playlists/add-playlist/add-playlist.component';
+import {EditPlaylistComponent} from './components/entities/playlists/edit-playlist/edit-playlist.component';
+import {DetailsPlaylistComponent} from './components/entities/playlists/details-playlist/details-playlist.component';
+import {
+  AddSongToPlaylistComponent
+} from './components/entities/playlists/add-song-to-playlist/add-song-to-playlist.component';
+import {ShowAllArtistsComponent} from './components/entities/artists/show-all-artists/show-all-artists.component';
+import {AddArtistComponent} from './components/entities/artists/add-artist/add-artist.component';
+import {DetailsArtistComponent} from './components/entities/artists/details-artist/details-artist.component';
+import {EditArtistComponent} from './components/entities/artists/edit-artist/edit-artist.component';
+import {ShowAllUsersComponent} from './components/entities/users/show-all-users/show-all-users.component';
+import { DetailsUserComponent } from './components/entities/users/details-user/details-user.component';
+import { AddUserComponent } from './components/entities/users/add-user/add-user.component';
+import { EditUserComponent } from './components/entities/users/edit-user/edit-user.component';
 
 @NgModule({
   declarations: [
@@ -36,16 +42,20 @@ import { EditArtistComponent } from './components/entities/artists/edit-artist/e
     ShowAllArtistsComponent,
     AddArtistComponent,
     DetailsArtistComponent,
-    EditArtistComponent
+    EditArtistComponent,
+    ShowAllUsersComponent,
+    DetailsUserComponent,
+    AddUserComponent,
+    EditUserComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        NgbModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        FormsModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    NgbModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    FormsModule,
+  ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: RequestInterceptor,

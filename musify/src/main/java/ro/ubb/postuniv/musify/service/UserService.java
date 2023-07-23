@@ -9,7 +9,9 @@ import ro.ubb.postuniv.musify.dto.UserLoginViewDto;
 import ro.ubb.postuniv.musify.dto.UserViewDto;
 import ro.ubb.postuniv.musify.exception.UnauthorizedException;
 import ro.ubb.postuniv.musify.mapper.UserMapper;
+import ro.ubb.postuniv.musify.model.Playlist;
 import ro.ubb.postuniv.musify.model.User;
+import ro.ubb.postuniv.musify.repository.PlaylistRepository;
 import ro.ubb.postuniv.musify.repository.UserRepository;
 import ro.ubb.postuniv.musify.security.InMemoryTokenBlacklist;
 import ro.ubb.postuniv.musify.security.JwtUtils;
@@ -23,6 +25,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +33,7 @@ public class UserService {
 
     private final RepositoryChecker repositoryChecker;
     private final UserRepository userRepository;
+    private final PlaylistRepository playlistRepository;
     private final UserMapper userMapper;
     private final InMemoryTokenBlacklist inMemoryTokenBlacklist;
 
@@ -117,6 +121,10 @@ public class UserService {
     public UserViewDto updateUserRole(Integer id, UserRole role) {
         String newRole = "";
 
+        if (JwtUtils.getCurrentUserId().equals(id)) {
+            throw new IllegalArgumentException("You cannot modify your own role");
+        }
+
         if (role == UserRole.ADMIN) {
             newRole = "admin";
         } else if (role == UserRole.USER) {
@@ -133,6 +141,10 @@ public class UserService {
     public UserViewDto updateUserStatus(Integer id, UserStatus status) {
         String newStatus = "";
 
+        if (JwtUtils.getCurrentUserId().equals(id)) {
+            throw new IllegalArgumentException("You cannot modify your own status");
+        }
+
         if (status == UserStatus.ACTIVE) {
             newStatus = "active";
         } else if (status == UserStatus.INACTIVE) {
@@ -141,6 +153,20 @@ public class UserService {
 
         User user = repositoryChecker.getUserIfExists(id);
         user.setStatus(newStatus);
+
+        return userMapper.toViewDto(user);
+    }
+
+    @Transactional
+    public UserViewDto delete(Integer id) {
+        User user = repositoryChecker.getUserIfExists(id);
+
+        user.getOwnedPlaylists().forEach(playlist -> {
+            playlist.getFollowerUsers().forEach(follower -> follower.removeFollowedPlaylist(playlist));
+            playlistRepository.delete(playlist);
+        });
+
+        userRepository.delete(user);
 
         return userMapper.toViewDto(user);
     }

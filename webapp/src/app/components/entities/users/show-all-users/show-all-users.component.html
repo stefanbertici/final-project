@@ -1,0 +1,180 @@
+<div class="container">
+  <label class="label">My admin options</label>
+  <button class="button" routerLink="/admin-page/users" routerLinkActive="active">Users</button>
+  <button class="button" routerLink="/admin-page/artists" routerLinkActive="active">Artists</button>
+  <button class="button" routerLink="/dashboard" routerLinkActive="active">Bands</button>
+  <button class="button" routerLink="/dashboard" routerLinkActive="active">Albums</button>
+  <button class="button" routerLink="/dashboard" routerLinkActive="active">Songs</button>
+  <br><br>
+  <label class="label">Users</label>
+  <button class="button is-primary" [routerLink]="['/admin-page/users/add']">Create</button>
+  <div class="table-container">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Status</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let user of users; let i = index">
+        <td>{{i + 1}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.role}}</td>
+        <td>{{user.status}}</td>
+        <td>
+          <div class="columns">
+            <div class="column">
+              <a [routerLink]="['/admin-page/users/details', user.id]">
+              <span class="icon">
+                <i class="fa-solid fa-circle-info"></i>
+              </span>
+              </a>
+            </div>
+
+            <div class="column">
+              <a [routerLink]="['/admin-page/users/edit', user.id]">
+              <span class="icon">
+                <i class="fa-solid fa-square-pen"></i>
+              </span>
+              </a>
+            </div>
+
+            <div *ngIf="canPromote(user)" class="column">
+              <a (click)="startPromote(user.id)">
+              <span class="icon">
+                <i class="fa-solid fa-bolt"></i>
+              </span>
+              </a>
+            </div>
+
+            <div *ngIf="canDemote(user)" class="column">
+              <a (click)="startDemote(user.id)">
+              <span class="icon">
+                <i class="fa-solid fa-user"></i>
+              </span>
+              </a>
+            </div>
+
+            <div *ngIf="canActivate(user)" class="column">
+              <a (click)="startActivate(user.id)">
+              <span class="icon">
+                <i class="fa-solid fa-play"></i>
+              </span>
+              </a>
+            </div>
+
+            <div *ngIf="canDeactivate(user)" class="column">
+              <a (click)="startDeactivate(user.id)">
+              <span class="icon">
+                <i class="fa-solid fa-stop"></i>
+              </span>
+              </a>
+            </div>
+
+            <div class="column">
+              <a (click)="startDelete(user.id)">
+              <span class="icon">
+                <i class="fa-solid fa-trash-can"></i>
+              </span>
+              </a>
+            </div>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="modal-delete-user" class="modal" [ngClass]="{'is-active': selectedUserIdForDelete}">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Confirm delete</p>
+      </header>
+
+      <div class="modal-card-body">
+        <p>Are you sure you want to delete this user?</p>
+      </div>
+
+      <div class="modal-card-foot">
+        <button class="button is-danger" (click)="confirmDelete()">Delete</button>
+        <button class="button is-light" (click)="cancelDelete()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-promote-user" class="modal" [ngClass]="{'is-active': selectedUserIdForPromote}">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Confirm promotion to admin</p>
+      </header>
+
+      <div class="modal-card-body">
+        <p>Are you sure you want to promote this user?</p>
+      </div>
+
+      <div class="modal-card-foot">
+        <button class="button is-danger" (click)="confirmPromote()">Promote</button>
+        <button class="button is-light" (click)="cancelPromote()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-demote-user" class="modal" [ngClass]="{'is-active': selectedUserIdForDemote}">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Confirm demotion to user</p>
+      </header>
+
+      <div class="modal-card-body">
+        <p>Are you sure you want to demote this user?</p>
+      </div>
+
+      <div class="modal-card-foot">
+        <button class="button is-danger" (click)="confirmDemote()">Demote</button>
+        <button class="button is-light" (click)="cancelDemote()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-activate-user" class="modal" [ngClass]="{'is-active': selectedUserIdForActivate}">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Confirm activation</p>
+      </header>
+
+      <div class="modal-card-body">
+        <p>Are you sure you want to activate this user?</p>
+      </div>
+
+      <div class="modal-card-foot">
+        <button class="button is-danger" (click)="confirmActivate()">Activate</button>
+        <button class="button is-light" (click)="cancelActivate()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-deactivate-user" class="modal" [ngClass]="{'is-active': selectedUserIdForDeactivate}">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Confirm deactivation</p>
+      </header>
+
+      <div class="modal-card-body">
+        <p>Are you sure you want to deactivate this user?</p>
+      </div>
+
+      <div class="modal-card-foot">
+        <button class="button is-danger" (click)="confirmDeactivate()">Deactivate</button>
+        <button class="button is-light" (click)="cancelDeactivate()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

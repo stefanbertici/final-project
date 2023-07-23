@@ -3,7 +3,6 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ArtistDto} from "../../../../models/artistDto";
 import {Status} from "../../../../models/status";
 import {ActivatedRoute} from "@angular/router";
-import {AuthService} from "../../../../services/auth.service";
 import {ArtistService} from "../../../../services/artist.service";
 
 @Component({
@@ -18,8 +17,8 @@ export class EditArtistComponent implements OnInit {
   form!: FormGroup;
   status!: Status;
 
-  constructor(private activatedRoute: ActivatedRoute, private authService: AuthService,
-              private artistService: ArtistService, private formBuilder: FormBuilder) {
+  constructor(private activatedRoute: ActivatedRoute, private artistService: ArtistService,
+              private formBuilder: FormBuilder) {
     this.activatedRoute.params.subscribe((params) => {
       this.artistId = params['id'];
     });

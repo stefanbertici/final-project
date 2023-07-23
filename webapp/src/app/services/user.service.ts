@@ -23,4 +23,24 @@ export class UserService {
   update(id: number, userDto: UserDto) {
     return this.httpClient.put<UserViewDto>(`${API_URL}/users/${id}`, userDto);
   }
+
+  delete(id: number) {
+    return this.httpClient.delete<UserViewDto>(`${API_URL}/users/${id}`);
+  }
+
+  promote(id: number) {
+    return this.httpClient.put<UserViewDto>(`${API_URL}/users/${id}/promote`, null);
+  }
+
+  demote(id: number) {
+    return this.httpClient.put<UserViewDto>(`${API_URL}/users/${id}/demote`, null);
+  }
+
+  activate(id: number) {
+    return this.httpClient.put<UserViewDto>(`${API_URL}/users/${id}/activate`, null);
+  }
+
+  deactivate(id: number) {
+    return this.httpClient.put<UserViewDto>(`${API_URL}/users/${id}/deactivate`, null);
+  }
 }

@@ -43,7 +43,7 @@ export class AddArtistComponent implements OnInit {
       next: (res) => {
         this.artistDto = res;
         this.status.code = 1;
-        this.status.message = "Artist created!!";
+        this.status.message = "Artist created!";
         this.form.reset();
       },
       error: (err) => {
