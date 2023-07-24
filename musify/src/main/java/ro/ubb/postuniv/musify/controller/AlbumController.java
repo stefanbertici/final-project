@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ro.ubb.postuniv.musify.dto.AlbumDetailViewDto;
 import ro.ubb.postuniv.musify.dto.AlbumDto;
+import ro.ubb.postuniv.musify.dto.AlbumViewDto;
 import ro.ubb.postuniv.musify.dto.SongViewDto;
 import ro.ubb.postuniv.musify.service.AlbumService;
 import ro.ubb.postuniv.musify.utils.UserChecker;
@@ -22,6 +24,16 @@ public class AlbumController {
     @GetMapping("/{id}/songs")
     public ResponseEntity<List<SongViewDto>> readByAlbumId(@PathVariable Integer id) {
         return new ResponseEntity<>(albumService.readSongsByAlbumId(id), HttpStatus.OK);
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<AlbumViewDto>> readAll() {
+        return new ResponseEntity<>(albumService.readAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AlbumDetailViewDto> readById(@PathVariable Integer id) {
+        return new ResponseEntity<>(albumService.readById(id), HttpStatus.OK);
     }
 
     @PostMapping()

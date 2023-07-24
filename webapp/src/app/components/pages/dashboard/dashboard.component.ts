@@ -16,7 +16,7 @@ export class DashboardComponent implements OnInit {
   form!: FormGroup;
   selectedPlaylistIdForDelete?: number;
   selectedPlaylistIdForUnfollow?: number;
-  searchViewDto?: SearchViewDto;
+  searchResults?: SearchViewDto;
   ownedPlaylists: PlaylistDto[] = [];
   followedPlaylists: PlaylistDto[] = [];
 
@@ -39,7 +39,7 @@ export class DashboardComponent implements OnInit {
 
     let searchResult = localStorage.getItem("searchResult");
     if (searchResult !== null) {
-      this.searchViewDto = JSON.parse(searchResult);
+      this.searchResults = JSON.parse(searchResult);
     }
   }
 
@@ -72,8 +72,8 @@ export class DashboardComponent implements OnInit {
 
     this.searchService.search(this.form.value.searchTerm).subscribe({
       next: (res) => {
-        this.searchViewDto = res;
-        localStorage.setItem("searchResult", JSON.stringify(this.searchViewDto));
+        this.searchResults = res;
+        localStorage.setItem("searchResult", JSON.stringify(this.searchResults));
       },
       error: (err) => {
         console.log("Server side error: " + err.message);
@@ -82,7 +82,7 @@ export class DashboardComponent implements OnInit {
   }
 
   clearSearch() {
-    this.searchViewDto = undefined;
+    this.searchResults = undefined;
     this.form.patchValue({
       searchTerm: ''
     })

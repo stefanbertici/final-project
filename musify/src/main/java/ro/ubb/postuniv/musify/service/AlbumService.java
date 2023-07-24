@@ -3,7 +3,9 @@ package ro.ubb.postuniv.musify.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ro.ubb.postuniv.musify.dto.AlbumDetailViewDto;
 import ro.ubb.postuniv.musify.dto.AlbumDto;
+import ro.ubb.postuniv.musify.dto.AlbumViewDto;
 import ro.ubb.postuniv.musify.dto.SongViewDto;
 import ro.ubb.postuniv.musify.mapper.AlbumMapper;
 import ro.ubb.postuniv.musify.mapper.SongMapper;
@@ -17,6 +19,8 @@ import ro.ubb.postuniv.musify.utils.RepositoryChecker;
 
 import java.util.List;
 
+import static java.util.Optional.ofNullable;
+
 @Service
 @RequiredArgsConstructor
 public class AlbumService {
@@ -27,6 +31,7 @@ public class AlbumService {
     private final AlbumMapper albumMapper;
     private final SongMapper songMapper;
 
+    //TODO 24/07/2023 stefan.bertici: move to song service / controller
     @Transactional
     public List<SongViewDto> readSongsByAlbumId(Integer id) {
         Album album = repositoryChecker.getAlbumIfExists(id);
@@ -36,19 +41,36 @@ public class AlbumService {
     }
 
     @Transactional
+    public List<AlbumViewDto> readAll() {
+        List<Album> albums = albumRepository.findAll();
+
+        return albumMapper.toViewDtos(albums);
+    }
+
+    @Transactional
+    public AlbumDetailViewDto readById(Integer id) {
+        Album album = repositoryChecker.getAlbumIfExists(id);
+
+        return albumMapper.toDetailViewDto(album);
+    }
+
+    @Transactional
     public AlbumDto create(AlbumDto albumDto) {
         if (albumDto.isTwoOwnersIdSet()) {
             throw new IllegalArgumentException("One of artist id or band id must be set, the other must remain null");
         }
 
         Album album = albumMapper.toEntity(albumDto);
-        album = albumRepository.save(album);
+        albumRepository.save(album);
 
         addArtistOrBandById(album, albumDto);
 
-        if (!albumDto.getSongIds().isEmpty()) {
-            addSongsById(album, albumDto);
-        }
+        ofNullable(albumDto.getSongIds())
+                .ifPresent(songs -> {
+                    if (!songs.isEmpty()) {
+                        addSongsById(album, albumDto);
+                    }
+                });
 
         return albumMapper.toDto(album);
     }
@@ -68,13 +90,19 @@ public class AlbumService {
         album.setReleaseDate(albumDto.getReleaseDate());
         album.setLabel(albumDto.getLabel());
 
-        if (!albumDto.getSongIds().isEmpty()) {
-            clearSongs(album);
-            addSongsById(album, albumDto);
-        }
+        ofNullable(albumDto.getSongIds())
+                .ifPresent(songs -> {
+                    if (!songs.isEmpty()) {
+                        clearSongs(album);
+                        addSongsById(album, albumDto);
+                    }
+                });
 
         return albumMapper.toDto(album);
     }
+
+    //TODO 23/07/2023 stefan.bertici: new endpoint for add and remove to / from album
+    // this way is easier than rewriting the current logic to support reactive forms - i think
 
     private void addSongsById(Album album, AlbumDto albumDto) {
         List<Song> songs = (List<Song>) songRepository.findAllById(albumDto.getSongIds());

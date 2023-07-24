@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -34,8 +35,8 @@ public class Album {
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(name = "albums_songs",
-            joinColumns = { @JoinColumn(name = "album_id") },
-            inverseJoinColumns = { @JoinColumn(name = "song_id") })
+            joinColumns = {@JoinColumn(name = "album_id")},
+            inverseJoinColumns = {@JoinColumn(name = "song_id")})
     @OrderColumn(name = "song_order")
     private List<Song> songs = new ArrayList<>();
 
@@ -62,7 +63,7 @@ public class Album {
     }
 
     public void addSong(Song song) {
-        if(songs.contains(song)){
+        if (songs.contains(song)) {
             throw new IllegalArgumentException("Song already in the album");
         }
 
@@ -73,5 +74,19 @@ public class Album {
     public void removeSong(Song song) {
         songs.remove(song);
         song.getAlbums().remove(this);
+    }
+
+    public String getArtistName() {
+        String name;
+
+        if (Objects.nonNull(artist)) {
+            name = artist.getStageName();
+        } else if (Objects.nonNull(band)) {
+            name = band.getBandName();
+        } else {
+            name = "Album does not have an artist set";
+        }
+
+        return name;
     }
 }

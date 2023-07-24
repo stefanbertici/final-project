@@ -30,6 +30,8 @@ import { ShowAllSongsComponent } from './components/entities/songs/show-all-song
 import { DetailsSongComponent } from './components/entities/songs/details-song/details-song.component';
 import { EditSongComponent } from './components/entities/songs/edit-song/edit-song.component';
 import { AddSongComponent } from './components/entities/songs/add-song/add-song.component';
+import { ShowAllAlbumsComponent } from './components/entities/albums/show-all-albums/show-all-albums.component';
+import { DetailsAlbumComponent } from './components/entities/albums/details-album/details-album.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +56,9 @@ import { AddSongComponent } from './components/entities/songs/add-song/add-song.
     ShowAllSongsComponent,
     DetailsSongComponent,
     EditSongComponent,
-    AddSongComponent
+    AddSongComponent,
+    ShowAllAlbumsComponent,
+    DetailsAlbumComponent
   ],
   imports: [
     BrowserModule,

@@ -13,7 +13,7 @@ import {UserViewDto} from "../../../models/userViewDto";
 export class SignupComponent implements OnInit {
 
   form!: FormGroup;
-  userViewDto!: UserViewDto;
+  user!: UserViewDto;
   status!: Status;
 
   constructor(private signupService: SignupService, private formBuilder: FormBuilder) {
@@ -42,7 +42,7 @@ export class SignupComponent implements OnInit {
 
     this.signupService.signup(this.form.value).subscribe({
       next: (res) => {
-        this.userViewDto = res;
+        this.user = res;
         this.status.code = 1;
         this.status.message = "Registered!";
         this.form.reset();

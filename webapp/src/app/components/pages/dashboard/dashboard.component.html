@@ -18,9 +18,9 @@
     <br>
   </div>
 
-  <div *ngIf="getSearchTerm && searchViewDto" class="table-container">
+  <div *ngIf="getSearchTerm && searchResults" class="table-container">
     <label class="label">Search results</label>
-    <div *ngIf="searchViewDto.songs.length !== 0">
+    <div *ngIf="searchResults.songs.length !== 0">
       <label class="label">Songs</label>
       <table  class="table">
         <thead>
@@ -32,7 +32,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let song of searchViewDto.songs; let i = index">
+        <tr *ngFor="let song of searchResults.songs; let i = index">
           <td>{{i + 1}}</td>
           <td>{{song.artist}}</td>
           <td>{{song.title}}</td>
@@ -53,7 +53,7 @@
         </tbody>
       </table>
     </div>
-    <div *ngIf="searchViewDto.playlists.length !== 0">
+    <div *ngIf="searchResults.playlists.length !== 0">
       <label class="label">Playlists</label>
       <table class="table">
         <thead>
@@ -65,7 +65,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let playlist of searchViewDto.playlists; let i = index">
+        <tr *ngFor="let playlist of searchResults.playlists; let i = index">
           <td>{{i + 1}}</td>
           <td>{{playlist.name}}</td>
           <td>{{playlist.type}}</td>

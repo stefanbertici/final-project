@@ -12,7 +12,7 @@ export class DetailsPlaylistComponent implements OnInit {
 
   selectedSongIdForRemove?: number;
   playlistId: number = 0;
-  playlistViewDto?: PlaylistViewDto;
+  playlist?: PlaylistViewDto;
 
   constructor(private activatedRoute: ActivatedRoute, private playlistService: PlaylistService) {
     this.activatedRoute.params.subscribe((params) => {
@@ -22,7 +22,7 @@ export class DetailsPlaylistComponent implements OnInit {
 
   private loadPlaylist() {
     this.playlistService.getById(this.playlistId).subscribe((data: PlaylistViewDto) => {
-      this.playlistViewDto = data;
+      this.playlist = data;
     });
   }
 
@@ -36,7 +36,7 @@ export class DetailsPlaylistComponent implements OnInit {
 
   confirmRemove() {
     if (this.selectedSongIdForRemove !== undefined) {
-      this.playlistService.removeSong(this.playlistViewDto!.id, this.selectedSongIdForRemove).subscribe(data => {
+      this.playlistService.removeSong(this.playlist!.id, this.selectedSongIdForRemove).subscribe(data => {
         alert("Song removed!");
         this.selectedSongIdForRemove = undefined;
         this.loadPlaylist();

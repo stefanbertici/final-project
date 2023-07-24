@@ -13,7 +13,7 @@ import {PlaylistDto} from "../../../../models/playlistDto";
 export class AddPlaylistComponent implements OnInit {
 
   form!: FormGroup;
-  playlistDto!: PlaylistDto;
+  playlist!: PlaylistDto;
   status!: Status;
 
   constructor(private authService: AuthService, private playlistService: PlaylistService,
@@ -43,7 +43,7 @@ export class AddPlaylistComponent implements OnInit {
 
     this.playlistService.add(playlist).subscribe({
       next: (res) => {
-        this.playlistDto = res;
+        this.playlist = res;
         this.status.code = 1;
         this.status.message = "Playlist created!";
         this.form.reset();
