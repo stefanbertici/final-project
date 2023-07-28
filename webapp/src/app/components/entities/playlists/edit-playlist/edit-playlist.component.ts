@@ -47,7 +47,7 @@ export class EditPlaylistComponent implements OnInit {
 
   onPost() {
     console.log("clicked update playlist")
-    this.status = {code: 0, message: "updating"};
+    this.status = {code: 0, message: "updating..."};
     let playlistDto: PlaylistDto = {id: this.playlistId, name: this.form.value.name, type: this.form.value.type,
       createdDate: new Date(), updatedDate: new Date(), ownerUserId: this.authService.getUserId()}
 

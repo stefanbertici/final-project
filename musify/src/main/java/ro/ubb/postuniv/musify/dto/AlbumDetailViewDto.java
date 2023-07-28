@@ -16,6 +16,7 @@ public class AlbumDetailViewDto {
 
     private Integer id;
     // in this context artist can be a singular artist or a band consisting of multiple artists
+    private Integer artistId;
     private String artist;
     private String title;
     private String description;

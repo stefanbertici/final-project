@@ -47,7 +47,7 @@ export class EditSongComponent implements OnInit {
 
   onPost() {
     console.log("clicked update song")
-    this.status = {code: 0, message: "updating"};
+    this.status = {code: 0, message: "updating..."};
 
     this.songService.update(this.songId, this.form.value).subscribe({
       next: (res) => {

@@ -53,7 +53,7 @@ export class EditUserComponent {
 
   onPost() {
     console.log("clicked update user")
-    this.status = {code: 0, message: "updating"};
+    this.status = {code: 0, message: "updating..."};
 
     this.userService.update(this.userId, this.form.value).subscribe({
       next: (res) => {

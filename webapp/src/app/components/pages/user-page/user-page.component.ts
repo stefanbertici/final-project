@@ -51,7 +51,7 @@ export class UserPageComponent implements OnInit {
 
   onPost() {
     console.log("clicked save changes")
-    this.status = {code: 0, message: "updating"};
+    this.status = {code: 0, message: "updating..."};
 
     this.userService.update(this.userId, this.form.value).subscribe({
       next: (res) => {

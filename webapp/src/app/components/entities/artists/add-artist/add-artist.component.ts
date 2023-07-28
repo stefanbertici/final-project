@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Status} from "../../../../models/status";
 import {ArtistDto} from "../../../../models/artistDto";
-import {AuthService} from "../../../../services/auth.service";
 import {ArtistService} from "../../../../services/artist.service";
 
 @Component({
@@ -16,8 +15,7 @@ export class AddArtistComponent implements OnInit {
   artistDto!: ArtistDto;
   status!: Status;
 
-  constructor(private authService: AuthService, private artistService: ArtistService,
-              private formBuilder: FormBuilder) {
+  constructor(private artistService: ArtistService, private formBuilder: FormBuilder) {
   }
 
   ngOnInit(): void {

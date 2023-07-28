@@ -1,0 +1,123 @@
+<div class="container">
+  <form [formGroup]="form" (ngSubmit)="onPost()">
+    <div class="field">
+      <label class="label">Artist</label>
+      <div class="control">
+        <div class="select">
+          <select formControlName="artistId">
+            <option value="" disabled selected>Select artist</option>
+            <option *ngFor="let item of artists" [ngValue]="item.id">
+              {{item.stageName}}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Title</label>
+      <div class="control">
+        <input
+          class="input"
+          formControlName="title"
+          type="text"
+          placeholder="Big album"
+          required
+        >
+      </div>
+      <div class="notification"
+           *ngIf="getFormControl['title'].invalid && (getFormControl['title'].dirty || getFormControl['title'].touched)">
+        <p class="help is-danger" *ngIf="getFormControl['title'].errors?.['required']">
+          Title is required
+        </p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Description</label>
+      <div class="control">
+        <input
+          class="input"
+          formControlName="description"
+          type="text"
+          placeholder="Mr. Biggie's newest, biggest and baddest album for all of his fans across the world."
+          required
+        >
+      </div>
+      <div class="notification"
+           *ngIf="getFormControl['description'].invalid && (getFormControl['description'].dirty || getFormControl['description'].touched)">
+        <p class="help is-danger" *ngIf="getFormControl['description'].errors?.['required']">
+          Description is required
+        </p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Genre</label>
+      <div class="control">
+        <input
+          class="input"
+          formControlName="genre"
+          type="text"
+          placeholder="hip-hop/rap"
+          required
+        >
+      </div>
+      <div class="notification"
+           *ngIf="getFormControl['genre'].invalid && (getFormControl['genre'].dirty || getFormControl['genre'].touched)">
+        <p class="help is-danger" *ngIf="getFormControl['genre'].errors?.['required']">
+          Genre is required
+        </p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Release date</label>
+      <div class="control">
+        <input
+          class="input"
+          formControlName="releaseDate"
+          type="date"
+          required
+        >
+      </div>
+      <div class="notification"
+           *ngIf="getFormControl['releaseDate'].invalid && (getFormControl['releaseDate'].dirty || getFormControl['releaseDate'].touched)">
+        <p class="help is-danger" *ngIf="getFormControl['releaseDate'].errors?.['required']">
+          Release date is required
+        </p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Label</label>
+      <div class="control">
+        <input
+          class="input"
+          formControlName="label"
+          type="text"
+          placeholder="Big records"
+          required
+        >
+      </div>
+      <div class="notification"
+           *ngIf="getFormControl['label'].invalid && (getFormControl['label'].dirty || getFormControl['label'].touched)">
+        <p class="help is-danger" *ngIf="getFormControl['label'].errors?.['required']">
+          Label is required
+        </p>
+      </div>
+    </div>
+
+    <br>
+    <div class="field">
+      <div class="control">
+        <button type="submit" class="button is-primary" [disabled]="form.invalid">Create</button>
+        <button type="button" class="button is-link is-light" [routerLink]="['/admin-page/albums']">Back</button>
+      </div>
+    </div>
+
+    <div class="help is-dark" *ngIf="status">
+      {{status.message}}
+    </div>
+  </form>
+</div>

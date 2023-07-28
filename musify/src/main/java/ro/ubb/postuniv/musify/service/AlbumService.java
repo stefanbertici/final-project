@@ -122,14 +122,18 @@ public class AlbumService {
     }
 
     private void addArtistOrBandById(Album album, AlbumDto albumDto) {
-        if (albumDto.getArtistId() != null && albumDto.getArtistId() != 0) {
-            Integer id = albumDto.getArtistId();
-            Artist artist = repositoryChecker.getArtistIfExists(id);
-            artist.addAlbum(album);
-        } else if (albumDto.getBandId() != null && albumDto.getBandId() != 0) {
-            Integer id = albumDto.getBandId();
-            Band band = repositoryChecker.getBandIfExists(id);
-            band.addAlbum(album);
+        if (albumDto.getArtistId() != null && albumDto.getArtistId() != 0 && !albumDto.getArtistId().equals(album.getArtistId())) {
+            Artist previousArtist = album.getArtist();
+            Artist newArtist = repositoryChecker.getArtistIfExists(albumDto.getArtistId());
+
+            previousArtist.removeAlbum(album);
+            newArtist.addAlbum(album);
+        } else if (albumDto.getBandId() != null && albumDto.getBandId() != 0 && !albumDto.getBandId().equals(album.getBandId())) {
+            Band previousBand = album.getBand();
+            Band newBand = repositoryChecker.getBandIfExists(albumDto.getArtistId());
+
+            previousBand.removeAlbum(album);
+            newBand.addAlbum(album);
         }
     }
 }

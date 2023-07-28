@@ -53,7 +53,7 @@ export class EditArtistComponent implements OnInit {
 
   onPost() {
     console.log("clicked update artist")
-    this.status = {code: 0, message: "updating"};
+    this.status = {code: 0, message: "updating..."};
 
     this.artistService.update(this.artistId, this.form.value).subscribe({
       next: (res) => {

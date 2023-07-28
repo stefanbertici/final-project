@@ -51,7 +51,7 @@ public class Album {
             return artist.getId();
         }
 
-        return null;
+        return 0;
     }
 
     public Integer getBandId() {
@@ -59,7 +59,7 @@ public class Album {
             return band.getId();
         }
 
-        return null;
+        return 0;
     }
 
     public void addSong(Song song) {
@@ -76,17 +76,31 @@ public class Album {
         song.getAlbums().remove(this);
     }
 
-    public String getArtistName() {
-        String name;
+    public Integer getOverallArtistId() {
+        Integer overallId;
 
         if (Objects.nonNull(artist)) {
-            name = artist.getStageName();
+            overallId = artist.getId();
         } else if (Objects.nonNull(band)) {
-            name = band.getBandName();
+            overallId = band.getId();
         } else {
-            name = "Album does not have an artist set";
+            overallId = 0;
         }
 
-        return name;
+        return overallId;
+    }
+
+    public String getOverallArtistName() {
+        String overallName;
+
+        if (Objects.nonNull(artist)) {
+            overallName = artist.getStageName();
+        } else if (Objects.nonNull(band)) {
+            overallName = band.getBandName();
+        } else {
+            overallName = "Album does not have an artist set";
+        }
+
+        return overallName;
     }
 }

@@ -1,13 +1,11 @@
-import {SongViewDto} from "./songViewDto";
-
-export interface AlbumDetailViewDto {
+export interface AlbumDto {
   id: number;
   artistId: number;
-  artist: string;
+  bandId: number;
   title: string;
   description: string;
   genre: string;
   releaseDate: Date;
   label: string;
-  songs: SongViewDto[];
+  songIds: number[];
 }

@@ -47,7 +47,7 @@ export class AddSongToPlaylistComponent implements OnInit {
 
   onPost() {
     console.log("clicked add song to playlist")
-    this.status = {code: 0, message: "updating"};
+    this.status = {code: 0, message: "updating..."};
 
     this.playlistService.addSong(this.form.value.playlistId, this.songId).subscribe({
       next: (res) => {

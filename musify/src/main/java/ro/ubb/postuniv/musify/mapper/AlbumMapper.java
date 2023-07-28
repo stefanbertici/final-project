@@ -21,13 +21,14 @@ public interface AlbumMapper {
 
     List<AlbumDto> toDtos(List<Album> albums);
 
-    @Mapping(target = "artist", expression = "java(album.getArtistName())")
+    @Mapping(target = "artist", expression = "java(album.getOverallArtistName())")
+    @Mapping(target = "artistId", expression = "java(album.getOverallArtistId())")
     @Mapping(target = "songs", expression = "java(toSongViewDtos(album.getSongs()))")
     AlbumDetailViewDto toDetailViewDto(Album album);
 
     List<AlbumDetailViewDto> toDetailViewDtos(List<Album> albums);
 
-    @Mapping(target = "artist", expression = "java(album.getArtistName())")
+    @Mapping(target = "artist", expression = "java(album.getOverallArtistName())")
     AlbumViewDto toViewDto(Album album);
 
     List<AlbumViewDto> toViewDtos(List<Album> albums);
