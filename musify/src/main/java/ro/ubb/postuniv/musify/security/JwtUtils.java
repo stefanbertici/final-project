@@ -4,6 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Calendar;
@@ -11,12 +13,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class JwtUtils {
-    private static final String signatureSecret = "myMusifyApp2023";
-    private static final String issuer = "musify";
+
+    private static final String SECRET = "myMusifyApp2023";
+    private static final String ISSUER = "musify";
 
     public static String generateToken(int id, String email, String role) {
-        Algorithm algorithm = Algorithm.HMAC256(signatureSecret);
+        Algorithm algorithm = Algorithm.HMAC256(SECRET);
 
         Calendar c = Calendar.getInstance();
         Date currentDate = c.getTime();
@@ -25,8 +29,8 @@ public class JwtUtils {
         Date expireDate = c.getTime();
 
         return JWT.create()
-                .withIssuer(issuer)
-                .withSubject(issuer)
+                .withIssuer(ISSUER)
+                .withSubject(ISSUER)
                 .withIssuedAt(currentDate)
                 .withExpiresAt(expireDate)
                 .withClaim("id", id)
@@ -36,11 +40,11 @@ public class JwtUtils {
     }
 
     public static Map<String, Object> validateToken(String jwtToken) {
-        Algorithm algorithm = Algorithm.HMAC256(signatureSecret);
+        Algorithm algorithm = Algorithm.HMAC256(SECRET);
 
         JWTVerifier verifier = JWT.require(algorithm)
-                .withIssuer(issuer)
-                .withSubject(issuer)
+                .withIssuer(ISSUER)
+                .withSubject(ISSUER)
                 .build();
 
         DecodedJWT decodedJWT = verifier.verify(jwtToken);

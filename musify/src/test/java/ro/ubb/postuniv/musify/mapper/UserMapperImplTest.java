@@ -23,7 +23,7 @@ class UserMapperImplTest {
 
     @Test
     @DisplayName("User entity to user view Dto test")
-    public void givenNullUser_whenMappingToUserViewDto_thenReturnNull() {
+    void givenNullUser_whenMappingToUserViewDto_thenReturnNull() {
         UserMapper userMapper = new UserMapperImpl();
         UserViewDto userViewDto = userMapper.toViewDto(null);
 
@@ -32,7 +32,7 @@ class UserMapperImplTest {
 
     @Test
     @DisplayName("User entity to user view Dto test")
-    public void givenValidUser_whenMappingToUserViewDto_thenReturnCorrectValidDto() {
+    void givenValidUser_whenMappingToUserViewDto_thenReturnCorrectValidDto() {
         Integer id = 1;
         String firstName = "Stefan";
         String lastName = "Bertici";
