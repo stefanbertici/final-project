@@ -46,10 +46,24 @@
           <td>{{song.duration}}</td>
           <td>
             <div class="columns">
-              <div class="column">
+              <div *ngIf="isOwner()" class="column">
                 <a (click)="startRemove(song.id)">
               <span class="icon">
                 <i class="fa-solid fa-trash-can"></i>
+              </span>
+                </a>
+              </div>
+              <div *ngIf="canMoveDown(i)" class="column">
+                <a (click)="moveDown(i, song.id)">
+              <span class="icon">
+                <i class="fa-solid fa-arrow-down"></i>
+              </span>
+                </a>
+              </div>
+              <div *ngIf="canMoveUp(i)" class="column">
+                <a (click)="moveUp(i, song.id)">
+              <span class="icon">
+                <i class="fa-solid fa-arrow-up"></i>
               </span>
                 </a>
               </div>

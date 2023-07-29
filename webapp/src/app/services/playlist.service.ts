@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {API_URL} from "../utils/constants";
 import {PlaylistDto} from "../models/playlistDto";
 import {PlaylistViewDto} from "../models/playlistViewDto";
@@ -50,5 +50,15 @@ export class PlaylistService {
 
   addAlbum(playlistId: number, albumId: number) {
     return this.httpClient.post<PlaylistViewDto>(`${API_URL}/playlists/${playlistId}/add-album/${albumId}`, null);
+  }
+
+  changeOrder(playlistId: number, songId: number, oldPosition: number, newPosition: number) {
+    const params = new HttpParams()
+      .set('songId', songId)
+      .set('oldPosition', oldPosition)
+      .set('newPosition', newPosition);
+    const searchParams = params.toString();
+
+    return this.httpClient.post<PlaylistViewDto>(`${API_URL}/playlists/${playlistId}/change-order?${searchParams}`, null);
   }
 }

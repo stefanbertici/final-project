@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {PlaylistViewDto} from "../../../../models/playlistViewDto";
 import {ActivatedRoute} from "@angular/router";
 import {PlaylistService} from "../../../../services/playlist.service";
+import {AuthService} from "../../../../services/auth.service";
 
 @Component({
   selector: 'app-details-playlist',
@@ -14,7 +15,7 @@ export class DetailsPlaylistComponent implements OnInit {
   playlistId: number = 0;
   playlist?: PlaylistViewDto;
 
-  constructor(private activatedRoute: ActivatedRoute, private playlistService: PlaylistService) {
+  constructor(private activatedRoute: ActivatedRoute, private authService: AuthService, private playlistService: PlaylistService) {
     this.activatedRoute.params.subscribe((params) => {
       this.playlistId = params['id'];
     });
@@ -46,5 +47,36 @@ export class DetailsPlaylistComponent implements OnInit {
 
   cancelRemove() {
     this.selectedSongIdForRemove = undefined;
+  }
+
+  isOwner() {
+    return this.playlist?.ownerUserId === this.authService.getUserId();
+  }
+
+  canMoveDown(i: number) {
+    return i < this.playlist!.songs.length - 1 && this.isOwner();
+  }
+
+  canMoveUp(i: number) {
+    return i >= 1 && this.isOwner();
+  }
+
+  moveDown(i: number, songId: number) {
+    let oldPosition: number = i + 1;
+    let newPosition: number = oldPosition + 1;
+
+    this.playlistService.changeOrder(this.playlistId, songId, oldPosition, newPosition).subscribe((data: PlaylistViewDto) => {
+      this.playlist = data;
+    });
+  }
+
+  moveUp(i: number, songId: number) {
+    let oldPosition: number = i + 1;
+    let newPosition: number = oldPosition - 1;
+
+    this.playlistService.changeOrder(this.playlistId, songId, oldPosition, newPosition).subscribe((data: PlaylistViewDto) => {
+      this.playlist = data;
+    });
+
   }
 }

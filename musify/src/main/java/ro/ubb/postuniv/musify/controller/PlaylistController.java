@@ -58,7 +58,7 @@ public class PlaylistController {
         return new ResponseEntity<>(playlistService.addAlbumToPlaylist(playlistId, albumId), HttpStatus.OK);
     }
 
-    @PostMapping("/{playlistId}/change-Order")
+    @PostMapping("/{playlistId}/change-order")
     public ResponseEntity<PlaylistViewDto> changeSongOrder(@PathVariable Integer playlistId, @RequestParam Integer songId, @RequestParam Integer oldPosition, @RequestParam Integer newPosition){
         return new ResponseEntity<>(playlistService.changeSongOrder(playlistId, songId, oldPosition, newPosition), HttpStatus.OK);
     }
