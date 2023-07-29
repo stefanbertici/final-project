@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import ro.ubb.postuniv.musify.dto.AlbumDetailViewDto;
 import ro.ubb.postuniv.musify.dto.AlbumDto;
 import ro.ubb.postuniv.musify.dto.AlbumViewDto;
-import ro.ubb.postuniv.musify.dto.SongViewDto;
 import ro.ubb.postuniv.musify.service.AlbumService;
 import ro.ubb.postuniv.musify.utils.UserChecker;
 
@@ -21,11 +20,6 @@ public class AlbumController {
 
     private final AlbumService albumService;
 
-    @GetMapping("/{id}/songs")
-    public ResponseEntity<List<SongViewDto>> readByAlbumId(@PathVariable Integer id) {
-        return new ResponseEntity<>(albumService.readSongsByAlbumId(id), HttpStatus.OK);
-    }
-
     @GetMapping()
     public ResponseEntity<List<AlbumViewDto>> readAll() {
         return new ResponseEntity<>(albumService.readAll(), HttpStatus.OK);
@@ -34,6 +28,11 @@ public class AlbumController {
     @GetMapping("/{id}")
     public ResponseEntity<AlbumDetailViewDto> readById(@PathVariable Integer id) {
         return new ResponseEntity<>(albumService.readById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/artist/{id}")
+    public ResponseEntity<List<AlbumDto>> readAllByArtistId(@PathVariable Integer id) {
+        return new ResponseEntity<>(albumService.readAllByArtistId(id), HttpStatus.OK);
     }
 
     @PostMapping()
@@ -46,5 +45,17 @@ public class AlbumController {
     public ResponseEntity<AlbumDto> update(@PathVariable Integer id, @RequestBody @Valid AlbumDto albumDto) {
         UserChecker.validateAdminRole();
         return new ResponseEntity<>(albumService.update(id, albumDto), HttpStatus.OK);
+    }
+
+    @PostMapping("/{albumId}/add-song/{songId}")
+    public ResponseEntity<AlbumDetailViewDto> addSong(@PathVariable Integer albumId, @PathVariable Integer songId) {
+        UserChecker.validateAdminRole();
+        return new ResponseEntity<>(albumService.addSong(albumId, songId), HttpStatus.OK);
+    }
+
+    @PostMapping("/{albumId}/remove-song/{songId}")
+    public ResponseEntity<AlbumDetailViewDto> removeSong(@PathVariable Integer albumId, @PathVariable Integer songId) {
+        UserChecker.validateAdminRole();
+        return new ResponseEntity<>(albumService.removeSong(albumId, songId), HttpStatus.OK);
     }
 }

@@ -41,10 +41,10 @@ export class PlaylistService {
   }
 
   addSong(playlistId: number, songId: number) {
-    return this.httpClient.post<PlaylistViewDto>(`${API_URL}/playlists/${playlistId}/add/song/${songId}`, null);
+    return this.httpClient.post<PlaylistViewDto>(`${API_URL}/playlists/${playlistId}/add-song/${songId}`, null);
   }
 
   removeSong(playlistId: number, songId: number) {
-    return this.httpClient.post<PlaylistViewDto>(`${API_URL}/playlists/${playlistId}/remove/song/${songId}`, null);
+    return this.httpClient.post<PlaylistViewDto>(`${API_URL}/playlists/${playlistId}/remove-song/${songId}`, null);
   }
 }

@@ -21,11 +21,23 @@ export class AlbumService {
     return this.httpClient.get<AlbumDetailViewDto>(`${API_URL}/albums/${id}`);
   }
 
+  getAllByArtistId(id: number) {
+    return this.httpClient.get<AlbumViewDto[]>(`${API_URL}/albums/artist/${id}`);
+  }
+
   create(albumDto: AlbumDto) {
     return this.httpClient.post<AlbumDto>(`${API_URL}/albums`, albumDto);
   }
 
   update(id: number, albumDto: AlbumDto) {
     return this.httpClient.put<AlbumDto>(`${API_URL}/albums/${id}`, albumDto);
+  }
+
+  addSong(albumId: number, songId: number) {
+    return this.httpClient.post<AlbumDetailViewDto>(`${API_URL}/albums/${albumId}/add-song/${songId}`, null);
+  }
+
+  removeSong(albumId: number, songId: number) {
+    return this.httpClient.post<AlbumDetailViewDto>(`${API_URL}/albums/${albumId}/remove-song/${songId}`, null);
   }
 }

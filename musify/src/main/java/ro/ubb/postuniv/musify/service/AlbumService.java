@@ -6,9 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ro.ubb.postuniv.musify.dto.AlbumDetailViewDto;
 import ro.ubb.postuniv.musify.dto.AlbumDto;
 import ro.ubb.postuniv.musify.dto.AlbumViewDto;
-import ro.ubb.postuniv.musify.dto.SongViewDto;
 import ro.ubb.postuniv.musify.mapper.AlbumMapper;
-import ro.ubb.postuniv.musify.mapper.SongMapper;
 import ro.ubb.postuniv.musify.model.Album;
 import ro.ubb.postuniv.musify.model.Artist;
 import ro.ubb.postuniv.musify.model.Band;
@@ -17,6 +15,7 @@ import ro.ubb.postuniv.musify.repository.AlbumRepository;
 import ro.ubb.postuniv.musify.repository.SongRepository;
 import ro.ubb.postuniv.musify.utils.RepositoryChecker;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Optional.ofNullable;
@@ -29,29 +28,23 @@ public class AlbumService {
     private final AlbumRepository albumRepository;
     private final SongRepository songRepository;
     private final AlbumMapper albumMapper;
-    private final SongMapper songMapper;
-
-    //TODO 24/07/2023 stefan.bertici: move to song service / controller
-    @Transactional
-    public List<SongViewDto> readSongsByAlbumId(Integer id) {
-        Album album = repositoryChecker.getAlbumIfExists(id);
-        List<Song> songs = album.getSongs();
-
-        return songMapper.toViewDtos(songs);
-    }
 
     @Transactional
     public List<AlbumViewDto> readAll() {
         List<Album> albums = albumRepository.findAll();
-
         return albumMapper.toViewDtos(albums);
     }
 
     @Transactional
     public AlbumDetailViewDto readById(Integer id) {
         Album album = repositoryChecker.getAlbumIfExists(id);
-
         return albumMapper.toDetailViewDto(album);
+    }
+
+    @Transactional
+    public List<AlbumDto> readAllByArtistId(Integer id) {
+        Artist artist = repositoryChecker.getArtistIfExists(id);
+        return albumMapper.toDtos(new ArrayList<>(artist.getArtistAlbums()));
     }
 
     @Transactional
@@ -101,8 +94,29 @@ public class AlbumService {
         return albumMapper.toDto(album);
     }
 
-    //TODO 23/07/2023 stefan.bertici: new endpoint for add and remove to / from album
-    // this way is easier than rewriting the current logic to support reactive forms - i think
+    @Transactional
+    public AlbumDetailViewDto addSong(Integer albumId, Integer songId) {
+        Album album = repositoryChecker.getAlbumIfExists(albumId);
+        Song song = repositoryChecker.getSongIfExists(songId);
+
+        if (!album.getSongs().contains(song)) {
+            album.addSong(song);
+        }
+
+        return albumMapper.toDetailViewDto(album);
+    }
+
+    @Transactional
+    public AlbumDetailViewDto removeSong(Integer albumId, Integer songId) {
+        Album album = repositoryChecker.getAlbumIfExists(albumId);
+        Song song = repositoryChecker.getSongIfExists(songId);
+
+        if (album.getSongs().contains(song)) {
+            album.removeSong(song);
+        }
+
+        return albumMapper.toDetailViewDto(album);
+    }
 
     private void addSongsById(Album album, AlbumDto albumDto) {
         List<Song> songs = (List<Song>) songRepository.findAllById(albumDto.getSongIds());
@@ -123,16 +137,14 @@ public class AlbumService {
 
     private void addArtistOrBandById(Album album, AlbumDto albumDto) {
         if (albumDto.getArtistId() != null && albumDto.getArtistId() != 0 && !albumDto.getArtistId().equals(album.getArtistId())) {
-            Artist previousArtist = album.getArtist();
             Artist newArtist = repositoryChecker.getArtistIfExists(albumDto.getArtistId());
 
-            previousArtist.removeAlbum(album);
+            ofNullable(album.getArtist()).ifPresent(previousArtist -> previousArtist.removeAlbum(album));
             newArtist.addAlbum(album);
         } else if (albumDto.getBandId() != null && albumDto.getBandId() != 0 && !albumDto.getBandId().equals(album.getBandId())) {
-            Band previousBand = album.getBand();
             Band newBand = repositoryChecker.getBandIfExists(albumDto.getArtistId());
 
-            previousBand.removeAlbum(album);
+            ofNullable(album.getBand()).ifPresent(previousBand -> previousBand.removeAlbum(album));
             newBand.addAlbum(album);
         }
     }

@@ -5,10 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.ubb.postuniv.musify.dto.PlaylistDto;
 import ro.ubb.postuniv.musify.dto.PlaylistViewDto;
-import ro.ubb.postuniv.musify.dto.SongViewDto;
 import ro.ubb.postuniv.musify.exception.UnauthorizedException;
 import ro.ubb.postuniv.musify.mapper.PlaylistMapper;
-import ro.ubb.postuniv.musify.mapper.SongMapper;
 import ro.ubb.postuniv.musify.model.Album;
 import ro.ubb.postuniv.musify.model.Playlist;
 import ro.ubb.postuniv.musify.model.Song;
@@ -19,7 +17,6 @@ import ro.ubb.postuniv.musify.security.JwtUtils;
 import ro.ubb.postuniv.musify.utils.RepositoryChecker;
 import ro.ubb.postuniv.musify.utils.UserChecker;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -29,12 +26,11 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PlaylistService {
-    private final RepositoryChecker repositoryChecker;
 
+    private final RepositoryChecker repositoryChecker;
     private final PlaylistRepository playlistRepository;
     private final UserRepository userRepository;
     private final PlaylistMapper playlistMapper;
-    private final SongMapper songMapper;
 
     @Transactional
     public List<PlaylistDto> readAll() {
@@ -60,17 +56,6 @@ public class PlaylistService {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(id);
 
         return playlistMapper.toViewDto(playlist);
-    }
-
-    @Transactional
-    public List<SongViewDto> readSongsByPlaylistId(Integer id) {
-        Playlist playlist = repositoryChecker.getPlaylistIfExists(id);
-
-        if (playlist.getType().equals("private") && UserChecker.isCurrentUserNotOwnerOfPlaylist(playlist)) {
-            throw new UnauthorizedException("You cannot view this private playlist");
-        }
-
-        return songMapper.toViewDtos(playlist.getSongsInPlaylist());
     }
 
     @Transactional

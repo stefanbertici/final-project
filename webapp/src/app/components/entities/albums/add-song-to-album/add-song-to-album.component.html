@@ -1,0 +1,43 @@
+<div class="container">
+  <form [formGroup]="form" (ngSubmit)="onPost()">
+    <div class="field">
+      <label class="label">Artist</label>
+      <div class="control">
+        <div class="select">
+          <!-- substring is used here because artistSelect.value returned a string in the format "1: 2"
+          where first number is index and second is id -->
+          <select formControlName="artistId" #artistSelect (change)="onChangeEvent(artistSelect.value.substring(3))">
+            <option value="" disabled selected>Select artist</option>
+            <option *ngFor="let item of artists" [ngValue]="item.id">
+              {{item.stageName}}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <label class="label">Album</label>
+      <div class="control">
+        <div class="select">
+          <select formControlName="albumId">
+            <option value="" disabled selected>Select album</option>
+            <option *ngFor="let item of albums" [ngValue]="item.id">
+              {{item.title}}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <br>
+    <div class="field is-grouped">
+      <div class="control">
+        <button type="submit" class="button is-primary" [disabled]="form.invalid">Add</button>
+        <button type="button" class="button is-link is-light" [routerLink]="['/admin-page/songs']">Back</button>
+      </div>
+    </div>
+    <div class="help is-dark" *ngIf="status">
+      {{status.message}}
+    </div>
+  </form>
+</div>

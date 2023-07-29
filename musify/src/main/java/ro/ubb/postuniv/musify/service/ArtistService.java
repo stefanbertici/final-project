@@ -3,12 +3,9 @@ package ro.ubb.postuniv.musify.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.ubb.postuniv.musify.dto.AlbumDto;
 import ro.ubb.postuniv.musify.dto.ArtistDto;
 import ro.ubb.postuniv.musify.dto.ArtistViewDto;
-import ro.ubb.postuniv.musify.mapper.AlbumMapper;
 import ro.ubb.postuniv.musify.mapper.ArtistMapper;
-import ro.ubb.postuniv.musify.mapper.SongMapper;
 import ro.ubb.postuniv.musify.model.Album;
 import ro.ubb.postuniv.musify.model.Artist;
 import ro.ubb.postuniv.musify.model.Band;
@@ -17,7 +14,10 @@ import ro.ubb.postuniv.musify.repository.AlbumRepository;
 import ro.ubb.postuniv.musify.repository.ArtistRepository;
 import ro.ubb.postuniv.musify.utils.RepositoryChecker;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -27,15 +27,6 @@ public class ArtistService {
     private final ArtistRepository artistRepository;
     private final AlbumRepository albumRepository;
     private final ArtistMapper artistMapper;
-    private final AlbumMapper albumMapper;
-    private final SongMapper songMapper;
-
-    @Transactional
-    public List<AlbumDto> readAlbumsByArtistId(Integer id) {
-        Artist artist = repositoryChecker.getArtistIfExists(id);
-
-        return albumMapper.toDtos(new ArrayList<>(artist.getArtistAlbums()));
-    }
 
     @Transactional
     public List<ArtistViewDto> readAll() {
@@ -86,11 +77,25 @@ public class ArtistService {
         Set<Band> bands = artist.getBands();
         Set<Album> albums = artist.getArtistAlbums();
 
+        // remove artist from all bands
         bands.forEach(band -> band.removeArtist(artist));
+
+        // remove artists songs from all playlists
         albums.stream()
                 .map(Album::getSongs)
                 .flatMap(Collection::stream)
                 .forEach(Song::removeFromPlaylists);
+
+        // remove artist's songs from other artists albums
+        albums.stream()
+                .map(Album::getSongs)
+                .flatMap(Collection::stream)
+                .forEach(song -> {
+                    Set<Album> albumsOfSong = song.getAlbums();
+                    albumsOfSong.stream()
+                            .filter(a -> !a.getArtist().equals(artist))
+                            .forEach(a -> a.getSongs().remove(song));
+                });
 
         albumRepository.deleteAll(albums);
         artistRepository.delete(artist);

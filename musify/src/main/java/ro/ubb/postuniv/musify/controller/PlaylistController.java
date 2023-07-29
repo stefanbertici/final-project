@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.ubb.postuniv.musify.dto.PlaylistDto;
 import ro.ubb.postuniv.musify.dto.PlaylistViewDto;
-import ro.ubb.postuniv.musify.dto.SongViewDto;
 import ro.ubb.postuniv.musify.service.PlaylistService;
 
 import javax.validation.Valid;
@@ -29,11 +28,6 @@ public class PlaylistController {
         return new ResponseEntity<>(playlistService.readById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}/songs")
-    public ResponseEntity<List<SongViewDto>> readSongsByPlaylistId(@PathVariable Integer id) {
-        return new ResponseEntity<>(playlistService.readSongsByPlaylistId(id), HttpStatus.OK);
-    }
-
     @PostMapping()
     public ResponseEntity<PlaylistDto> create(@RequestBody @Valid PlaylistDto playlistDto) {
         return new ResponseEntity<>(playlistService.create(playlistDto), HttpStatus.CREATED);
@@ -49,22 +43,22 @@ public class PlaylistController {
         return new ResponseEntity<>(playlistService.delete(id), HttpStatus.OK);
     }
 
-    @PostMapping("/{playlistId}/add/song/{songId}")
+    @PostMapping("/{playlistId}/add-song/{songId}")
     public ResponseEntity<PlaylistViewDto> addSongToPlaylist(@PathVariable Integer playlistId, @PathVariable Integer songId) {
         return new ResponseEntity<>(playlistService.addSongToPlaylist(playlistId, songId), HttpStatus.OK);
     }
 
-    @PostMapping("/{playlistId}/remove/song/{songId}")
+    @PostMapping("/{playlistId}/remove-song/{songId}")
     public ResponseEntity<PlaylistViewDto> removeSongFromPlaylist(@PathVariable Integer playlistId, @PathVariable Integer songId) {
         return new ResponseEntity<>(playlistService.removeSongFromPlaylist(playlistId, songId), HttpStatus.OK);
     }
 
-    @PostMapping("/{playlistId}/add/album/{albumId}")
+    @PostMapping("/{playlistId}/add-album/{albumId}")
     public ResponseEntity<PlaylistViewDto> addAlbumToPlaylist(@PathVariable Integer playlistId, @PathVariable Integer albumId) {
         return new ResponseEntity<>(playlistService.addAlbumToPlaylist(playlistId, albumId), HttpStatus.OK);
     }
 
-    @PostMapping("/{playlistId}/changeSongOrder")
+    @PostMapping("/{playlistId}/change-Order")
     public ResponseEntity<PlaylistViewDto> changeSongOrder(@PathVariable Integer playlistId, @RequestParam Integer songId, @RequestParam Integer oldPosition, @RequestParam Integer newPosition){
         return new ResponseEntity<>(playlistService.changeSongOrder(playlistId, songId, oldPosition, newPosition), HttpStatus.OK);
     }

@@ -26,14 +26,17 @@ public class SearchService {
     public SearchViewDto search(String searchTerm) {
         SearchViewDto searchViewDto = new SearchViewDto();
 
-        searchViewDto.setPlaylists(playlistMapper.toDtos(playlistRepository.findAllByNameContainingIgnoreCase(searchTerm)
-                .stream()
-                .filter(p -> p.getType().equals("public"))
-                .toList()));
+        searchViewDto.setPlaylists(playlistMapper.toDtos(
+                playlistRepository.findAllByNameContainingIgnoreCase(searchTerm).stream()
+                        .filter(p -> p.getType().equals("public"))
+                        .toList()));
+        searchViewDto.setSongs(songMapper.toViewDtos(
+                songRepository.findAllByTitleAndAlternativeTitles(searchTerm).stream()
+                        .filter(song -> !song.getAlbums().isEmpty())
+                        .toList()));
         searchViewDto.setArtists(artistMapper.toDtos(artistRepository.findAllByStageNameContainingIgnoreCase(searchTerm)));
         searchViewDto.setBands(bandMapper.toDtos(bandRepository.findAllByBandNameContainingIgnoreCase(searchTerm)));
         searchViewDto.setAlbums(albumMapper.toDtos(albumRepository.findAllByTitleContainingIgnoreCase(searchTerm)));
-        searchViewDto.setSongs(songMapper.toViewDtos(songRepository.findAllByTitleAndAlternativeTitles(searchTerm)));
 
         return searchViewDto;
     }

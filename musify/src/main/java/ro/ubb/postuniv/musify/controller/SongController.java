@@ -29,9 +29,19 @@ public class SongController {
         return new ResponseEntity<>(songService.readById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/artist={id}")
-    public ResponseEntity<List<SongViewDto>> readSongsByArtistId(@PathVariable Integer id) {
+    @GetMapping("/artist/{id}")
+    public ResponseEntity<List<SongViewDto>> readAllByArtistId(@PathVariable Integer id) {
         return new ResponseEntity<>(songService.readAllByArtistId(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/album/{id}")
+    public ResponseEntity<List<SongViewDto>> readAllByAlbumId(@PathVariable Integer id) {
+        return new ResponseEntity<>(songService.readAllByAlbumId(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/playlist/{id}")
+    public ResponseEntity<List<SongViewDto>> readAllByPlaylistId(@PathVariable Integer id) {
+        return new ResponseEntity<>(songService.readAllByPlaylistId(id), HttpStatus.OK);
     }
 
     @PostMapping()

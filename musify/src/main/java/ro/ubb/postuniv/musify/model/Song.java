@@ -94,8 +94,6 @@ public class Song {
 
         if (!sb.isEmpty()) {
             sb.deleteCharAt(sb.lastIndexOf(", "));
-        } else {
-            sb.append("Song not yet added to an album");
         }
 
         return sb.toString();

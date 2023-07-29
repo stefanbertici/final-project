@@ -72,6 +72,10 @@ public class Album {
     }
 
     public void removeSong(Song song) {
+        if (!songs.contains(song)) {
+            throw new IllegalArgumentException("Song is not in the album");
+        }
+
         songs.remove(song);
         song.getAlbums().remove(this);
     }
@@ -91,14 +95,12 @@ public class Album {
     }
 
     public String getOverallArtistName() {
-        String overallName;
+        String overallName = "";
 
         if (Objects.nonNull(artist)) {
             overallName = artist.getStageName();
         } else if (Objects.nonNull(band)) {
             overallName = band.getBandName();
-        } else {
-            overallName = "Album does not have an artist set";
         }
 
         return overallName;

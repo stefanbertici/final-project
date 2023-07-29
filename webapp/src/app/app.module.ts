@@ -23,17 +23,18 @@ import {AddArtistComponent} from './components/entities/artists/add-artist/add-a
 import {DetailsArtistComponent} from './components/entities/artists/details-artist/details-artist.component';
 import {EditArtistComponent} from './components/entities/artists/edit-artist/edit-artist.component';
 import {ShowAllUsersComponent} from './components/entities/users/show-all-users/show-all-users.component';
-import { DetailsUserComponent } from './components/entities/users/details-user/details-user.component';
-import { AddUserComponent } from './components/entities/users/add-user/add-user.component';
-import { EditUserComponent } from './components/entities/users/edit-user/edit-user.component';
-import { ShowAllSongsComponent } from './components/entities/songs/show-all-songs/show-all-songs.component';
-import { DetailsSongComponent } from './components/entities/songs/details-song/details-song.component';
-import { EditSongComponent } from './components/entities/songs/edit-song/edit-song.component';
-import { AddSongComponent } from './components/entities/songs/add-song/add-song.component';
-import { ShowAllAlbumsComponent } from './components/entities/albums/show-all-albums/show-all-albums.component';
-import { DetailsAlbumComponent } from './components/entities/albums/details-album/details-album.component';
-import { AddAlbumComponent } from './components/entities/albums/add-album/add-album.component';
-import { EditAlbumComponent } from './components/entities/albums/edit-album/edit-album.component';
+import {DetailsUserComponent} from './components/entities/users/details-user/details-user.component';
+import {AddUserComponent} from './components/entities/users/add-user/add-user.component';
+import {EditUserComponent} from './components/entities/users/edit-user/edit-user.component';
+import {ShowAllSongsComponent} from './components/entities/songs/show-all-songs/show-all-songs.component';
+import {DetailsSongComponent} from './components/entities/songs/details-song/details-song.component';
+import {EditSongComponent} from './components/entities/songs/edit-song/edit-song.component';
+import {AddSongComponent} from './components/entities/songs/add-song/add-song.component';
+import {ShowAllAlbumsComponent} from './components/entities/albums/show-all-albums/show-all-albums.component';
+import {DetailsAlbumComponent} from './components/entities/albums/details-album/details-album.component';
+import {AddAlbumComponent} from './components/entities/albums/add-album/add-album.component';
+import {EditAlbumComponent} from './components/entities/albums/edit-album/edit-album.component';
+import {AddSongToAlbumComponent} from './components/entities/albums/add-song-to-album/add-song-to-album.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { EditAlbumComponent } from './components/entities/albums/edit-album/edit
     ShowAllAlbumsComponent,
     DetailsAlbumComponent,
     AddAlbumComponent,
-    EditAlbumComponent
+    EditAlbumComponent,
+    AddSongToAlbumComponent
   ],
   imports: [
     BrowserModule,

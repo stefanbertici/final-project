@@ -10,6 +10,7 @@ import {AlbumService} from "../../../../services/album.service";
 })
 export class DetailsAlbumComponent implements OnInit {
 
+  selectedSongIdForRemove?: number;
   albumId: number = 0;
   album?: AlbumDetailViewDto;
 
@@ -20,8 +21,30 @@ export class DetailsAlbumComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadAlbum();
+  }
+
+  private loadAlbum() {
     this.albumService.getById(this.albumId).subscribe((data: AlbumDetailViewDto) => {
       this.album = data;
     });
+  }
+
+  startRemove(id: number) {
+    this.selectedSongIdForRemove = id;
+  }
+
+  confirmRemove() {
+    if (this.selectedSongIdForRemove !== undefined) {
+      this.albumService.removeSong(this.album!.id, this.selectedSongIdForRemove).subscribe(data => {
+        alert("Song removed!");
+        this.selectedSongIdForRemove = undefined;
+        this.loadAlbum();
+      });
+    }
+  }
+
+  cancelRemove() {
+    this.selectedSongIdForRemove = undefined;
   }
 }

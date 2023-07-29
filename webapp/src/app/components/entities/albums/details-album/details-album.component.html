@@ -38,6 +38,7 @@
           <th>Artist</th>
           <th>Title</th>
           <th>Duration</th>
+          <th>Operations</th>
         </tr>
         </thead>
         <tbody>
@@ -46,12 +47,41 @@
           <td>{{song.artist}}</td>
           <td>{{song.title}}</td>
           <td>{{song.duration}}</td>
+          <td>
+            <div class="columns">
+              <div class="column">
+                <a (click)="startRemove(song.id)">
+              <span class="icon">
+                <i class="fa-solid fa-trash-can"></i>
+              </span>
+                </a>
+              </div>
+            </div>
+          </td>
         </tr>
         </tbody>
       </table>
 
       <br>
       <button class="button is-link is-light" [routerLink]="['/admin-page/albums']">Back</button>
+    </div>
+  </div>
+
+  <div id="modal-delete-song-from-album" class="modal" [ngClass]="{'is-active': selectedSongIdForRemove}">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Confirm remove</p>
+      </header>
+
+      <div class="modal-card-body">
+        <p>Are you sure you want to remove this song from the album?</p>
+      </div>
+
+      <div class="modal-card-foot">
+        <button class="button is-danger" (click)="confirmRemove()">Remove</button>
+        <button class="button is-light" (click)="cancelRemove()">Cancel</button>
+      </div>
     </div>
   </div>
 </div>
