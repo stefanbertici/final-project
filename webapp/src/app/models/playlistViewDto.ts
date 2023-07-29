@@ -6,6 +6,7 @@ export interface PlaylistViewDto {
   type: string,
   createdDate: Date,
   updatedDate: Date,
+  ownerUserId: number,
   ownerUserName: string,
   songs: SongViewDto[]
 }

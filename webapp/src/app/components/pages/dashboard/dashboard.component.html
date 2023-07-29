@@ -22,7 +22,7 @@
     <label class="label">Search results</label>
     <div *ngIf="searchResults.songs.length !== 0">
       <label class="label">Songs</label>
-      <table class="table">
+      <table class="table" aria-describedby="Songs">
         <thead>
         <tr>
           <th>#</th>
@@ -55,7 +55,7 @@
     </div>
     <div *ngIf="searchResults.playlists.length !== 0">
       <label class="label">Playlists</label>
-      <table class="table">
+      <table class="table" aria-describedby="Playlists">
         <thead>
         <tr>
           <th>#</th>
@@ -92,12 +92,52 @@
         </tbody>
       </table>
     </div>
+    <div *ngIf="searchResults.albums.length !== 0">
+      <label class="label">Albums</label>
+      <table class="table" aria-describedby="Albums">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Artist</th>
+          <th>Title</th>
+          <th>Genre</th>
+          <th>Operations</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let album of searchResults.albums; let i = index">
+          <td>{{i + 1}}</td>
+          <td>{{album.artist}}</td>
+          <td>{{album.title}}</td>
+          <td>{{album.genre}}</td>
+          <td>
+            <div class="columns">
+              <div class="column">
+                <a [routerLink]="['/albums/details', album.id]">
+                <span class="icon">
+                  <i class="fa-solid fa-circle-info"></i>
+                </span>
+                </a>
+              </div>
+              <div class="column">
+                <a [routerLink]="['/playlists/add-album', album.id]">
+                <span class="icon">
+                  <i class="fa-solid fa-plus"></i>
+                </span>
+                </a>
+              </div>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <div class="table-container">
     <label class="label">My playlists</label>
     <button class="button is-primary" [routerLink]="['/playlists/add']">Create</button>
-    <table class="table">
+    <table class="table" aria-describedby="My playlists">
       <thead>
       <tr>
         <th>#</th>
@@ -143,7 +183,7 @@
     </table>
 
     <label class="label">Followed playlists</label>
-    <table class="table">
+    <table class="table" aria-describedby="Followed playlists">
       <thead>
       <tr>
         <th>#</th>

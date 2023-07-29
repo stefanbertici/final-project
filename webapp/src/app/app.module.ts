@@ -31,10 +31,12 @@ import {DetailsSongComponent} from './components/entities/songs/details-song/det
 import {EditSongComponent} from './components/entities/songs/edit-song/edit-song.component';
 import {AddSongComponent} from './components/entities/songs/add-song/add-song.component';
 import {ShowAllAlbumsComponent} from './components/entities/albums/show-all-albums/show-all-albums.component';
-import {DetailsAlbumComponent} from './components/entities/albums/details-album/details-album.component';
+import {DetailsAlbumAdminComponent} from './components/entities/albums/details-album-admin/details-album-admin.component';
 import {AddAlbumComponent} from './components/entities/albums/add-album/add-album.component';
 import {EditAlbumComponent} from './components/entities/albums/edit-album/edit-album.component';
 import {AddSongToAlbumComponent} from './components/entities/albums/add-song-to-album/add-song-to-album.component';
+import { DetailsAlbumUserComponent } from './components/entities/albums/details-album-user/details-album-user.component';
+import { AddAlbumToPlaylistComponent } from './components/entities/playlists/add-album-to-playlist/add-album-to-playlist.component';
 
 @NgModule({
   declarations: [
@@ -61,10 +63,12 @@ import {AddSongToAlbumComponent} from './components/entities/albums/add-song-to-
     EditSongComponent,
     AddSongComponent,
     ShowAllAlbumsComponent,
-    DetailsAlbumComponent,
+    DetailsAlbumAdminComponent,
     AddAlbumComponent,
     EditAlbumComponent,
-    AddSongToAlbumComponent
+    AddSongToAlbumComponent,
+    DetailsAlbumUserComponent,
+    AddAlbumToPlaylistComponent
   ],
   imports: [
     BrowserModule,

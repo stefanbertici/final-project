@@ -1,7 +1,9 @@
-import {PlaylistDto} from "./playlistDto";
 import {SongViewDto} from "./songViewDto";
+import {AlbumViewDto} from "./albumViewDto";
+import {PlaylistViewDto} from "./playlistViewDto";
 
 export interface SearchViewDto {
-  playlists: PlaylistDto[];
+  playlists: PlaylistViewDto[];
   songs: SongViewDto[];
+  albums: AlbumViewDto[];
 }

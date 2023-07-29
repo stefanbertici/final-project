@@ -26,10 +26,16 @@ import {DetailsSongComponent} from "./components/entities/songs/details-song/det
 import {EditSongComponent} from "./components/entities/songs/edit-song/edit-song.component";
 import {AddSongComponent} from "./components/entities/songs/add-song/add-song.component";
 import {ShowAllAlbumsComponent} from "./components/entities/albums/show-all-albums/show-all-albums.component";
-import {DetailsAlbumComponent} from "./components/entities/albums/details-album/details-album.component";
+import {
+  DetailsAlbumAdminComponent
+} from "./components/entities/albums/details-album-admin/details-album-admin.component";
 import {AddAlbumComponent} from "./components/entities/albums/add-album/add-album.component";
 import {EditAlbumComponent} from "./components/entities/albums/edit-album/edit-album.component";
 import {AddSongToAlbumComponent} from "./components/entities/albums/add-song-to-album/add-song-to-album.component";
+import {DetailsAlbumUserComponent} from "./components/entities/albums/details-album-user/details-album-user.component";
+import {
+  AddAlbumToPlaylistComponent
+} from "./components/entities/playlists/add-album-to-playlist/add-album-to-playlist.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -41,6 +47,8 @@ const routes: Routes = [
   {path: 'playlists/details/:id', component: DetailsPlaylistComponent, canActivate: [authGuard]},
   {path: 'playlists/edit/:id', component: EditPlaylistComponent, canActivate: [authGuard]},
   {path: 'playlists/add-song/:id', component: AddSongToPlaylistComponent, canActivate: [authGuard]},
+  {path: 'playlists/add-album/:id', component: AddAlbumToPlaylistComponent, canActivate: [authGuard]},
+  {path: 'albums/details/:id', component: DetailsAlbumUserComponent, canActivate: [authGuard]},
   {path: 'admin-page', component: AdminPageComponent, canActivate: [authGuard, adminGuard]},
   {path: 'admin-page/users', component: ShowAllUsersComponent, canActivate: [authGuard, adminGuard]},
   {path: 'admin-page/users/add', component: AddUserComponent, canActivate: [authGuard, adminGuard]},
@@ -52,7 +60,7 @@ const routes: Routes = [
   {path: 'admin-page/artists/edit/:id', component: EditArtistComponent, canActivate: [authGuard, adminGuard]},
   {path: 'admin-page/albums', component: ShowAllAlbumsComponent, canActivate: [authGuard, adminGuard]},
   {path: 'admin-page/albums/add', component: AddAlbumComponent, canActivate: [authGuard, adminGuard]},
-  {path: 'admin-page/albums/details/:id', component: DetailsAlbumComponent, canActivate: [authGuard, adminGuard]},
+  {path: 'admin-page/albums/details/:id', component: DetailsAlbumAdminComponent, canActivate: [authGuard, adminGuard]},
   {path: 'admin-page/albums/edit/:id', component: EditAlbumComponent, canActivate: [authGuard, adminGuard]},
   {path: 'admin-page/albums/add-song/:id', component: AddSongToAlbumComponent, canActivate: [authGuard, adminGuard]},
   {path: 'admin-page/songs', component: ShowAllSongsComponent, canActivate: [authGuard, adminGuard]},

@@ -1,19 +1,19 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {PlaylistService} from "../../../../services/playlist.service";
 import {PlaylistDto} from "../../../../models/playlistDto";
-import {AuthService} from "../../../../services/auth.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Status} from "../../../../models/status";
+import {ActivatedRoute} from "@angular/router";
+import {AuthService} from "../../../../services/auth.service";
+import {PlaylistService} from "../../../../services/playlist.service";
 
 @Component({
-  selector: 'app-add-song-to-playlist',
-  templateUrl: './add-song-to-playlist.component.html',
-  styleUrls: ['./add-song-to-playlist.component.scss']
+  selector: 'app-add-album-to-playlist',
+  templateUrl: './add-album-to-playlist.component.html',
+  styleUrls: ['./add-album-to-playlist.component.scss']
 })
-export class AddSongToPlaylistComponent implements OnInit {
+export class AddAlbumToPlaylistComponent implements OnInit {
 
-  songId: number = 0;
+  albumId: number = 0;
   ownedPlaylists: PlaylistDto[] = [];
   form!: FormGroup;
   status!: Status;
@@ -21,7 +21,7 @@ export class AddSongToPlaylistComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private authService: AuthService,
               private playlistService: PlaylistService, private formBuilder: FormBuilder) {
     this.activatedRoute.params.subscribe((params) => {
-      this.songId = params['id'];
+      this.albumId = params['id'];
     });
   }
 
@@ -46,13 +46,13 @@ export class AddSongToPlaylistComponent implements OnInit {
   }
 
   onPost() {
-    console.log("clicked add song to playlist")
+    console.log("clicked add album to playlist")
     this.status = {code: 0, message: "adding..."};
 
-    this.playlistService.addSong(this.form.value.playlistId, this.songId).subscribe({
+    this.playlistService.addAlbum(this.form.value.playlistId, this.albumId).subscribe({
       next: () => {
         this.status.code = 1;
-        this.status.message = "Song added to playlist!";
+        this.status.message = "Songs added to playlist!";
       },
       error: (err) => {
         console.log("Server side error: " + err.message);

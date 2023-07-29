@@ -12,8 +12,6 @@ import ro.ubb.postuniv.musify.model.Playlist;
 import ro.ubb.postuniv.musify.model.Song;
 import ro.ubb.postuniv.musify.model.User;
 import ro.ubb.postuniv.musify.repository.PlaylistRepository;
-import ro.ubb.postuniv.musify.repository.UserRepository;
-import ro.ubb.postuniv.musify.security.JwtUtils;
 import ro.ubb.postuniv.musify.utils.RepositoryChecker;
 import ro.ubb.postuniv.musify.utils.UserChecker;
 
@@ -29,25 +27,24 @@ public class PlaylistService {
 
     private final RepositoryChecker repositoryChecker;
     private final PlaylistRepository playlistRepository;
-    private final UserRepository userRepository;
     private final PlaylistMapper playlistMapper;
 
     @Transactional
-    public List<PlaylistDto> readAll() {
+    public List<PlaylistViewDto> readAll() {
         User user = repositoryChecker.getCurrentUser();
 
         Set<Playlist> ownedPlaylists = user.getOwnedPlaylists();
         Set<Playlist> followedPlaylists = user.getFollowedPlaylists();
 
-        List<PlaylistDto> result = ownedPlaylists
+        List<PlaylistViewDto> result = ownedPlaylists
                 .stream()
-                .map(playlistMapper::toDto)
+                .map(playlistMapper::toViewDto)
                 .collect(Collectors.toList());
 
-        followedPlaylists.forEach(playlist -> result.add(playlistMapper.toDto(playlist)));
+        followedPlaylists.forEach(playlist -> result.add(playlistMapper.toViewDto(playlist)));
 
         return result.stream()
-                .sorted(Comparator.comparing(PlaylistDto::getName))
+                .sorted(Comparator.comparing(PlaylistViewDto::getName))
                 .toList();
     }
 
@@ -59,7 +56,7 @@ public class PlaylistService {
     }
 
     @Transactional
-    public PlaylistDto create(PlaylistDto playlistDto) {
+    public PlaylistViewDto create(PlaylistDto playlistDto) {
         if (playlistDto.isNotPrivateOrPublic()) {
             throw new IllegalArgumentException("Playlist type must be \"private\" or \"public\"");
         }
@@ -73,36 +70,30 @@ public class PlaylistService {
 
         user.addOwnedPlaylist(playlist);
 
-        return playlistMapper.toDto(playlist);
+        return playlistMapper.toViewDto(playlist);
     }
 
     @Transactional
-    public PlaylistDto update(Integer id, PlaylistDto playlistDto) {
+    public PlaylistViewDto update(Integer id, PlaylistDto playlistDto) {
         if (playlistDto.isNotPrivateOrPublic()) {
             throw new IllegalArgumentException("Playlist type must be \"private\" or \"public\"");
         }
 
         Playlist playlist = repositoryChecker.getPlaylistIfExists(id);
-
-        if (UserChecker.isCurrentUserNotOwnerOfPlaylist(playlist)) {
-            throw new UnauthorizedException("You can't modify playlists you do not own");
-        }
+        UserChecker.checkIfOwner(playlist);
 
         playlist.setName(playlistDto.getName());
         playlist.setType(playlistDto.getType());
         playlist.setUpdatedDate(LocalDate.now());
 
-        return playlistMapper.toDto(playlist);
+        return playlistMapper.toViewDto(playlist);
     }
 
     @Transactional
     public PlaylistViewDto addSongToPlaylist(Integer playlistId, Integer songId) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(playlistId);
         Song song = repositoryChecker.getSongIfExists(songId);
-
-        if (UserChecker.isCurrentUserNotOwnerOfPlaylist(playlist)) {
-            throw new UnauthorizedException("You can't modify playlists you do not own");
-        }
+        UserChecker.checkIfOwner(playlist);
 
         if (!playlist.getSongsInPlaylist().contains(song)) {
             playlist.addSong(song);
@@ -116,10 +107,7 @@ public class PlaylistService {
     public PlaylistViewDto removeSongFromPlaylist(Integer playlistId, Integer songId) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(playlistId);
         Song song = repositoryChecker.getSongIfExists(songId);
-
-        if (UserChecker.isCurrentUserNotOwnerOfPlaylist(playlist)) {
-            throw new UnauthorizedException("You can't modify playlists you do not own");
-        }
+        UserChecker.checkIfOwner(playlist);
 
         if (playlist.getSongsInPlaylist().contains(song)) {
             playlist.removeSong(song);
@@ -133,11 +121,7 @@ public class PlaylistService {
     public PlaylistViewDto addAlbumToPlaylist(Integer playlistId, Integer albumId) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(playlistId);
         Album album = repositoryChecker.getAlbumIfExists(albumId);
-
-
-        if (UserChecker.isCurrentUserNotOwnerOfPlaylist(playlist)) {
-            throw new UnauthorizedException("You can't modify playlists you do not own");
-        }
+        UserChecker.checkIfOwner(playlist);
 
         for (Song song : album.getSongs()) {
             if (!playlist.getSongsInPlaylist().contains(song)) {
@@ -154,10 +138,7 @@ public class PlaylistService {
     public PlaylistViewDto changeSongOrder(Integer playlistId, Integer songId, Integer oldPosition, Integer newPosition) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(playlistId);
         Song song = repositoryChecker.getSongIfExists(songId);
-
-        if (UserChecker.isCurrentUserNotOwnerOfPlaylist(playlist)) {
-            throw new UnauthorizedException("You can't modify playlists you do not own");
-        }
+        UserChecker.checkIfOwner(playlist);
 
         List<Song> songs = playlist.getSongsInPlaylist();
         if (oldPosition < 1 || oldPosition > songs.size() || newPosition < 1 || newPosition > songs.size()) {
@@ -179,15 +160,10 @@ public class PlaylistService {
     }
 
     @Transactional
-    public PlaylistDto delete(Integer id) {
+    public PlaylistViewDto delete(Integer id) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(id);
-
-        User user = userRepository.findById(JwtUtils.getCurrentUserId())
-                .orElseThrow(() -> new UnauthorizedException("You need to log in"));
-
-        if (UserChecker.isCurrentUserNotOwnerOfPlaylist(playlist)) {
-            throw new UnauthorizedException("You can only delete your own playlists");
-        }
+        User user = repositoryChecker.getCurrentUser();
+        UserChecker.checkIfOwner(playlist);
 
         user.removeOwnedPlaylist(playlist);
 
@@ -198,15 +174,13 @@ public class PlaylistService {
 
         playlistRepository.delete(playlist);
 
-        return playlistMapper.toDto(playlist);
+        return playlistMapper.toViewDto(playlist);
     }
 
     @Transactional
-    public PlaylistDto follow(Integer id) {
+    public PlaylistViewDto follow(Integer id) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(id);
-
-        User user = userRepository.findById(JwtUtils.getCurrentUserId())
-                .orElseThrow(() -> new UnauthorizedException("You need to log in"));
+        User user = repositoryChecker.getCurrentUser();
 
         if (playlist.getFollowerUsers().contains(user)) {
             throw new UnauthorizedException("You already follow this playlist");
@@ -222,15 +196,13 @@ public class PlaylistService {
 
         user.addFollowedPlaylist(playlist);
 
-        return playlistMapper.toDto(playlist);
+        return playlistMapper.toViewDto(playlist);
     }
 
     @Transactional
-    public PlaylistDto unfollow(Integer id) {
+    public PlaylistViewDto unfollow(Integer id) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(id);
-
-        User user = userRepository.findById(JwtUtils.getCurrentUserId())
-                .orElseThrow(() -> new UnauthorizedException("You need to log in"));
+        User user = repositoryChecker.getCurrentUser();
 
         if (!playlist.getFollowerUsers().contains(user)) {
             throw new UnauthorizedException("You have not followed this playlist");
@@ -238,6 +210,6 @@ public class PlaylistService {
 
         user.removeFollowedPlaylist(playlist);
 
-        return playlistMapper.toDto(playlist);
+        return playlistMapper.toViewDto(playlist);
     }
 }

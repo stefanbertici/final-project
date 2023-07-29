@@ -12,9 +12,7 @@ export class AppComponent {
   role?: string;
   isLoggedIn!: boolean;
 
-  constructor(
-    private router: Router,
-    private authService: AuthService) {
+  constructor(private router: Router, private authService: AuthService) {
   }
 
   checkLoggedInUser() {
@@ -32,7 +30,7 @@ export class AppComponent {
 
   logout() {
     this.authService.logout().subscribe({
-      next: (res) => {
+      next: () => {
         this.authService.removeAllSavedData();
         this.router.navigate(['./login'])
       },

@@ -1,12 +1,12 @@
 package ro.ubb.postuniv.musify.mapper;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import ro.ubb.postuniv.musify.dto.PlaylistDto;
 import ro.ubb.postuniv.musify.dto.PlaylistViewDto;
 import ro.ubb.postuniv.musify.dto.SongViewDto;
 import ro.ubb.postuniv.musify.model.Playlist;
 import ro.ubb.postuniv.musify.model.Song;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.List;
 
@@ -21,6 +21,8 @@ public interface PlaylistMapper {
     @Mapping(target = "ownerUserName", expression = "java(playlist.getOwnerUser().getFullName())")
     @Mapping(target = "songs", expression = "java(getSongViewDtos(playlist.getSongsInPlaylist()))")
     PlaylistViewDto toViewDto(Playlist playlist);
+
+    List<PlaylistViewDto> toViewDtos(List<Playlist> playlists);
 
     Playlist toEntity(PlaylistDto playlistDto);
 

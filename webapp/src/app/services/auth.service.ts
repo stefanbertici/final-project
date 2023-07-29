@@ -86,5 +86,7 @@ export class AuthService {
   removeAllSavedData() {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('fullName');
+    localStorage.removeItem("searchTerm");
+    localStorage.removeItem("searchResult");
   }
 }

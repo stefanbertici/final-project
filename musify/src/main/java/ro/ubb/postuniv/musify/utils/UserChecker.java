@@ -37,4 +37,12 @@ public class UserChecker {
 
         return (playlist.getOwnerUserId().intValue() != userId.intValue());
     }
+
+    public static void checkIfOwner(Playlist playlist) {
+        Integer userId = JwtUtils.getCurrentUserId();
+
+        if (playlist.getOwnerUserId().intValue() != userId.intValue()) {
+            throw new UnauthorizedException("You can't modify playlists you do not own");
+        }
+    }
 }

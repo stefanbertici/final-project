@@ -5,10 +5,10 @@ import {AlbumService} from "../../../../services/album.service";
 
 @Component({
   selector: 'app-details-album',
-  templateUrl: './details-album.component.html',
-  styleUrls: ['./details-album.component.scss']
+  templateUrl: './details-album-admin.component.html',
+  styleUrls: ['./details-album-admin.component.scss']
 })
-export class DetailsAlbumComponent implements OnInit {
+export class DetailsAlbumAdminComponent implements OnInit {
 
   selectedSongIdForRemove?: number;
   albumId: number = 0;
@@ -36,7 +36,7 @@ export class DetailsAlbumComponent implements OnInit {
 
   confirmRemove() {
     if (this.selectedSongIdForRemove !== undefined) {
-      this.albumService.removeSong(this.album!.id, this.selectedSongIdForRemove).subscribe(data => {
+      this.albumService.removeSong(this.album!.id, this.selectedSongIdForRemove).subscribe(() => {
         alert("Song removed!");
         this.selectedSongIdForRemove = undefined;
         this.loadAlbum();

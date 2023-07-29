@@ -19,7 +19,7 @@ public class PlaylistController {
     private final PlaylistService playlistService;
 
     @GetMapping()
-    public ResponseEntity<List<PlaylistDto>> readAll() {
+    public ResponseEntity<List<PlaylistViewDto>> readAll() {
         return new ResponseEntity<>(playlistService.readAll(), HttpStatus.OK);
     }
 
@@ -29,17 +29,17 @@ public class PlaylistController {
     }
 
     @PostMapping()
-    public ResponseEntity<PlaylistDto> create(@RequestBody @Valid PlaylistDto playlistDto) {
+    public ResponseEntity<PlaylistViewDto> create(@RequestBody @Valid PlaylistDto playlistDto) {
         return new ResponseEntity<>(playlistService.create(playlistDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PlaylistDto> update(@PathVariable Integer id, @RequestBody @Valid PlaylistDto playlistDto) {
+    public ResponseEntity<PlaylistViewDto> update(@PathVariable Integer id, @RequestBody @Valid PlaylistDto playlistDto) {
         return new ResponseEntity<>(playlistService.update(id, playlistDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<PlaylistDto> delete(@PathVariable Integer id) {
+    public ResponseEntity<PlaylistViewDto> delete(@PathVariable Integer id) {
         return new ResponseEntity<>(playlistService.delete(id), HttpStatus.OK);
     }
 
@@ -64,12 +64,12 @@ public class PlaylistController {
     }
 
     @PostMapping("/{id}/follow")
-    public ResponseEntity<PlaylistDto> follow(@PathVariable Integer id) {
+    public ResponseEntity<PlaylistViewDto> follow(@PathVariable Integer id) {
         return new ResponseEntity<>(playlistService.follow(id), HttpStatus.OK);
     }
 
     @PostMapping("/{id}/unfollow")
-    public ResponseEntity<PlaylistDto> unfollow(@PathVariable Integer id) {
+    public ResponseEntity<PlaylistViewDto> unfollow(@PathVariable Integer id) {
         return new ResponseEntity<>(playlistService.unfollow(id), HttpStatus.OK);
     }
 }

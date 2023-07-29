@@ -1,0 +1,59 @@
+<div class="container">
+  <div *ngIf="album">
+    <p>
+      <strong>Id: </strong>
+      <span>{{album.id}}</span>
+    </p>
+    <p>
+      <strong>Artist: </strong>
+      <span>{{album.artist}}</span>
+    </p>
+    <p>
+      <strong>Title: </strong>
+      <span>{{album.title}}</span>
+    </p>
+    <p>
+      <strong>Genre: </strong>
+      <span>{{album.genre}}</span>
+    </p>
+    <p>
+      <strong>Description: </strong>
+      <span>{{album.description}}</span>
+    </p>
+    <p>
+      <strong>Label: </strong>
+      <span>{{album.label}}</span>
+    </p>
+    <p>
+      <strong>Release date: </strong>
+      <span>{{album.releaseDate}}</span>
+    </p>
+
+    <br>
+    <div class="table-container">
+      <label class="label">Songs</label>
+      <table class="table" aria-describedby="Songs">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Artist</th>
+          <th>Title</th>
+          <th>Duration</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let song of album.songs; let i = index">
+          <td>{{i + 1}}</td>
+          <td>{{song.artist}}</td>
+          <td>{{song.title}}</td>
+          <td>{{song.duration}}</td>
+        </tr>
+        </tbody>
+      </table>
+
+      <br>
+      <button class="button is-primary" [routerLink]="['/playlists/add-album', album.id]">Add to playlist</button>
+      <button class="button is-link is-light" [routerLink]="['/dashboard']">Back</button>
+    </div>
+  </div>
+</div>

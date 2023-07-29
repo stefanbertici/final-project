@@ -13,9 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 public class SearchViewDto {
 
-    private List<PlaylistDto> playlists;
-    private List<ArtistDto> artists;
+    private List<PlaylistViewDto> playlists;
+    private List<ArtistViewDto> artists;
     private List<BandDto> bands;
-    private List<AlbumDto> albums;
+    private List<AlbumViewDto> albums;
     private List<SongViewDto> songs;
 }

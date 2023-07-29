@@ -5,6 +5,7 @@ import {PlaylistDto} from "../../../models/playlistDto";
 import {SearchViewDto} from "../../../models/searchViewDto";
 import {SearchService} from "../../../services/search.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {PlaylistViewDto} from "../../../models/playlistViewDto";
 
 @Component({
   selector: 'app-dashboard',
@@ -17,8 +18,8 @@ export class DashboardComponent implements OnInit {
   selectedPlaylistIdForDelete?: number;
   selectedPlaylistIdForUnfollow?: number;
   searchResults?: SearchViewDto;
-  ownedPlaylists: PlaylistDto[] = [];
-  followedPlaylists: PlaylistDto[] = [];
+  ownedPlaylists: PlaylistViewDto[] = [];
+  followedPlaylists: PlaylistViewDto[] = [];
 
   constructor(private authService: AuthService, private playlistService: PlaylistService,
               private searchService: SearchService, private formBuilder: FormBuilder) {
@@ -52,7 +53,7 @@ export class DashboardComponent implements OnInit {
   }
 
   private loadPlaylists() {
-    this.playlistService.getAll().subscribe((data: PlaylistDto[]) => {
+    this.playlistService.getAll().subscribe((data: PlaylistViewDto[]) => {
       this.ownedPlaylists = [];
       this.followedPlaylists = [];
 
@@ -100,7 +101,7 @@ export class DashboardComponent implements OnInit {
 
   confirmDelete() {
     if (this.selectedPlaylistIdForDelete !== undefined) {
-      this.playlistService.delete(this.selectedPlaylistIdForDelete).subscribe(data => {
+      this.playlistService.delete(this.selectedPlaylistIdForDelete).subscribe(() => {
         alert("Playlist deleted!");
         this.selectedPlaylistIdForDelete = undefined;
         this.loadPlaylists();
@@ -110,7 +111,7 @@ export class DashboardComponent implements OnInit {
 
   confirmUnfollow() {
     if (this.selectedPlaylistIdForUnfollow !== undefined) {
-      this.playlistService.unfollow(this.selectedPlaylistIdForUnfollow).subscribe(data => {
+      this.playlistService.unfollow(this.selectedPlaylistIdForUnfollow).subscribe(() => {
         alert("Playlist unfollowed!");
         this.selectedPlaylistIdForUnfollow = undefined;
         this.loadPlaylists();
@@ -127,14 +128,14 @@ export class DashboardComponent implements OnInit {
   }
 
   follow(id: number) {
-    this.playlistService.follow(id).subscribe(data => {
+    this.playlistService.follow(id).subscribe(() => {
       this.loadPlaylists();
     });
   }
 
   canFollow(playlist: PlaylistDto) {
-    var notOwnPlaylist = playlist.ownerUserId !== this.authService.getUserId();
-    var notAlreadyFollowed = true;
+    let notOwnPlaylist = playlist.ownerUserId !== this.authService.getUserId();
+    let notAlreadyFollowed = true;
 
     for (let p of this.followedPlaylists) {
       if (p.id === playlist.id) {
