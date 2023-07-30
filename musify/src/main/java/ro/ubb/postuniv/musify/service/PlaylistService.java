@@ -1,5 +1,12 @@
 package ro.ubb.postuniv.musify.service;
 
+import static ro.ubb.postuniv.musify.utils.checkers.PositionChecker.*;
+import static ro.ubb.postuniv.musify.utils.checkers.UserChecker.*;
+
+import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,21 +20,14 @@ import ro.ubb.postuniv.musify.model.Playlist;
 import ro.ubb.postuniv.musify.model.Song;
 import ro.ubb.postuniv.musify.model.User;
 import ro.ubb.postuniv.musify.repository.PlaylistRepository;
+import ro.ubb.postuniv.musify.security.JwtService;
 import ro.ubb.postuniv.musify.utils.checkers.RepositoryChecker;
-
-import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-
-import static ro.ubb.postuniv.musify.utils.checkers.PositionChecker.checkPositionsInRangeValid;
-import static ro.ubb.postuniv.musify.utils.checkers.PositionChecker.checkSongPositionValid;
-import static ro.ubb.postuniv.musify.utils.checkers.UserChecker.checkIfOwner;
 
 @Service
 @RequiredArgsConstructor
 public class PlaylistService {
 
+    private final JwtService jwtService;
     private final RepositoryChecker repositoryChecker;
     private final PlaylistRepository playlistRepository;
     private final PlaylistMapper playlistMapper;
@@ -82,7 +82,7 @@ public class PlaylistService {
         }
 
         Playlist playlist = repositoryChecker.getPlaylistIfExists(id);
-        checkIfOwner(playlist);
+        checkIfOwner(jwtService.getCurrentUserId(), playlist);
 
         playlist.setName(playlistDto.getName());
         playlist.setType(playlistDto.getType());
@@ -95,7 +95,7 @@ public class PlaylistService {
     public PlaylistViewDto addSongToPlaylist(Integer playlistId, Integer songId) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(playlistId);
         Song song = repositoryChecker.getSongIfExists(songId);
-        checkIfOwner(playlist);
+        checkIfOwner(jwtService.getCurrentUserId(), playlist);
 
         if (!playlist.getSongsInPlaylist().contains(song)) {
             playlist.addSong(song);
@@ -109,7 +109,7 @@ public class PlaylistService {
     public PlaylistViewDto removeSongFromPlaylist(Integer playlistId, Integer songId) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(playlistId);
         Song song = repositoryChecker.getSongIfExists(songId);
-        checkIfOwner(playlist);
+        checkIfOwner(jwtService.getCurrentUserId(), playlist);
 
         if (playlist.getSongsInPlaylist().contains(song)) {
             playlist.removeSong(song);
@@ -123,7 +123,7 @@ public class PlaylistService {
     public PlaylistViewDto addAlbumToPlaylist(Integer playlistId, Integer albumId) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(playlistId);
         Album album = repositoryChecker.getAlbumIfExists(albumId);
-        checkIfOwner(playlist);
+        checkIfOwner(jwtService.getCurrentUserId(), playlist);
 
         for (Song song : album.getSongs()) {
             if (!playlist.getSongsInPlaylist().contains(song)) {
@@ -140,7 +140,7 @@ public class PlaylistService {
     public PlaylistViewDto changeSongOrder(Integer playlistId, Integer songId, Integer oldPosition, Integer newPosition) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(playlistId);
         Song song = repositoryChecker.getSongIfExists(songId);
-        checkIfOwner(playlist);
+        checkIfOwner(jwtService.getCurrentUserId(), playlist);
 
         List<Song> songs = playlist.getSongsInPlaylist();
         checkPositionsInRangeValid(oldPosition, newPosition, songs);
@@ -159,7 +159,7 @@ public class PlaylistService {
     public PlaylistViewDto delete(Integer id) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(id);
         User user = repositoryChecker.getCurrentUser();
-        checkIfOwner(playlist);
+        checkIfOwner(jwtService.getCurrentUserId(), playlist);
 
         user.removeOwnedPlaylist(playlist);
 

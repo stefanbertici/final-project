@@ -4,8 +4,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.ubb.postuniv.musify.dto.SearchViewDto;
-import ro.ubb.postuniv.musify.mapper.*;
-import ro.ubb.postuniv.musify.repository.*;
+import ro.ubb.postuniv.musify.mapper.AlbumMapper;
+import ro.ubb.postuniv.musify.mapper.ArtistMapper;
+import ro.ubb.postuniv.musify.mapper.BandMapper;
+import ro.ubb.postuniv.musify.mapper.PlaylistMapper;
+import ro.ubb.postuniv.musify.mapper.SongMapper;
+import ro.ubb.postuniv.musify.repository.AlbumRepository;
+import ro.ubb.postuniv.musify.repository.ArtistRepository;
+import ro.ubb.postuniv.musify.repository.BandRepository;
+import ro.ubb.postuniv.musify.repository.PlaylistRepository;
+import ro.ubb.postuniv.musify.repository.SongRepository;
 
 @Service
 @RequiredArgsConstructor

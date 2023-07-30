@@ -1,13 +1,12 @@
 package ro.ubb.postuniv.musify.mapper;
 
+import java.util.List;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import ro.ubb.postuniv.musify.dto.UserDto;
 import ro.ubb.postuniv.musify.dto.UserLoginViewDto;
 import ro.ubb.postuniv.musify.dto.UserViewDto;
 import ro.ubb.postuniv.musify.model.User;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-
-import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {

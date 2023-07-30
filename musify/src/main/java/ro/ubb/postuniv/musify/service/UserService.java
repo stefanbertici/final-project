@@ -1,5 +1,14 @@
 package ro.ubb.postuniv.musify.service;
 
+import static ro.ubb.postuniv.musify.utils.checkers.UserChecker.*;
+import static ro.ubb.postuniv.musify.utils.constants.UserRole.*;
+import static ro.ubb.postuniv.musify.utils.constants.UserStatus.*;
+
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,23 +22,16 @@ import ro.ubb.postuniv.musify.model.User;
 import ro.ubb.postuniv.musify.repository.PlaylistRepository;
 import ro.ubb.postuniv.musify.repository.UserRepository;
 import ro.ubb.postuniv.musify.security.InMemoryTokenBlacklist;
-import ro.ubb.postuniv.musify.security.JwtUtils;
+import ro.ubb.postuniv.musify.security.JwtService;
 import ro.ubb.postuniv.musify.utils.checkers.RepositoryChecker;
 import ro.ubb.postuniv.musify.utils.constants.UserRole;
 import ro.ubb.postuniv.musify.utils.constants.UserStatus;
-
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.List;
-import java.util.Optional;
-
-import static ro.ubb.postuniv.musify.utils.checkers.UserChecker.*;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
+    private final JwtService jwtService;
     private final RepositoryChecker repositoryChecker;
     private final UserRepository userRepository;
     private final PlaylistRepository playlistRepository;
@@ -62,8 +64,8 @@ public class UserService {
 
         String encryptedPassword = getEncryptedPassword(userDto.getPassword());
         user.setEncryptedPassword(encryptedPassword);
-        user.setRole("user");
-        user.setStatus("active");
+        user.setRole(USER.value);
+        user.setStatus(ACTIVE.value);
 
         return userMapper.toViewDto(user);
     }
@@ -86,12 +88,12 @@ public class UserService {
             throw new UnauthorizedException("It looks like your account has been deactivated :(\n Please contact our customer support department");
         }
 
-        String accessToken = JwtUtils.generateToken(user.getId(), user.getEmail(), user.getRole());
+        String accessToken = jwtService.generateToken(user.getId(), user.getEmail(), user.getRole());
         return userMapper.toLoginViewDto(user, accessToken);
     }
 
     public String logout(String header) {
-        String token = JwtUtils.extractTokenFromHeader(header);
+        String token = jwtService.extractTokenFromHeader(header);
         inMemoryTokenBlacklist.blacklist(token);
         return "Logout successful";
     }
@@ -102,7 +104,7 @@ public class UserService {
 
         repositoryChecker.checkIfEmailIsTaken(id, userDto.getEmail());
 
-        if (isCurrentUserNotAdmin() && !isOperationOnSelf(id)) {
+        if (isCurrentUserNotAdmin(jwtService.getCurrentUserRole()) && !isOperationOnSelf(jwtService.getCurrentUserId(), id)) {
             throw new UnauthorizedException("Users can only update their own info");
         }
 
@@ -118,46 +120,44 @@ public class UserService {
 
     @Transactional
     public UserViewDto updateUserRole(Integer id, UserRole role) {
-        String newRole = "";
-
-        if (JwtUtils.getCurrentUserId().equals(id)) {
+        validateAdminRole(jwtService.getCurrentUserRole());
+        if (jwtService.getCurrentUserId().equals(id)) {
             throw new IllegalArgumentException("You cannot modify your own role");
         }
 
-        if (role == UserRole.ADMIN) {
-            newRole = "admin";
-        } else if (role == UserRole.USER) {
-            newRole = "user";
-        }
-
         User user = repositoryChecker.getUserIfExists(id);
-        user.setRole(newRole);
+
+        if (role == ADMIN) {
+            user.setRole(ADMIN.value);
+        } else if (role == USER) {
+            user.setRole(USER.value);
+        }
 
         return userMapper.toViewDto(user);
     }
 
     @Transactional
     public UserViewDto updateUserStatus(Integer id, UserStatus status) {
-        String newStatus = "";
-
-        if (JwtUtils.getCurrentUserId().equals(id)) {
+        validateAdminRole(jwtService.getCurrentUserRole());
+        if (jwtService.getCurrentUserId().equals(id)) {
             throw new IllegalArgumentException("You cannot modify your own status");
         }
 
-        if (status == UserStatus.ACTIVE) {
-            newStatus = "active";
-        } else if (status == UserStatus.INACTIVE) {
-            newStatus = "inactive";
-        }
-
         User user = repositoryChecker.getUserIfExists(id);
-        user.setStatus(newStatus);
+
+        if (status == ACTIVE) {
+            user.setStatus(ACTIVE.value);
+        } else if (status == INACTIVE) {
+            user.setStatus(INACTIVE.value);
+        }
 
         return userMapper.toViewDto(user);
     }
 
     @Transactional
     public UserViewDto delete(Integer id) {
+        validateAdminRole(jwtService.getCurrentUserRole());
+
         User user = repositoryChecker.getUserIfExists(id);
 
         user.getOwnedPlaylists().forEach(playlist -> {

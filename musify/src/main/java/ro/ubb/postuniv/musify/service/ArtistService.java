@@ -1,5 +1,11 @@
 package ro.ubb.postuniv.musify.service;
 
+import static ro.ubb.postuniv.musify.utils.checkers.UserChecker.*;
+
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,17 +18,14 @@ import ro.ubb.postuniv.musify.model.Band;
 import ro.ubb.postuniv.musify.model.Song;
 import ro.ubb.postuniv.musify.repository.AlbumRepository;
 import ro.ubb.postuniv.musify.repository.ArtistRepository;
+import ro.ubb.postuniv.musify.security.JwtService;
 import ro.ubb.postuniv.musify.utils.checkers.RepositoryChecker;
-
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class ArtistService {
 
+    private final JwtService jwtService;
     private final RepositoryChecker repositoryChecker;
     private final ArtistRepository artistRepository;
     private final AlbumRepository albumRepository;
@@ -30,6 +33,8 @@ public class ArtistService {
 
     @Transactional
     public List<ArtistViewDto> readAll() {
+        validateAdminRole(jwtService.getCurrentUserRole());
+
         return artistRepository.findAll().stream()
                 .map(artistMapper::toViewDto)
                 .sorted(Comparator.comparing(ArtistViewDto::getStageName))
@@ -45,6 +50,7 @@ public class ArtistService {
 
     @Transactional
     public ArtistDto create(ArtistDto artistDto) {
+        validateAdminRole(jwtService.getCurrentUserRole());
         if (artistDto.isNotValidActivityDates()) {
             throw new IllegalArgumentException("Activity start and end dates must be the year in numeric format. " +
                     "\n Additionally the end date can be \"present\" if the artist is still active");
@@ -58,6 +64,8 @@ public class ArtistService {
 
     @Transactional
     public ArtistDto update(Integer id, ArtistDto artistDto) {
+        validateAdminRole(jwtService.getCurrentUserRole());
+
         Artist artist = repositoryChecker.getArtistIfExists(id);
 
         artist.setFirstName(artistDto.getFirstName());
@@ -72,8 +80,9 @@ public class ArtistService {
 
     @Transactional
     public ArtistDto delete(Integer id) {
-        Artist artist = repositoryChecker.getArtistIfExists(id);
+        validateAdminRole(jwtService.getCurrentUserRole());
 
+        Artist artist = repositoryChecker.getArtistIfExists(id);
         Set<Band> bands = artist.getBands();
         Set<Album> albums = artist.getArtistAlbums();
 

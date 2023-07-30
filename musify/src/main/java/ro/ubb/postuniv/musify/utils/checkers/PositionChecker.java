@@ -1,10 +1,9 @@
 package ro.ubb.postuniv.musify.utils.checkers;
 
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import ro.ubb.postuniv.musify.model.Song;
-
-import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PositionChecker {

@@ -1,5 +1,11 @@
 package ro.ubb.postuniv.musify.service;
 
+import static java.util.Optional.*;
+import static ro.ubb.postuniv.musify.utils.checkers.PositionChecker.*;
+import static ro.ubb.postuniv.musify.utils.checkers.UserChecker.*;
+
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,19 +19,14 @@ import ro.ubb.postuniv.musify.model.Band;
 import ro.ubb.postuniv.musify.model.Song;
 import ro.ubb.postuniv.musify.repository.AlbumRepository;
 import ro.ubb.postuniv.musify.repository.SongRepository;
+import ro.ubb.postuniv.musify.security.JwtService;
 import ro.ubb.postuniv.musify.utils.checkers.RepositoryChecker;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.util.Optional.ofNullable;
-import static ro.ubb.postuniv.musify.utils.checkers.PositionChecker.checkPositionsInRangeValid;
-import static ro.ubb.postuniv.musify.utils.checkers.PositionChecker.checkSongPositionValid;
 
 @Service
 @RequiredArgsConstructor
 public class AlbumService {
 
+    private final JwtService jwtService;
     private final RepositoryChecker repositoryChecker;
     private final AlbumRepository albumRepository;
     private final SongRepository songRepository;
@@ -51,6 +52,7 @@ public class AlbumService {
 
     @Transactional
     public AlbumDto create(AlbumDto albumDto) {
+        validateAdminRole(jwtService.getCurrentUserRole());
         if (albumDto.isTwoOwnersIdSet()) {
             throw new IllegalArgumentException("One of artist id or band id must be set, the other must remain null");
         }
@@ -72,6 +74,7 @@ public class AlbumService {
 
     @Transactional
     public AlbumDto update(Integer id, AlbumDto albumDto) {
+        validateAdminRole(jwtService.getCurrentUserRole());
         if (albumDto.isTwoOwnersIdSet()) {
             throw new IllegalArgumentException("One of artist id or band id must be set, the other must remain null");
         }
@@ -98,6 +101,8 @@ public class AlbumService {
 
     @Transactional
     public AlbumDetailViewDto addSong(Integer albumId, Integer songId) {
+        validateAdminRole(jwtService.getCurrentUserRole());
+
         Album album = repositoryChecker.getAlbumIfExists(albumId);
         Song song = repositoryChecker.getSongIfExists(songId);
 
@@ -110,6 +115,8 @@ public class AlbumService {
 
     @Transactional
     public AlbumDetailViewDto removeSong(Integer albumId, Integer songId) {
+        validateAdminRole(jwtService.getCurrentUserRole());
+
         Album album = repositoryChecker.getAlbumIfExists(albumId);
         Song song = repositoryChecker.getSongIfExists(songId);
 
@@ -122,6 +129,8 @@ public class AlbumService {
 
     @Transactional
     public AlbumDetailViewDto changeSongOrder(Integer albumId, Integer songId, Integer oldPosition, Integer newPosition) {
+        validateAdminRole(jwtService.getCurrentUserRole());
+
         Album album = repositoryChecker.getAlbumIfExists(albumId);
         Song song = repositoryChecker.getSongIfExists(songId);
 

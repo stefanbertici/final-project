@@ -1,12 +1,11 @@
 package ro.ubb.postuniv.musify.repository;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ro.ubb.postuniv.musify.model.Song;
-
-import java.util.List;
 
 @Repository
 public interface SongRepository extends CrudRepository<Song, Integer> {

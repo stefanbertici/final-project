@@ -1,5 +1,10 @@
 package ro.ubb.postuniv.musify.service;
 
+import static ro.ubb.postuniv.musify.utils.checkers.UserChecker.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,16 +16,14 @@ import ro.ubb.postuniv.musify.model.Artist;
 import ro.ubb.postuniv.musify.model.Band;
 import ro.ubb.postuniv.musify.repository.ArtistRepository;
 import ro.ubb.postuniv.musify.repository.BandRepository;
+import ro.ubb.postuniv.musify.security.JwtService;
 import ro.ubb.postuniv.musify.utils.checkers.RepositoryChecker;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class BandService {
 
+    private final JwtService jwtService;
     private final RepositoryChecker repositoryChecker;
     private final BandRepository bandRepository;
     private final ArtistRepository artistRepository;
@@ -36,6 +39,8 @@ public class BandService {
 
     @Transactional
     public BandDto create(BandDto bandDto) {
+        validateAdminRole(jwtService.getCurrentUserRole());
+
         Band band = bandMapper.toEntity(bandDto);
         band = bandRepository.save(band);
 
@@ -48,6 +53,8 @@ public class BandService {
 
     @Transactional
     public BandDto update(Integer id, BandDto bandDto) {
+        validateAdminRole(jwtService.getCurrentUserRole());
+
         Band band = repositoryChecker.getBandIfExists(id);
 
         band.setBandName(bandDto.getBandName());

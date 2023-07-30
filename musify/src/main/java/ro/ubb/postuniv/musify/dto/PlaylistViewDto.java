@@ -1,12 +1,11 @@
 package ro.ubb.postuniv.musify.dto;
 
+import java.sql.Date;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.sql.Date;
-import java.util.List;
 
 @Getter
 @Setter

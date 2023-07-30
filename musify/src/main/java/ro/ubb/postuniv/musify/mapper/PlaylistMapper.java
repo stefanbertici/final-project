@@ -1,5 +1,6 @@
 package ro.ubb.postuniv.musify.mapper;
 
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import ro.ubb.postuniv.musify.dto.PlaylistDto;
@@ -7,8 +8,6 @@ import ro.ubb.postuniv.musify.dto.PlaylistViewDto;
 import ro.ubb.postuniv.musify.dto.SongViewDto;
 import ro.ubb.postuniv.musify.model.Playlist;
 import ro.ubb.postuniv.musify.model.Song;
-
-import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface PlaylistMapper {

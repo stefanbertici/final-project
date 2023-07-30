@@ -1,5 +1,7 @@
 package ro.ubb.postuniv.musify.security;
 
+import java.util.Arrays;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -11,18 +13,17 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
-import java.util.List;
-
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     private final InMemoryTokenBlacklist tokenBlacklist;
+    private final JwtService jwtService;
 
     @Autowired
-    public WebSecurity(InMemoryTokenBlacklist tokenBlacklist) {
+    public WebSecurity(InMemoryTokenBlacklist tokenBlacklist, JwtService jwtService) {
         super();
         this.tokenBlacklist = tokenBlacklist;
+        this.jwtService = jwtService;
     }
 
     @Override
@@ -38,7 +39,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .and()
                 .cors()
                 .and()
-                .addFilter(new JwtAuthorizationFilter(authenticationManager(), tokenBlacklist))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), tokenBlacklist, jwtService))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .csrf().disable();

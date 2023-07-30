@@ -1,19 +1,29 @@
 package ro.ubb.postuniv.musify.utils.checkers;
 
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ro.ubb.postuniv.musify.exception.ResourceNotFoundException;
 import ro.ubb.postuniv.musify.exception.UnauthorizedException;
-import ro.ubb.postuniv.musify.model.*;
-import ro.ubb.postuniv.musify.repository.*;
-import ro.ubb.postuniv.musify.security.JwtUtils;
-
-import java.util.Optional;
+import ro.ubb.postuniv.musify.model.Album;
+import ro.ubb.postuniv.musify.model.Artist;
+import ro.ubb.postuniv.musify.model.Band;
+import ro.ubb.postuniv.musify.model.Playlist;
+import ro.ubb.postuniv.musify.model.Song;
+import ro.ubb.postuniv.musify.model.User;
+import ro.ubb.postuniv.musify.repository.AlbumRepository;
+import ro.ubb.postuniv.musify.repository.ArtistRepository;
+import ro.ubb.postuniv.musify.repository.BandRepository;
+import ro.ubb.postuniv.musify.repository.PlaylistRepository;
+import ro.ubb.postuniv.musify.repository.SongRepository;
+import ro.ubb.postuniv.musify.repository.UserRepository;
+import ro.ubb.postuniv.musify.security.JwtService;
 
 @RequiredArgsConstructor
 @Component
 public class RepositoryChecker {
 
+    private final JwtService jwtService;
     private final UserRepository userRepository;
     private final AlbumRepository albumRepository;
     private final ArtistRepository artistRepository;
@@ -31,7 +41,7 @@ public class RepositoryChecker {
     }
 
     public User getCurrentUser() {
-        Optional<User> optional = userRepository.findById(JwtUtils.getCurrentUserId());
+        Optional<User> optional = userRepository.findById(jwtService.getCurrentUserId());
         if (optional.isEmpty()) {
             throw new UnauthorizedException("You need to log in");
         }

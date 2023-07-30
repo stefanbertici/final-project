@@ -1,11 +1,10 @@
 package ro.ubb.postuniv.musify.mapper;
 
+import java.util.List;
 import org.mapstruct.Mapper;
 import ro.ubb.postuniv.musify.dto.ArtistDto;
 import ro.ubb.postuniv.musify.dto.ArtistViewDto;
 import ro.ubb.postuniv.musify.model.Artist;
-
-import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ArtistMapper {

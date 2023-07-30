@@ -1,28 +1,37 @@
 package ro.ubb.postuniv.musify.security;
 
+import static ro.ubb.postuniv.musify.utils.constants.Constants.*;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import ro.ubb.postuniv.musify.utils.EnvironmentVariables;
 
-import static ro.ubb.postuniv.musify.utils.constants.Constants.*;
+@RequiredArgsConstructor
+@Service
+public class JwtService {
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class JwtUtils {
+    private String secret;
+    private String issuer;
+    private final EnvironmentVariables environmentVariables;
 
-    private static final String SECRET = "myMusifyApp2023";
-    private static final String ISSUER = "musify";
+    @PostConstruct
+    private synchronized void init() {
+        secret = environmentVariables.getSecret();
+        issuer = environmentVariables.getIssuer();
+    }
 
-    public static String generateToken(int id, String email, String role) {
-        Algorithm algorithm = Algorithm.HMAC256(SECRET);
+    public String generateToken(int id, String email, String role) {
+        Algorithm algorithm = Algorithm.HMAC256(secret);
 
         Calendar c = Calendar.getInstance();
         Date currentDate = c.getTime();
@@ -31,8 +40,8 @@ public class JwtUtils {
         Date expireDate = c.getTime();
 
         return JWT.create()
-                .withIssuer(ISSUER)
-                .withSubject(ISSUER)
+                .withIssuer(issuer)
+                .withSubject(issuer)
                 .withIssuedAt(currentDate)
                 .withExpiresAt(expireDate)
                 .withClaim(ID.value, id)
@@ -41,12 +50,12 @@ public class JwtUtils {
                 .sign(algorithm);
     }
 
-    public static Map<String, Object> validateToken(String jwtToken) {
-        Algorithm algorithm = Algorithm.HMAC256(SECRET);
+    public Map<String, Object> validateToken(String jwtToken) {
+        Algorithm algorithm = Algorithm.HMAC256(secret);
 
         JWTVerifier verifier = JWT.require(algorithm)
-                .withIssuer(ISSUER)
-                .withSubject(ISSUER)
+                .withIssuer(issuer)
+                .withSubject(issuer)
                 .build();
 
         DecodedJWT decodedJWT = verifier.verify(jwtToken);
@@ -62,11 +71,11 @@ public class JwtUtils {
         return userInfo;
     }
 
-    public static String extractTokenFromHeader(String header) {
+    public String extractTokenFromHeader(String header) {
         return header.replace("Bearer ", "").trim();
     }
 
-    public static Integer getCurrentUserId() {
+    public Integer getCurrentUserId() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof Map) {
@@ -76,7 +85,7 @@ public class JwtUtils {
         throw new RuntimeException("Could not get current user's id from security context");
     }
 
-    public static String getCurrentUserEmail() {
+    public String getCurrentUserEmail() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof Map) {
@@ -86,7 +95,7 @@ public class JwtUtils {
         throw new RuntimeException("Could not get current user's email from security context");
     }
 
-    public static String getCurrentUserRole() {
+    public String getCurrentUserRole() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof Map) {

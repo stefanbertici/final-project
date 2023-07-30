@@ -1,11 +1,10 @@
 package ro.ubb.postuniv.musify.mapper;
 
-import ro.ubb.postuniv.musify.dto.BandDto;
-import ro.ubb.postuniv.musify.model.Band;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.util.List;
+import ro.ubb.postuniv.musify.dto.BandDto;
+import ro.ubb.postuniv.musify.model.Band;
 
 @Mapper(componentModel = "spring")
 public interface BandMapper {

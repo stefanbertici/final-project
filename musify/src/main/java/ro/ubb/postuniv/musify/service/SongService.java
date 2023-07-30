@@ -1,17 +1,7 @@
 package ro.ubb.postuniv.musify.service;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import ro.ubb.postuniv.musify.dto.SongDto;
-import ro.ubb.postuniv.musify.dto.SongViewDto;
-import ro.ubb.postuniv.musify.exception.UnauthorizedException;
-import ro.ubb.postuniv.musify.mapper.SongMapper;
-import ro.ubb.postuniv.musify.model.*;
-import ro.ubb.postuniv.musify.repository.AlternativeSongTitleRepository;
-import ro.ubb.postuniv.musify.repository.ArtistRepository;
-import ro.ubb.postuniv.musify.repository.SongRepository;
-import ro.ubb.postuniv.musify.utils.checkers.RepositoryChecker;
+import static java.util.Optional.*;
+import static ro.ubb.postuniv.musify.utils.checkers.UserChecker.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,15 +9,30 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
-
-import static java.util.Optional.ofNullable;
-import static ro.ubb.postuniv.musify.utils.checkers.UserChecker.isCurrentUserNotOwnerOfPlaylist;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ro.ubb.postuniv.musify.dto.SongDto;
+import ro.ubb.postuniv.musify.dto.SongViewDto;
+import ro.ubb.postuniv.musify.exception.UnauthorizedException;
+import ro.ubb.postuniv.musify.mapper.SongMapper;
+import ro.ubb.postuniv.musify.model.Album;
+import ro.ubb.postuniv.musify.model.AlternativeSongTitle;
+import ro.ubb.postuniv.musify.model.Artist;
+import ro.ubb.postuniv.musify.model.Playlist;
+import ro.ubb.postuniv.musify.model.Song;
+import ro.ubb.postuniv.musify.repository.AlternativeSongTitleRepository;
+import ro.ubb.postuniv.musify.repository.ArtistRepository;
+import ro.ubb.postuniv.musify.repository.SongRepository;
+import ro.ubb.postuniv.musify.security.JwtService;
+import ro.ubb.postuniv.musify.utils.checkers.RepositoryChecker;
 
 @Service
 @RequiredArgsConstructor
 public class SongService {
-    private final RepositoryChecker repositoryChecker;
 
+    private final JwtService jwtService;
+    private final RepositoryChecker repositoryChecker;
     private final SongRepository songRepository;
     private final ArtistRepository artistRepository;
     private final AlternativeSongTitleRepository alternativeSongTitleRepository;
@@ -71,7 +76,7 @@ public class SongService {
     public List<SongViewDto> readAllByPlaylistId(Integer id) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(id);
 
-        if (playlist.getType().equals("private") && isCurrentUserNotOwnerOfPlaylist(playlist)) {
+        if (playlist.getType().equals("private") && isCurrentUserNotOwnerOfPlaylist(jwtService.getCurrentUserId(), playlist)) {
             throw new UnauthorizedException("You cannot view this private playlist");
         }
 
@@ -80,6 +85,8 @@ public class SongService {
 
     @Transactional
     public SongViewDto create(SongDto songDto) {
+        validateAdminRole(jwtService.getCurrentUserRole());
+
         Song song = songMapper.toEntity(songDto);
         songRepository.save(song);
 
@@ -102,6 +109,8 @@ public class SongService {
 
     @Transactional
     public SongViewDto update(Integer id, SongDto songDto) {
+        validateAdminRole(jwtService.getCurrentUserRole());
+
         Song song = repositoryChecker.getSongIfExists(id);
 
         song.setTitle(songDto.getTitle());
