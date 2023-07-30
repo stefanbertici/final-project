@@ -12,7 +12,7 @@ import ro.ubb.postuniv.musify.model.Band;
 import ro.ubb.postuniv.musify.model.Song;
 import ro.ubb.postuniv.musify.repository.AlbumRepository;
 import ro.ubb.postuniv.musify.repository.ArtistRepository;
-import ro.ubb.postuniv.musify.utils.RepositoryChecker;
+import ro.ubb.postuniv.musify.utils.checkers.RepositoryChecker;
 
 import java.util.Collection;
 import java.util.Comparator;

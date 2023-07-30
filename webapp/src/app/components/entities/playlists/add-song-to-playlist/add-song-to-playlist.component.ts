@@ -5,6 +5,7 @@ import {PlaylistDto} from "../../../../models/playlistDto";
 import {AuthService} from "../../../../services/auth.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Status} from "../../../../models/status";
+import {PlaylistCategorizedViewDto} from "../../../../models/playlistCategorizedViewDto";
 
 @Component({
   selector: 'app-add-song-to-playlist',
@@ -30,14 +31,8 @@ export class AddSongToPlaylistComponent implements OnInit {
       'playlistId': ['', Validators.required],
     });
 
-    this.playlistService.getAll().subscribe((data: PlaylistDto[]) => {
-      this.ownedPlaylists = [];
-
-      for (const playlist of data) {
-        if (playlist.ownerUserId === this.authService.getUserId()) {
-          this.ownedPlaylists.push(playlist);
-        }
-      }
+    this.playlistService.getAll().subscribe((data: PlaylistCategorizedViewDto) => {
+      this.ownedPlaylists = data.ownedPlaylists;
     })
   }
 

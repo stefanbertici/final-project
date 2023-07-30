@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {API_URL} from "../utils/constants";
 import {AlbumViewDto} from "../models/albumViewDto";
 import {AlbumDetailViewDto} from "../models/albumDetailViewDto";
@@ -39,5 +39,15 @@ export class AlbumService {
 
   removeSong(albumId: number, songId: number) {
     return this.httpClient.post<AlbumDetailViewDto>(`${API_URL}/albums/${albumId}/remove-song/${songId}`, null);
+  }
+
+  changeOrder(albumId: number, songId: number, oldPosition: number, newPosition: number) {
+    const params = new HttpParams()
+      .set('songId', songId)
+      .set('oldPosition', oldPosition)
+      .set('newPosition', newPosition);
+    const searchParams = params.toString();
+
+    return this.httpClient.post<AlbumDetailViewDto>(`${API_URL}/albums/${albumId}/change-order?${searchParams}`, null);
   }
 }

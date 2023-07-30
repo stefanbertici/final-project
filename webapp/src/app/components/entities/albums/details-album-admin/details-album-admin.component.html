@@ -57,6 +57,20 @@
               </span>
                 </a>
               </div>
+              <div *ngIf="canMoveDown(i)" class="column">
+                <a (click)="moveDown(i, song.id)">
+              <span class="icon">
+                <i class="fa-solid fa-arrow-down"></i>
+              </span>
+                </a>
+              </div>
+              <div *ngIf="canMoveUp(i)" class="column">
+                <a (click)="moveUp(i, song.id)">
+              <span class="icon">
+                <i class="fa-solid fa-arrow-up"></i>
+              </span>
+                </a>
+              </div>
             </div>
           </td>
         </tr>

@@ -9,23 +9,22 @@ import ro.ubb.postuniv.musify.dto.UserLoginViewDto;
 import ro.ubb.postuniv.musify.dto.UserViewDto;
 import ro.ubb.postuniv.musify.exception.UnauthorizedException;
 import ro.ubb.postuniv.musify.mapper.UserMapper;
-import ro.ubb.postuniv.musify.model.Playlist;
 import ro.ubb.postuniv.musify.model.User;
 import ro.ubb.postuniv.musify.repository.PlaylistRepository;
 import ro.ubb.postuniv.musify.repository.UserRepository;
 import ro.ubb.postuniv.musify.security.InMemoryTokenBlacklist;
 import ro.ubb.postuniv.musify.security.JwtUtils;
-import ro.ubb.postuniv.musify.utils.RepositoryChecker;
-import ro.ubb.postuniv.musify.utils.UserChecker;
-import ro.ubb.postuniv.musify.utils.UserRole;
-import ro.ubb.postuniv.musify.utils.UserStatus;
+import ro.ubb.postuniv.musify.utils.checkers.RepositoryChecker;
+import ro.ubb.postuniv.musify.utils.constants.UserRole;
+import ro.ubb.postuniv.musify.utils.constants.UserStatus;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+
+import static ro.ubb.postuniv.musify.utils.checkers.UserChecker.*;
 
 @Service
 @RequiredArgsConstructor
@@ -79,11 +78,11 @@ public class UserService {
         }
 
         User user = optional.get();
-        if (!UserChecker.canLogin(user, encryptedInputPassword)) {
+        if (!canLogin(user, encryptedInputPassword)) {
             throw new UnauthorizedException("Incorrect email or password");
         }
 
-        if (!UserChecker.isActive(user)) {
+        if (!isActive(user)) {
             throw new UnauthorizedException("It looks like your account has been deactivated :(\n Please contact our customer support department");
         }
 
@@ -103,7 +102,7 @@ public class UserService {
 
         repositoryChecker.checkIfEmailIsTaken(id, userDto.getEmail());
 
-        if (UserChecker.isCurrentUserNotAdmin() && !UserChecker.isOperationOnSelf(id)) {
+        if (isCurrentUserNotAdmin() && !isOperationOnSelf(id)) {
             throw new UnauthorizedException("Users can only update their own info");
         }
 

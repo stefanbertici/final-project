@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserViewDtoTest {
 
     @Test
-    public void givenValidUserViewDto_whenSerializingAndDeserializing_thenResultIsSame() throws JsonProcessingException {
+    void givenValidUserViewDto_whenSerializingAndDeserializing_thenResultIsSame() throws JsonProcessingException {
         UserViewDto userViewDto = new UserViewDto(1, "Stefan", "Bertici", "Stefan Bertici",
                 "me@gmail.com", "Romania", "admin", "active");
 

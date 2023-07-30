@@ -3,6 +3,7 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {API_URL} from "../utils/constants";
 import {PlaylistDto} from "../models/playlistDto";
 import {PlaylistViewDto} from "../models/playlistViewDto";
+import {PlaylistCategorizedViewDto} from "../models/playlistCategorizedViewDto";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class PlaylistService {
   }
 
   getAll() {
-    return this.httpClient.get<PlaylistViewDto[]>(`${API_URL}/playlists`);
+    return this.httpClient.get<PlaylistCategorizedViewDto>(`${API_URL}/playlists`);
   }
 
   getById(id: number) {

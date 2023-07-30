@@ -9,12 +9,13 @@ import ro.ubb.postuniv.musify.dto.UserLoginDto;
 import ro.ubb.postuniv.musify.dto.UserLoginViewDto;
 import ro.ubb.postuniv.musify.dto.UserViewDto;
 import ro.ubb.postuniv.musify.service.UserService;
-import ro.ubb.postuniv.musify.utils.UserChecker;
-import ro.ubb.postuniv.musify.utils.UserRole;
-import ro.ubb.postuniv.musify.utils.UserStatus;
+import ro.ubb.postuniv.musify.utils.constants.UserRole;
+import ro.ubb.postuniv.musify.utils.constants.UserStatus;
 
 import javax.validation.Valid;
 import java.util.List;
+
+import static ro.ubb.postuniv.musify.utils.checkers.UserChecker.validateAdminRole;
 
 @RequiredArgsConstructor
 @RestController
@@ -66,35 +67,35 @@ public class UserController {
 
     @PutMapping("/{id}/promote")
     public ResponseEntity<UserViewDto> promote(@PathVariable Integer id) {
-        UserChecker.validateAdminRole();
+        validateAdminRole();
         UserViewDto user = userService.updateUserRole(id, UserRole.ADMIN);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PutMapping("/{id}/demote")
     public ResponseEntity<UserViewDto> demote(@PathVariable Integer id) {
-        UserChecker.validateAdminRole();
+        validateAdminRole();
         UserViewDto user = userService.updateUserRole(id, UserRole.USER);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PutMapping("/{id}/activate")
     public ResponseEntity<UserViewDto> activate(@PathVariable Integer id) {
-        UserChecker.validateAdminRole();
+        validateAdminRole();
         UserViewDto user = userService.updateUserStatus(id, UserStatus.ACTIVE);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PutMapping("/{id}/deactivate")
     public ResponseEntity<UserViewDto> deactivate(@PathVariable Integer id) {
-        UserChecker.validateAdminRole();
+        validateAdminRole();
         UserViewDto user = userService.updateUserStatus(id, UserStatus.INACTIVE);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<UserViewDto> delete(@PathVariable Integer id) {
-        UserChecker.validateAdminRole();
+        validateAdminRole();
         return new ResponseEntity<>(userService.delete(id), HttpStatus.OK);
     }
 }

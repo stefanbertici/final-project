@@ -7,10 +7,11 @@ import org.springframework.web.bind.annotation.*;
 import ro.ubb.postuniv.musify.dto.SongDto;
 import ro.ubb.postuniv.musify.dto.SongViewDto;
 import ro.ubb.postuniv.musify.service.SongService;
-import ro.ubb.postuniv.musify.utils.UserChecker;
 
 import javax.validation.Valid;
 import java.util.List;
+
+import static ro.ubb.postuniv.musify.utils.checkers.UserChecker.validateAdminRole;
 
 @RequiredArgsConstructor
 @RestController
@@ -46,13 +47,13 @@ public class SongController {
 
     @PostMapping()
     public ResponseEntity<SongViewDto> create(@RequestBody @Valid SongDto songDto) {
-        UserChecker.validateAdminRole();
+        validateAdminRole();
         return new ResponseEntity<>(songService.create(songDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<SongViewDto> update(@PathVariable Integer id, @RequestBody @Valid SongDto songDto) {
-        UserChecker.validateAdminRole();
+        validateAdminRole();
         return new ResponseEntity<>(songService.update(id, songDto), HttpStatus.OK);
     }
 }

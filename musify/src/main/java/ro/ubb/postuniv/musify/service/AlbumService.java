@@ -13,12 +13,14 @@ import ro.ubb.postuniv.musify.model.Band;
 import ro.ubb.postuniv.musify.model.Song;
 import ro.ubb.postuniv.musify.repository.AlbumRepository;
 import ro.ubb.postuniv.musify.repository.SongRepository;
-import ro.ubb.postuniv.musify.utils.RepositoryChecker;
+import ro.ubb.postuniv.musify.utils.checkers.RepositoryChecker;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Optional.ofNullable;
+import static ro.ubb.postuniv.musify.utils.checkers.PositionChecker.checkPositionsInRangeValid;
+import static ro.ubb.postuniv.musify.utils.checkers.PositionChecker.checkSongPositionValid;
 
 @Service
 @RequiredArgsConstructor
@@ -117,6 +119,25 @@ public class AlbumService {
 
         return albumMapper.toDetailViewDto(album);
     }
+
+    @Transactional
+    public AlbumDetailViewDto changeSongOrder(Integer albumId, Integer songId, Integer oldPosition, Integer newPosition) {
+        Album album = repositoryChecker.getAlbumIfExists(albumId);
+        Song song = repositoryChecker.getSongIfExists(songId);
+
+        List<Song> songs = album.getSongs();
+        checkPositionsInRangeValid(oldPosition, newPosition, songs);
+        checkSongPositionValid(songId, oldPosition, songs);
+
+        if (!oldPosition.equals(newPosition)) {
+            songs.remove(song);
+            songs.add(newPosition - 1, song);
+        }
+
+        return albumMapper.toDetailViewDto(album);
+    }
+
+
 
     private void addSongsById(Album album, AlbumDto albumDto) {
         List<Song> songs = (List<Song>) songRepository.findAllById(albumDto.getSongIds());

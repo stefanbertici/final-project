@@ -6,6 +6,7 @@ import {SearchViewDto} from "../../../models/searchViewDto";
 import {SearchService} from "../../../services/search.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {PlaylistViewDto} from "../../../models/playlistViewDto";
+import {PlaylistCategorizedViewDto} from "../../../models/playlistCategorizedViewDto";
 
 @Component({
   selector: 'app-dashboard',
@@ -53,17 +54,9 @@ export class DashboardComponent implements OnInit {
   }
 
   private loadPlaylists() {
-    this.playlistService.getAll().subscribe((data: PlaylistViewDto[]) => {
-      this.ownedPlaylists = [];
-      this.followedPlaylists = [];
-
-      for (const playlist of data) {
-        if (playlist.ownerUserId === this.authService.getUserId()) {
-          this.ownedPlaylists.push(playlist);
-        } else {
-          this.followedPlaylists.push(playlist);
-        }
-      }
+    this.playlistService.getAll().subscribe((data: PlaylistCategorizedViewDto) => {
+      this.ownedPlaylists = data.ownedPlaylists;
+      this.followedPlaylists = data.followedPlaylists;
     })
   }
 

@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static ro.ubb.postuniv.musify.utils.constants.Constants.*;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class JwtUtils {
 
@@ -33,9 +35,9 @@ public class JwtUtils {
                 .withSubject(ISSUER)
                 .withIssuedAt(currentDate)
                 .withExpiresAt(expireDate)
-                .withClaim("id", id)
-                .withClaim("email", email)
-                .withClaim("role", role)
+                .withClaim(ID.value, id)
+                .withClaim(EMAIL.value, email)
+                .withClaim(ROLE.value, role)
                 .sign(algorithm);
     }
 
@@ -48,14 +50,14 @@ public class JwtUtils {
                 .build();
 
         DecodedJWT decodedJWT = verifier.verify(jwtToken);
-        Integer id = decodedJWT.getClaim("id").asInt();
-        String email = decodedJWT.getClaim("email").asString();
-        String role = decodedJWT.getClaim("role").asString();
+        Integer id = decodedJWT.getClaim(ID.value).asInt();
+        String email = decodedJWT.getClaim(EMAIL.value).asString();
+        String role = decodedJWT.getClaim(ROLE.value).asString();
 
         Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put("id", id);
-        userInfo.put("email", email);
-        userInfo.put("role", role);
+        userInfo.put(ID.value, id);
+        userInfo.put(EMAIL.value, email);
+        userInfo.put(ROLE.value, role);
 
         return userInfo;
     }
@@ -68,7 +70,7 @@ public class JwtUtils {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof Map) {
-            return (Integer) ((Map<String, Object>) principal).get("id");
+            return (Integer) ((Map<String, Object>) principal).get(ID.value);
         }
 
         throw new RuntimeException("Could not get current user's id from security context");
@@ -78,7 +80,7 @@ public class JwtUtils {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof Map) {
-            return (String) ((Map<String, Object>) principal).get("email");
+            return (String) ((Map<String, Object>) principal).get(EMAIL.value);
         }
 
         throw new RuntimeException("Could not get current user's email from security context");
@@ -88,7 +90,7 @@ public class JwtUtils {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof Map) {
-            return (String) ((Map<String, Object>) principal).get("role");
+            return (String) ((Map<String, Object>) principal).get(ROLE.value);
         }
 
         throw new RuntimeException("Could not get current user's role from security context");

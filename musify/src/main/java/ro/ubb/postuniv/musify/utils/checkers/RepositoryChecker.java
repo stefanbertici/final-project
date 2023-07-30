@@ -1,4 +1,4 @@
-package ro.ubb.postuniv.musify.utils;
+package ro.ubb.postuniv.musify.utils.checkers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

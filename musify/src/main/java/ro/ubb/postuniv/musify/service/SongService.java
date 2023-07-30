@@ -11,8 +11,7 @@ import ro.ubb.postuniv.musify.model.*;
 import ro.ubb.postuniv.musify.repository.AlternativeSongTitleRepository;
 import ro.ubb.postuniv.musify.repository.ArtistRepository;
 import ro.ubb.postuniv.musify.repository.SongRepository;
-import ro.ubb.postuniv.musify.utils.RepositoryChecker;
-import ro.ubb.postuniv.musify.utils.UserChecker;
+import ro.ubb.postuniv.musify.utils.checkers.RepositoryChecker;
 
 import java.util.Collection;
 import java.util.List;
@@ -22,6 +21,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static java.util.Optional.ofNullable;
+import static ro.ubb.postuniv.musify.utils.checkers.UserChecker.isCurrentUserNotOwnerOfPlaylist;
 
 @Service
 @RequiredArgsConstructor
@@ -71,7 +71,7 @@ public class SongService {
     public List<SongViewDto> readAllByPlaylistId(Integer id) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(id);
 
-        if (playlist.getType().equals("private") && UserChecker.isCurrentUserNotOwnerOfPlaylist(playlist)) {
+        if (playlist.getType().equals("private") && isCurrentUserNotOwnerOfPlaylist(playlist)) {
             throw new UnauthorizedException("You cannot view this private playlist");
         }
 

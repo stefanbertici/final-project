@@ -7,10 +7,11 @@ import org.springframework.web.bind.annotation.*;
 import ro.ubb.postuniv.musify.dto.AlbumDto;
 import ro.ubb.postuniv.musify.dto.BandDto;
 import ro.ubb.postuniv.musify.service.BandService;
-import ro.ubb.postuniv.musify.utils.UserChecker;
 
 import javax.validation.Valid;
 import java.util.List;
+
+import static ro.ubb.postuniv.musify.utils.checkers.UserChecker.validateAdminRole;
 
 @RequiredArgsConstructor
 @RestController
@@ -26,13 +27,13 @@ public class BandController {
 
     @PostMapping()
     public ResponseEntity<BandDto> create(@RequestBody @Valid BandDto bandDto) {
-        UserChecker.validateAdminRole();
+        validateAdminRole();
         return new ResponseEntity<>(bandService.create(bandDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<BandDto> update(@PathVariable Integer id, @RequestBody @Valid BandDto bandDto) {
-        UserChecker.validateAdminRole();
+        validateAdminRole();
         return new ResponseEntity<>(bandService.update(id, bandDto), HttpStatus.OK);
     }
 }

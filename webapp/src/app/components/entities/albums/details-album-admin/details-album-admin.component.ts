@@ -47,4 +47,30 @@ export class DetailsAlbumAdminComponent implements OnInit {
   cancelRemove() {
     this.selectedSongIdForRemove = undefined;
   }
+
+  canMoveDown(i: number) {
+    return i < this.album!.songs.length - 1;
+  }
+
+  canMoveUp(i: number) {
+    return i >= 1;
+  }
+
+  moveDown(i: number, songId: number) {
+    let oldPosition: number = i + 1;
+    let newPosition: number = oldPosition + 1;
+
+    this.albumService.changeOrder(this.albumId, songId, oldPosition, newPosition).subscribe((data: AlbumDetailViewDto) => {
+      this.album = data;
+    });
+  }
+
+  moveUp(i: number, songId: number) {
+    let oldPosition: number = i + 1;
+    let newPosition: number = oldPosition - 1;
+
+    this.albumService.changeOrder(this.albumId, songId, oldPosition, newPosition).subscribe((data: AlbumDetailViewDto) => {
+      this.album = data;
+    });
+  }
 }

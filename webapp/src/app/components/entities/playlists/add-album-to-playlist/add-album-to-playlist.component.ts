@@ -5,6 +5,7 @@ import {Status} from "../../../../models/status";
 import {ActivatedRoute} from "@angular/router";
 import {AuthService} from "../../../../services/auth.service";
 import {PlaylistService} from "../../../../services/playlist.service";
+import {PlaylistCategorizedViewDto} from "../../../../models/playlistCategorizedViewDto";
 
 @Component({
   selector: 'app-add-album-to-playlist',
@@ -30,14 +31,8 @@ export class AddAlbumToPlaylistComponent implements OnInit {
       'playlistId': ['', Validators.required],
     });
 
-    this.playlistService.getAll().subscribe((data: PlaylistDto[]) => {
-      this.ownedPlaylists = [];
-
-      for (const playlist of data) {
-        if (playlist.ownerUserId === this.authService.getUserId()) {
-          this.ownedPlaylists.push(playlist);
-        }
-      }
+    this.playlistService.getAll().subscribe((data: PlaylistCategorizedViewDto) => {
+      this.ownedPlaylists = data.ownedPlaylists;
     })
   }
 

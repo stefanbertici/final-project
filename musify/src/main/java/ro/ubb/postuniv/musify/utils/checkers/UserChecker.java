@@ -1,4 +1,4 @@
-package ro.ubb.postuniv.musify.utils;
+package ro.ubb.postuniv.musify.utils.checkers;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import ro.ubb.postuniv.musify.security.JwtUtils;
 public class UserChecker {
 
     public static void validateAdminRole() {
-        if (UserChecker.isCurrentUserNotAdmin()) {
+        if (isCurrentUserNotAdmin()) {
             throw new UnauthorizedException("Only admins can perform this operation");
         }
     }

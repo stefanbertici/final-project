@@ -4,12 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ro.ubb.postuniv.musify.dto.PlaylistCategorizedViewDto;
 import ro.ubb.postuniv.musify.dto.PlaylistDto;
 import ro.ubb.postuniv.musify.dto.PlaylistViewDto;
 import ro.ubb.postuniv.musify.service.PlaylistService;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,7 +19,7 @@ public class PlaylistController {
     private final PlaylistService playlistService;
 
     @GetMapping()
-    public ResponseEntity<List<PlaylistViewDto>> readAll() {
+    public ResponseEntity<PlaylistCategorizedViewDto> readAll() {
         return new ResponseEntity<>(playlistService.readAll(), HttpStatus.OK);
     }
 

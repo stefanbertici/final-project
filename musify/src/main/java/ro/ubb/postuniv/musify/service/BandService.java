@@ -11,7 +11,7 @@ import ro.ubb.postuniv.musify.model.Artist;
 import ro.ubb.postuniv.musify.model.Band;
 import ro.ubb.postuniv.musify.repository.ArtistRepository;
 import ro.ubb.postuniv.musify.repository.BandRepository;
-import ro.ubb.postuniv.musify.utils.RepositoryChecker;
+import ro.ubb.postuniv.musify.utils.checkers.RepositoryChecker;
 
 import java.util.ArrayList;
 import java.util.List;

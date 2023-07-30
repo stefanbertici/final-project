@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
+import static ro.ubb.postuniv.musify.utils.constants.Constants.*;
+
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     public static final String TOKEN_PREFIX = "Bearer ";
@@ -48,9 +50,9 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     private UsernamePasswordAuthenticationToken getAuthentication(String token) {
         if (token != null) {
             Map<String, Object> userInfo = JwtUtils.validateToken(token);
-            String id = String.valueOf(userInfo.get("id"));
-            String email = (String) userInfo.get("email");
-            String role = (String) userInfo.get("role");
+            String id = String.valueOf(userInfo.get(ID.value));
+            String email = (String) userInfo.get(EMAIL.value);
+            String role = (String) userInfo.get(ROLE.value);
 
             if (id != null && email != null && role != null) {
                 // new arraylist means authorities

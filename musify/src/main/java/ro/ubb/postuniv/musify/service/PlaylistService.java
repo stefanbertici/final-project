@@ -3,6 +3,7 @@ package ro.ubb.postuniv.musify.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ro.ubb.postuniv.musify.dto.PlaylistCategorizedViewDto;
 import ro.ubb.postuniv.musify.dto.PlaylistDto;
 import ro.ubb.postuniv.musify.dto.PlaylistViewDto;
 import ro.ubb.postuniv.musify.exception.UnauthorizedException;
@@ -12,14 +13,16 @@ import ro.ubb.postuniv.musify.model.Playlist;
 import ro.ubb.postuniv.musify.model.Song;
 import ro.ubb.postuniv.musify.model.User;
 import ro.ubb.postuniv.musify.repository.PlaylistRepository;
-import ro.ubb.postuniv.musify.utils.RepositoryChecker;
-import ro.ubb.postuniv.musify.utils.UserChecker;
+import ro.ubb.postuniv.musify.utils.checkers.RepositoryChecker;
 
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
+
+import static ro.ubb.postuniv.musify.utils.checkers.PositionChecker.checkPositionsInRangeValid;
+import static ro.ubb.postuniv.musify.utils.checkers.PositionChecker.checkSongPositionValid;
+import static ro.ubb.postuniv.musify.utils.checkers.UserChecker.checkIfOwner;
 
 @Service
 @RequiredArgsConstructor
@@ -30,22 +33,21 @@ public class PlaylistService {
     private final PlaylistMapper playlistMapper;
 
     @Transactional
-    public List<PlaylistViewDto> readAll() {
+    public PlaylistCategorizedViewDto readAll() {
         User user = repositoryChecker.getCurrentUser();
 
-        Set<Playlist> ownedPlaylists = user.getOwnedPlaylists();
-        Set<Playlist> followedPlaylists = user.getFollowedPlaylists();
+        List<PlaylistViewDto> ownedPlaylists = playlistMapper.toViewDtos(
+                user.getOwnedPlaylists()
+                        .stream()
+                        .sorted(Comparator.comparing(Playlist::getName))
+                        .toList());
+        List<PlaylistViewDto> followedPlaylists = playlistMapper.toViewDtos(
+                user.getFollowedPlaylists()
+                        .stream()
+                        .sorted(Comparator.comparing(Playlist::getName))
+                        .toList());
 
-        List<PlaylistViewDto> result = ownedPlaylists
-                .stream()
-                .map(playlistMapper::toViewDto)
-                .collect(Collectors.toList());
-
-        followedPlaylists.forEach(playlist -> result.add(playlistMapper.toViewDto(playlist)));
-
-        return result.stream()
-                .sorted(Comparator.comparing(PlaylistViewDto::getName))
-                .toList();
+        return new PlaylistCategorizedViewDto(ownedPlaylists, followedPlaylists);
     }
 
     @Transactional
@@ -80,7 +82,7 @@ public class PlaylistService {
         }
 
         Playlist playlist = repositoryChecker.getPlaylistIfExists(id);
-        UserChecker.checkIfOwner(playlist);
+        checkIfOwner(playlist);
 
         playlist.setName(playlistDto.getName());
         playlist.setType(playlistDto.getType());
@@ -93,7 +95,7 @@ public class PlaylistService {
     public PlaylistViewDto addSongToPlaylist(Integer playlistId, Integer songId) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(playlistId);
         Song song = repositoryChecker.getSongIfExists(songId);
-        UserChecker.checkIfOwner(playlist);
+        checkIfOwner(playlist);
 
         if (!playlist.getSongsInPlaylist().contains(song)) {
             playlist.addSong(song);
@@ -107,7 +109,7 @@ public class PlaylistService {
     public PlaylistViewDto removeSongFromPlaylist(Integer playlistId, Integer songId) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(playlistId);
         Song song = repositoryChecker.getSongIfExists(songId);
-        UserChecker.checkIfOwner(playlist);
+        checkIfOwner(playlist);
 
         if (playlist.getSongsInPlaylist().contains(song)) {
             playlist.removeSong(song);
@@ -121,7 +123,7 @@ public class PlaylistService {
     public PlaylistViewDto addAlbumToPlaylist(Integer playlistId, Integer albumId) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(playlistId);
         Album album = repositoryChecker.getAlbumIfExists(albumId);
-        UserChecker.checkIfOwner(playlist);
+        checkIfOwner(playlist);
 
         for (Song song : album.getSongs()) {
             if (!playlist.getSongsInPlaylist().contains(song)) {
@@ -138,22 +140,16 @@ public class PlaylistService {
     public PlaylistViewDto changeSongOrder(Integer playlistId, Integer songId, Integer oldPosition, Integer newPosition) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(playlistId);
         Song song = repositoryChecker.getSongIfExists(songId);
-        UserChecker.checkIfOwner(playlist);
+        checkIfOwner(playlist);
 
         List<Song> songs = playlist.getSongsInPlaylist();
-        if (oldPosition < 1 || oldPosition > songs.size() || newPosition < 1 || newPosition > songs.size()) {
-            throw new IllegalArgumentException("The given positions are not in range.");
-        }
-
-        if (songs.get(oldPosition - 1).getId().intValue() != songId.intValue()) {
-            throw new IllegalArgumentException("The song introduced is not in the correct position");
-        }
+        checkPositionsInRangeValid(oldPosition, newPosition, songs);
+        checkSongPositionValid(songId, oldPosition, songs);
 
         if (!oldPosition.equals(newPosition)) {
             songs.remove(song);
             songs.add(newPosition - 1, song);
             playlist.setUpdatedDate(LocalDate.now());
-            playlistRepository.save(playlist);
         }
 
         return playlistMapper.toViewDto(playlist);
@@ -163,7 +159,7 @@ public class PlaylistService {
     public PlaylistViewDto delete(Integer id) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(id);
         User user = repositoryChecker.getCurrentUser();
-        UserChecker.checkIfOwner(playlist);
+        checkIfOwner(playlist);
 
         user.removeOwnedPlaylist(playlist);
 
