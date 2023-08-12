@@ -7,7 +7,7 @@ import {AuthService} from "../services/auth.service";
 })
 class PermissionsService {
 
-  constructor(private router: Router) {
+  constructor() {
   }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
@@ -17,7 +17,8 @@ class PermissionsService {
     if (authService.getUserRole() === 'admin') {
       return true;
     } else {
-      router.navigate(['/']);
+      router.navigate(['/'])
+          .then(r => console.log("Authorization error: User needs admin rights."));
       return false;
     }
   }
