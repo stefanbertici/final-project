@@ -32,10 +32,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**/swagger-resources", "/**/swagger-resources/**", "/**/swagger-ui",
                         "/**/swagger-ui/**", "/**/swagger-ui.html", "/**/swagger-ui.html/**", "/**/v3/api-docs/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/users/register", "/users/login").permitAll()
-                .antMatchers(HttpMethod.GET, "/users/403").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("/users/403")
+                .formLogin().loginPage("/users/login")
                 .and()
                 .cors()
                 .and()
