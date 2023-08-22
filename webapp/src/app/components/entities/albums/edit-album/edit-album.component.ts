@@ -66,10 +66,8 @@ export class EditAlbumComponent implements OnInit {
 
     this.albumService.update(this.albumId, this.form.value).subscribe({
       next: (res) => {
-        this.album = res;
         this.status.code = 1;
         this.status.message = "Album updated!";
-        this.form.reset();
       },
       error: (err) => {
         console.log("Server side error: " + err.message);

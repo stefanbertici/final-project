@@ -13,7 +13,6 @@ import {SongService} from "../../../../services/song.service";
 export class EditSongComponent implements OnInit {
 
   songId: number = 0;
-  song!: SongViewDto;
   form!: FormGroup;
   status!: Status;
 
@@ -32,7 +31,6 @@ export class EditSongComponent implements OnInit {
     })
 
     this.songService.getById(this.songId).subscribe((data: SongViewDto) => {
-      this.song = data;
       this.form.patchValue({
         title: data.title,
         duration: data.duration,

@@ -15,7 +15,6 @@ import {AuthService} from "../../../../services/auth.service";
 export class EditPlaylistComponent implements OnInit {
 
   playlistId: number = 0;
-  playlist!: PlaylistViewDto;
   form!: FormGroup;
   status!: Status;
 
@@ -33,7 +32,6 @@ export class EditPlaylistComponent implements OnInit {
     });
 
     this.playlistService.getById(this.playlistId).subscribe((data: PlaylistViewDto) => {
-      this.playlist = data;
       this.form.patchValue({
         name: data.name,
         type: data.type
