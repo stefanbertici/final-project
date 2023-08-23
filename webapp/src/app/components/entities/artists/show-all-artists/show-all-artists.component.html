@@ -25,7 +25,7 @@
             <div class="column">
               <a [routerLink]="['/admin-page/artists/details', artist.id]">
               <span class="icon">
-                <i class="fa-solid fa-circle-info"></i>
+                <i class="fa-solid fa-circle-info" title="details"></i>
               </span>
               </a>
             </div>
@@ -33,7 +33,7 @@
             <div class="column">
               <a [routerLink]="['/admin-page/artists/edit', artist.id]">
               <span class="icon">
-                <i class="fa-solid fa-square-pen"></i>
+                <i class="fa-solid fa-square-pen" title="edit"></i>
               </span>
               </a>
             </div>
@@ -41,7 +41,7 @@
             <div class="column">
               <a (click)="startDelete(artist.id)">
               <span class="icon">
-                <i class="fa-solid fa-trash-can"></i>
+                <i class="fa-solid fa-trash-can" title="delete"></i>
               </span>
               </a>
             </div>

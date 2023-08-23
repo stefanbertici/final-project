@@ -53,21 +53,21 @@
               <div class="column">
                 <a (click)="startRemove(song.id)">
               <span class="icon">
-                <i class="fa-solid fa-trash-can"></i>
+                <i class="fa-solid fa-trash-can" title="delete"></i>
               </span>
                 </a>
               </div>
               <div *ngIf="canMoveDown(i)" class="column">
                 <a (click)="moveDown(i, song.id)">
               <span class="icon">
-                <i class="fa-solid fa-arrow-down"></i>
+                <i class="fa-solid fa-arrow-down" title="move down"></i>
               </span>
                 </a>
               </div>
               <div *ngIf="canMoveUp(i)" class="column">
                 <a (click)="moveUp(i, song.id)">
               <span class="icon">
-                <i class="fa-solid fa-arrow-up"></i>
+                <i class="fa-solid fa-arrow-up" title="move up"></i>
               </span>
                 </a>
               </div>

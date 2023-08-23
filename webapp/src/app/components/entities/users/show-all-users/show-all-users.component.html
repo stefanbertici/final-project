@@ -29,7 +29,7 @@
             <div class="column">
               <a [routerLink]="['/admin-page/users/details', user.id]">
               <span class="icon">
-                <i class="fa-solid fa-circle-info"></i>
+                <i class="fa-solid fa-circle-info" title="details"></i>
               </span>
               </a>
             </div>
@@ -37,7 +37,7 @@
             <div class="column">
               <a [routerLink]="['/admin-page/users/edit', user.id]">
               <span class="icon">
-                <i class="fa-solid fa-square-pen"></i>
+                <i class="fa-solid fa-square-pen" title="edit"></i>
               </span>
               </a>
             </div>
@@ -45,7 +45,7 @@
             <div *ngIf="canPromote(user)" class="column">
               <a (click)="startPromote(user.id)">
               <span class="icon">
-                <i class="fa-solid fa-bolt"></i>
+                <i class="fa-solid fa-bolt" title="promote"></i>
               </span>
               </a>
             </div>
@@ -53,7 +53,7 @@
             <div *ngIf="canDemote(user)" class="column">
               <a (click)="startDemote(user.id)">
               <span class="icon">
-                <i class="fa-solid fa-user"></i>
+                <i class="fa-solid fa-user" title="demote"></i>
               </span>
               </a>
             </div>
@@ -61,7 +61,7 @@
             <div *ngIf="canActivate(user)" class="column">
               <a (click)="startActivate(user.id)">
               <span class="icon">
-                <i class="fa-solid fa-play"></i>
+                <i class="fa-solid fa-play"title="activate"></i>
               </span>
               </a>
             </div>
@@ -69,7 +69,7 @@
             <div *ngIf="canDeactivate(user)" class="column">
               <a (click)="startDeactivate(user.id)">
               <span class="icon">
-                <i class="fa-solid fa-stop"></i>
+                <i class="fa-solid fa-stop"title="deactivate"></i>
               </span>
               </a>
             </div>
@@ -77,7 +77,7 @@
             <div class="column">
               <a (click)="startDelete(user.id)">
               <span class="icon">
-                <i class="fa-solid fa-trash-can"></i>
+                <i class="fa-solid fa-trash-can"title="delete"></i>
               </span>
               </a>
             </div>

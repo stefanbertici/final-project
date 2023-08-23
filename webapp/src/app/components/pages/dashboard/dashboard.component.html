@@ -41,9 +41,16 @@
           <td>
             <div class="columns">
               <div class="column">
+                <a [routerLink]="['/songs/details', song.id]">
+                <span class="icon">
+                  <i class="fa-solid fa-circle-info" title="details"></i>
+                </span>
+                </a>
+              </div>
+              <div class="column">
                 <a [routerLink]="['/playlists/add-song', song.id]">
               <span class="icon">
-                <i class="fa-solid fa-plus"></i>
+                <i class="fa-solid fa-plus" title="add to playlist"></i>
               </span>
                 </a>
               </div>
@@ -74,15 +81,21 @@
               <div class="column">
                 <a [routerLink]="['/playlists/details', playlist.id]">
                 <span class="icon">
-                  <i class="fa-solid fa-circle-info"></i>
+                  <i class="fa-solid fa-circle-info" title="details"></i>
                 </span>
                 </a>
               </div>
-
               <div *ngIf="canFollow(playlist)" class="column">
                 <a (click)="follow(playlist.id)">
                 <span class="icon">
-                  <i class="fa-solid fa-plus"></i>
+                  <i class="fa-solid fa-plus" title="follow"></i>
+                </span>
+                </a>
+              </div>
+              <div *ngIf="canUnfollow(playlist)" class="column">
+                <a (click)="startUnfollow(playlist.id)">
+                <span class="icon">
+                  <i class="fa-solid fa-minus" title="unfollow"></i>
                 </span>
                 </a>
               </div>
@@ -115,14 +128,14 @@
               <div class="column">
                 <a [routerLink]="['/albums/details', album.id]">
                 <span class="icon">
-                  <i class="fa-solid fa-circle-info"></i>
+                  <i class="fa-solid fa-circle-info" title="details"></i>
                 </span>
                 </a>
               </div>
               <div class="column">
                 <a [routerLink]="['/playlists/add-album', album.id]">
                 <span class="icon">
-                  <i class="fa-solid fa-plus"></i>
+                  <i class="fa-solid fa-plus" title="add to playlist"></i>
                 </span>
                 </a>
               </div>
@@ -156,7 +169,7 @@
             <div class="column">
               <a [routerLink]="['/playlists/details', playlist.id]">
               <span class="icon">
-                <i class="fa-solid fa-circle-info"></i>
+                <i class="fa-solid fa-circle-info" title="details"></i>
               </span>
               </a>
             </div>
@@ -164,7 +177,7 @@
             <div class="column">
               <a [routerLink]="['/playlists/edit', playlist.id]">
               <span class="icon">
-                <i class="fa-solid fa-square-pen"></i>
+                <i class="fa-solid fa-square-pen" title="edit"></i>
               </span>
               </a>
             </div>
@@ -172,7 +185,7 @@
             <div class="column">
               <a (click)="startDelete(playlist.id)">
               <span class="icon">
-                <i class="fa-solid fa-trash-can"></i>
+                <i class="fa-solid fa-trash-can" title="delete"></i>
               </span>
               </a>
             </div>
@@ -202,7 +215,7 @@
             <div class="column">
               <a [routerLink]="['/playlists/details', playlist.id]">
                 <span class="icon">
-                  <i class="fa-solid fa-circle-info"></i>
+                  <i class="fa-solid fa-circle-info" title="details"></i>
                 </span>
               </a>
             </div>
@@ -210,7 +223,7 @@
             <div class="column">
               <a (click)="startUnfollow(playlist.id)">
                 <span class="icon">
-                  <i class="fa-solid fa-minus"></i>
+                  <i class="fa-solid fa-minus" title="unfollow"></i>
                 </span>
               </a>
             </div>

@@ -48,6 +48,7 @@ const routes: Routes = [
   {path: 'playlists/edit/:id', component: EditPlaylistComponent, canActivate: [authGuard]},
   {path: 'playlists/add-song/:id', component: AddSongToPlaylistComponent, canActivate: [authGuard]},
   {path: 'playlists/add-album/:id', component: AddAlbumToPlaylistComponent, canActivate: [authGuard]},
+  {path: 'songs/details/:id', component: DetailsSongComponent, canActivate: [authGuard]},
   {path: 'albums/details/:id', component: DetailsAlbumUserComponent, canActivate: [authGuard]},
   {path: 'admin-page', component: AdminPageComponent, canActivate: [authGuard, adminGuard]},
   {path: 'admin-page/users', component: ShowAllUsersComponent, canActivate: [authGuard, adminGuard]},

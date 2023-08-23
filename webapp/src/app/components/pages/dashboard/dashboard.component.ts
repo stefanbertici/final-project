@@ -138,4 +138,17 @@ export class DashboardComponent implements OnInit {
 
     return notOwnPlaylist && notAlreadyFollowed;
   }
+
+  canUnfollow(playlist: PlaylistDto) {
+    let notOwnPlaylist = playlist.ownerUserId !== this.authService.getUserId();
+    let alreadyFollowed = false;
+
+    for (let p of this.followedPlaylists) {
+      if (p.id === playlist.id) {
+        alreadyFollowed = true;
+      }
+    }
+
+    return notOwnPlaylist && alreadyFollowed;
+  }
 }

@@ -12,7 +12,7 @@
 
     <groupId>ro.ubb.postuniv</groupId>
     <artifactId>musify</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <name>musify</name>
     <description>Spotify rip-off</description>
 
