@@ -29,6 +29,7 @@ public class Album {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
+    @Column(length = 1020)
     private String description;
     private String genre;
     @Column(name = "release_date")
