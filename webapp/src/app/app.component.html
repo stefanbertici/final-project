@@ -15,8 +15,12 @@
 
           <button class="button" routerLink="/dashboard" routerLinkActive="active">Dashboard</button>
           <button class="button" routerLink="/user-page" routerLinkActive="active">User</button>
-          <button class="button" *ngIf="role == 'admin'" routerLink="/admin-page/users" routerLinkActive="active">Admin
-          </button>
+          <div class="button" *ngIf="role == 'admin'" routerLinkActive="active">
+            <a routerLink="/admin-page/users">Admin</a>
+            <a routerLink="/admin-page/artists"></a>
+            <a routerLink="/admin-page/albums"></a>
+            <a routerLink="/admin-page/songs"></a>
+          </div>
           <button class="button" (click)="logout()">Logout</button>
         </div>
       </div>
