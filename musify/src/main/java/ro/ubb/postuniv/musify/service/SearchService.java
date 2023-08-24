@@ -1,5 +1,7 @@
 package ro.ubb.postuniv.musify.service;
 
+import java.util.ArrayList;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +11,7 @@ import ro.ubb.postuniv.musify.mapper.ArtistMapper;
 import ro.ubb.postuniv.musify.mapper.BandMapper;
 import ro.ubb.postuniv.musify.mapper.PlaylistMapper;
 import ro.ubb.postuniv.musify.mapper.SongMapper;
+import ro.ubb.postuniv.musify.model.Song;
 import ro.ubb.postuniv.musify.repository.AlbumRepository;
 import ro.ubb.postuniv.musify.repository.ArtistRepository;
 import ro.ubb.postuniv.musify.repository.BandRepository;
@@ -38,10 +41,15 @@ public class SearchService {
                 playlistRepository.findAllByNameContainingIgnoreCase(searchTerm).stream()
                         .filter(p -> p.getType().equals("public"))
                         .toList()));
-        searchViewDto.setSongs(songMapper.toViewDtos(
-                songRepository.findAllByTitleAndAlternativeTitles(searchTerm).stream()
-                        .filter(song -> !song.getAlbums().isEmpty())
-                        .toList()));
+
+        Set<Song> firstBatchOfSongs = songRepository.findAllByTitleAndAlternativeTitlesContainingIgnoreCase(searchTerm);
+        Set<Song> secondBatchOfSongs = songRepository.findAllByAlbumsArtistStageNameContainingIgnoreCase(searchTerm);
+        firstBatchOfSongs.addAll(secondBatchOfSongs);
+        ArrayList<Song> songs = new ArrayList<>(firstBatchOfSongs);
+        searchViewDto.setSongs(songMapper.toViewDtos(songs.stream()
+                .filter(song -> !song.getAlbums().isEmpty())
+                .toList()));
+
         searchViewDto.setArtists(artistMapper.toViewDtos(
                 artistRepository.findAllByStageNameContainingIgnoreCase(searchTerm)));
         searchViewDto.setBands(bandMapper.toDtos(
