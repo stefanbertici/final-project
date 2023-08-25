@@ -27,7 +27,7 @@ import {DetailsUserComponent} from './components/entities/users/details-user/det
 import {AddUserComponent} from './components/entities/users/add-user/add-user.component';
 import {EditUserComponent} from './components/entities/users/edit-user/edit-user.component';
 import {ShowAllSongsComponent} from './components/entities/songs/show-all-songs/show-all-songs.component';
-import {DetailsSongComponent} from './components/entities/songs/details-song/details-song.component';
+import {DetailsSongAdminComponent} from './components/entities/songs/details-song-admin/details-song-admin.component';
 import {EditSongComponent} from './components/entities/songs/edit-song/edit-song.component';
 import {AddSongComponent} from './components/entities/songs/add-song/add-song.component';
 import {ShowAllAlbumsComponent} from './components/entities/albums/show-all-albums/show-all-albums.component';
@@ -37,6 +37,7 @@ import {EditAlbumComponent} from './components/entities/albums/edit-album/edit-a
 import {AddSongToAlbumComponent} from './components/entities/albums/add-song-to-album/add-song-to-album.component';
 import { DetailsAlbumUserComponent } from './components/entities/albums/details-album-user/details-album-user.component';
 import { AddAlbumToPlaylistComponent } from './components/entities/playlists/add-album-to-playlist/add-album-to-playlist.component';
+import { DetailsSongUserComponent } from './components/entities/songs/details-song-user/details-song-user.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,7 @@ import { AddAlbumToPlaylistComponent } from './components/entities/playlists/add
     AddUserComponent,
     EditUserComponent,
     ShowAllSongsComponent,
-    DetailsSongComponent,
+    DetailsSongAdminComponent,
     EditSongComponent,
     AddSongComponent,
     ShowAllAlbumsComponent,
@@ -68,7 +69,8 @@ import { AddAlbumToPlaylistComponent } from './components/entities/playlists/add
     EditAlbumComponent,
     AddSongToAlbumComponent,
     DetailsAlbumUserComponent,
-    AddAlbumToPlaylistComponent
+    AddAlbumToPlaylistComponent,
+    DetailsSongUserComponent
   ],
   imports: [
     BrowserModule,

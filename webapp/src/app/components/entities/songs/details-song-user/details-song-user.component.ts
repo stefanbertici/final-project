@@ -1,14 +1,14 @@
 import {Component} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
 import {SongViewDto} from "../../../../models/songViewDto";
+import {ActivatedRoute} from "@angular/router";
 import {SongService} from "../../../../services/song.service";
 
 @Component({
-  selector: 'app-details-song',
-  templateUrl: './details-song.component.html',
-  styleUrls: ['./details-song.component.scss']
+  selector: 'app-details-song-user',
+  templateUrl: './details-song-user.component.html',
+  styleUrls: ['./details-song-user.component.scss']
 })
-export class DetailsSongComponent {
+export class DetailsSongUserComponent {
 
   songId: number = 0;
   song?: SongViewDto;
