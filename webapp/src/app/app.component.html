@@ -1,49 +1,55 @@
-<section class="hero is-primary">
-  <div class="hero-body">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-two-fifths">
-        <p class="title">
-          Musify
-        </p>
-        <p class="subtitle">
-          your personal music management app
-        </p>
-        <div *ngIf="isLoggedIn">
-          <p class="heading">
-            Welcome back, {{getUserFullName()}}!
-          </p>
+<body>
+  <div id="app">
+    <header>
+      <section class="hero is-primary">
+        <div class="hero-body">
+          <div class="columns is-centered has-text-centered">
+            <div class="column is-two-fifths">
+              <p class="title">
+                Musify
+              </p>
+              <p class="subtitle">
+                your personal music management app
+              </p>
+              <div *ngIf="isLoggedIn">
+                <p class="heading">
+                  Welcome back, {{getUserFullName()}}!
+                </p>
 
-          <button class="button" routerLink="/dashboard" routerLinkActive="active">Dashboard</button>
-          <button class="button" routerLink="/user-page" routerLinkActive="active">User</button>
-          <div class="button" *ngIf="role == 'admin'" routerLinkActive="active">
-            <a routerLink="/admin-page/users">Admin</a>
-            <a routerLink="/admin-page/artists"></a>
-            <a routerLink="/admin-page/albums"></a>
-            <a routerLink="/admin-page/songs"></a>
+                <button class="button" routerLink="/dashboard" routerLinkActive="active">Dashboard</button>
+                <button class="button" routerLink="/user-page" routerLinkActive="active">User</button>
+                <div class="button" *ngIf="role == 'admin'" routerLinkActive="active">
+                  <a routerLink="/admin-page/users">Admin</a>
+                  <a routerLink="/admin-page/artists"></a>
+                  <a routerLink="/admin-page/albums"></a>
+                  <a routerLink="/admin-page/songs"></a>
+                </div>
+                <button class="button" (click)="logout()">Logout</button>
+              </div>
+            </div>
           </div>
-          <button class="button" (click)="logout()">Logout</button>
         </div>
+      </section>
+    </header>
+    <main>
+      <section class="section">
+        <div class="columns is-centered">
+          <div class="column is-three-fifths">
+            <router-outlet (activate)="checkLoggedInUser()">
+              <!-- site content goes here-->
+            </router-outlet>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <div class="content has-text-centered is-flex-align-items-flex-end mt-auto">
+        <p>
+          <strong>Musify</strong> by <strong>Stefan Bertici</strong>. The source code is up on GitHub
+          <a href="https://github.com/stefanbertici/final-project">@stefanbertici/final-project</a>.
+          This website and it's contents were used for learning purposes.
+        </p>
       </div>
-    </div>
+    </footer>
   </div>
-</section>
-
-<section class="section">
-  <div class="columns is-centered">
-    <div class="column is-three-fifths">
-      <router-outlet (activate)="checkLoggedInUser()">
-        <!-- site content goes here-->
-      </router-outlet>
-    </div>
-  </div>
-</section>
-
-<footer class="footer">
-  <div class="content has-text-centered">
-    <p>
-      <strong>Musify</strong> by <strong>Stefan Bertici</strong>. The source code is up on GitHub
-      <a href="https://github.com/stefanbertici/final-project">@stefanbertici/final-project</a>.
-      This website and it's contents were used for learning purposes.
-    </p>
-  </div>
-</footer>
+</body>
