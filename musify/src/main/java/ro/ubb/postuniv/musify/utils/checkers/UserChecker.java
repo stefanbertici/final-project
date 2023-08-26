@@ -34,7 +34,7 @@ public class UserChecker {
         return currentUserId.equals(id);
     }
 
-    public static boolean isCurrentUserNotOwnerOfPlaylist(Integer currentUserId, Playlist playlist) {
+    public static boolean isNotOwnerOfPlaylist(Integer currentUserId, Playlist playlist) {
         return !currentUserId.equals(playlist.getOwnerUserId());
     }
 

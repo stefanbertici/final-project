@@ -8,5 +8,7 @@ export interface PlaylistViewDto {
   updatedDate: Date,
   ownerUserId: number,
   ownerUserName: string,
+  followableByUser: Boolean,
+  unfollowableByUser: Boolean,
   songs: SongViewDto[]
 }

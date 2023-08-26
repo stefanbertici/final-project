@@ -20,5 +20,7 @@ public class PlaylistViewDto {
     private Date updatedDate;
     private Integer ownerUserId;
     private String ownerUserName;
+    private Boolean followableByUser;
+    private Boolean unfollowableByUser;
     private List<SongViewDto> songs;
 }

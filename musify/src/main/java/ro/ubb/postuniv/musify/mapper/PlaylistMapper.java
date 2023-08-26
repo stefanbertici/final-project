@@ -21,7 +21,9 @@ public interface PlaylistMapper {
     @Mapping(target = "songs", expression = "java(getSongViewDtos(playlist.getSongsInPlaylist()))")
     PlaylistViewDto toViewDto(Playlist playlist);
 
-    List<PlaylistViewDto> toViewDtos(List<Playlist> playlists);
+    @Mapping(target = "ownerUserName", expression = "java(playlist.getOwnerUser().getFullName())")
+    @Mapping(target = "songs", expression = "java(getSongViewDtos(playlist.getSongsInPlaylist()))")
+    PlaylistViewDto toViewDto(Playlist playlist, Boolean followableByUser, Boolean unfollowableByUser);
 
     Playlist toEntity(PlaylistDto playlistDto);
 

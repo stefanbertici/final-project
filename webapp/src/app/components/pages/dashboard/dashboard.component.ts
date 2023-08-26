@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../../services/auth.service";
 import {PlaylistService} from "../../../services/playlist.service";
-import {PlaylistDto} from "../../../models/playlistDto";
 import {SearchViewDto} from "../../../models/searchViewDto";
 import {SearchService} from "../../../services/search.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
@@ -124,31 +123,5 @@ export class DashboardComponent implements OnInit {
     this.playlistService.follow(id).subscribe(() => {
       this.loadPlaylists();
     });
-  }
-
-  canFollow(playlist: PlaylistDto) {
-    let notOwnPlaylist = playlist.ownerUserId !== this.authService.getUserId();
-    let notAlreadyFollowed = true;
-
-    for (let p of this.followedPlaylists) {
-      if (p.id === playlist.id) {
-        notAlreadyFollowed = false;
-      }
-    }
-
-    return notOwnPlaylist && notAlreadyFollowed;
-  }
-
-  canUnfollow(playlist: PlaylistDto) {
-    let notOwnPlaylist = playlist.ownerUserId !== this.authService.getUserId();
-    let alreadyFollowed = false;
-
-    for (let p of this.followedPlaylists) {
-      if (p.id === playlist.id) {
-        alreadyFollowed = true;
-      }
-    }
-
-    return notOwnPlaylist && alreadyFollowed;
   }
 }

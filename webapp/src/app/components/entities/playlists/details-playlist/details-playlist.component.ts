@@ -12,6 +12,7 @@ import {AuthService} from "../../../../services/auth.service";
 export class DetailsPlaylistComponent implements OnInit {
 
   selectedSongIdForRemove?: number;
+  startedUnfollow: boolean = false;
   playlistId: number = 0;
   playlist?: PlaylistViewDto;
 
@@ -77,6 +78,29 @@ export class DetailsPlaylistComponent implements OnInit {
     this.playlistService.changeOrder(this.playlistId, songId, oldPosition, newPosition).subscribe((data: PlaylistViewDto) => {
       this.playlist = data;
     });
+  }
 
+  follow(id: number) {
+    this.playlistService.follow(id).subscribe(() => {
+      this.loadPlaylist();
+    });
+  }
+
+  startUnfollow(id: number) {
+    this.startedUnfollow = true;
+  }
+
+  cancelUnfollow() {
+    this.startedUnfollow = false;
+  }
+
+  confirmUnfollow() {
+    if (this.startedUnfollow) {
+      this.playlistService.unfollow(this.playlistId).subscribe(() => {
+        alert("Playlist unfollowed!");
+        this.startedUnfollow = false;
+        this.loadPlaylist();
+      });
+    }
   }
 }

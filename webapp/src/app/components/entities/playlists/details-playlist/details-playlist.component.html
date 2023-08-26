@@ -75,6 +75,8 @@
     </div>
 
     <br>
+    <button *ngIf="playlist.followableByUser" class="button is-primary" (click)="follow(playlist.id)">Follow playlist</button>
+    <button *ngIf="playlist.unfollowableByUser" class="button is-danger" (click)="startUnfollow(playlist.id)">Unfollow playlist</button>
     <button class="button is-link is-light" [routerLink]="['/dashboard']">Back</button>
   </div>
 
@@ -92,6 +94,24 @@
       <div class="modal-card-foot">
         <button class="button is-danger" (click)="confirmRemove()">Remove</button>
         <button class="button is-light" (click)="cancelRemove()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-unfollow-playlist" class="modal" [ngClass]="{'is-active': startedUnfollow}">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Confirm unfollow</p>
+      </header>
+
+      <div class="modal-card-body">
+        <p>Are you sure you want to unfollow this playlist?</p>
+      </div>
+
+      <div class="modal-card-foot">
+        <button class="button is-danger" (click)="confirmUnfollow()">Unfollow</button>
+        <button class="button is-light" (click)="cancelUnfollow()">Cancel</button>
       </div>
     </div>
   </div>

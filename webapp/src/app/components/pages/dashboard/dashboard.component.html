@@ -85,14 +85,14 @@
                 </span>
                 </a>
               </div>
-              <div *ngIf="canFollow(playlist)" class="column">
+              <div *ngIf="playlist.followableByUser" class="column">
                 <a (click)="follow(playlist.id)">
                 <span class="icon">
                   <i class="fa-solid fa-plus" title="follow"></i>
                 </span>
                 </a>
               </div>
-              <div *ngIf="canUnfollow(playlist)" class="column">
+              <div *ngIf="playlist.unfollowableByUser" class="column">
                 <a (click)="startUnfollow(playlist.id)">
                 <span class="icon">
                   <i class="fa-solid fa-minus" title="unfollow"></i>

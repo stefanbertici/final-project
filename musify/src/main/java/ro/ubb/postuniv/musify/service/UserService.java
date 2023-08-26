@@ -39,16 +39,19 @@ public class UserService {
     private final InMemoryTokenBlacklist inMemoryTokenBlacklist;
 
     @Transactional
+    public User readCurrentUser() {
+        return repositoryChecker.getUserIfExists(jwtService.getCurrentUserId());
+    }
+
+    @Transactional
     public List<UserViewDto> readAll() {
         List<User> users = userRepository.findAll();
-
         return userMapper.toViewDtos(users);
     }
 
     @Transactional
     public UserViewDto readUserById(int id) {
         User user = repositoryChecker.getUserIfExists(id);
-
         return userMapper.toViewDto(user);
     }
 

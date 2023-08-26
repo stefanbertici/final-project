@@ -76,7 +76,7 @@ public class SongService {
     public List<SongViewDto> readAllByPlaylistId(Integer id) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(id);
 
-        if (playlist.getType().equals("private") && isCurrentUserNotOwnerOfPlaylist(jwtService.getCurrentUserId(), playlist)) {
+        if (playlist.getType().equals("private") && isNotOwnerOfPlaylist(jwtService.getCurrentUserId(), playlist)) {
             throw new UnauthorizedException("You cannot view this private playlist");
         }
 

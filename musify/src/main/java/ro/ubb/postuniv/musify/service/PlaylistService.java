@@ -1,5 +1,6 @@
 package ro.ubb.postuniv.musify.service;
 
+import static ro.ubb.postuniv.musify.utils.checkers.PlaylistChecker.*;
 import static ro.ubb.postuniv.musify.utils.checkers.PositionChecker.*;
 import static ro.ubb.postuniv.musify.utils.checkers.UserChecker.*;
 
@@ -36,16 +37,16 @@ public class PlaylistService {
     public PlaylistCategorizedViewDto readAll() {
         User user = repositoryChecker.getCurrentUser();
 
-        List<PlaylistViewDto> ownedPlaylists = playlistMapper.toViewDtos(
-                user.getOwnedPlaylists()
-                        .stream()
-                        .sorted(Comparator.comparing(Playlist::getName))
-                        .toList());
-        List<PlaylistViewDto> followedPlaylists = playlistMapper.toViewDtos(
-                user.getFollowedPlaylists()
-                        .stream()
-                        .sorted(Comparator.comparing(Playlist::getName))
-                        .toList());
+        List<PlaylistViewDto> ownedPlaylists = user.getOwnedPlaylists()
+                .stream()
+                .sorted(Comparator.comparing(Playlist::getName))
+                .map(p -> playlistMapper.toViewDto(p, isFollowableByUser(p, user), isUnfollowableByUser(p, user)))
+                .toList();
+        List<PlaylistViewDto> followedPlaylists = user.getFollowedPlaylists()
+                .stream()
+                .sorted(Comparator.comparing(Playlist::getName))
+                .map(p -> playlistMapper.toViewDto(p, isFollowableByUser(p, user), isUnfollowableByUser(p, user)))
+                .toList();
 
         return new PlaylistCategorizedViewDto(ownedPlaylists, followedPlaylists);
     }
@@ -53,8 +54,13 @@ public class PlaylistService {
     @Transactional
     public PlaylistViewDto readById(Integer id) {
         Playlist playlist = repositoryChecker.getPlaylistIfExists(id);
+        User user = repositoryChecker.getCurrentUser();
 
-        return playlistMapper.toViewDto(playlist);
+        if (playlist.getType().equals("private") && isNotOwnerOfPlaylist(user.getId(), playlist)) {
+            throw new UnauthorizedException("Private playlist can only be accessed by its owner");
+        }
+
+        return playlistMapper.toViewDto(playlist, isFollowableByUser(playlist, user), isUnfollowableByUser(playlist, user));
     }
 
     @Transactional

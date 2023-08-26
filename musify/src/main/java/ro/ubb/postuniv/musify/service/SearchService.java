@@ -1,5 +1,7 @@
 package ro.ubb.postuniv.musify.service;
 
+import static ro.ubb.postuniv.musify.utils.checkers.PlaylistChecker.*;
+
 import java.util.ArrayList;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import ro.ubb.postuniv.musify.mapper.BandMapper;
 import ro.ubb.postuniv.musify.mapper.PlaylistMapper;
 import ro.ubb.postuniv.musify.mapper.SongMapper;
 import ro.ubb.postuniv.musify.model.Song;
+import ro.ubb.postuniv.musify.model.User;
 import ro.ubb.postuniv.musify.repository.AlbumRepository;
 import ro.ubb.postuniv.musify.repository.ArtistRepository;
 import ro.ubb.postuniv.musify.repository.BandRepository;
@@ -22,6 +25,7 @@ import ro.ubb.postuniv.musify.repository.SongRepository;
 @RequiredArgsConstructor
 public class SearchService {
 
+    private final UserService userService;
     private final AlbumRepository albumRepository;
     private final SongRepository songRepository;
     private final ArtistRepository artistRepository;
@@ -36,11 +40,12 @@ public class SearchService {
     @Transactional
     public SearchViewDto search(String searchTerm) {
         SearchViewDto searchViewDto = new SearchViewDto();
+        User user = userService.readCurrentUser();
 
-        searchViewDto.setPlaylists(playlistMapper.toViewDtos(
-                playlistRepository.findAllByNameContainingIgnoreCase(searchTerm).stream()
-                        .filter(p -> p.getType().equals("public"))
-                        .toList()));
+        searchViewDto.setPlaylists(playlistRepository.findAllByNameContainingIgnoreCase(searchTerm).stream()
+                .filter(p -> p.getType().equals("public"))
+                .map(p -> playlistMapper.toViewDto(p, isFollowableByUser(p, user), isUnfollowableByUser(p, user)))
+                .toList());
 
         Set<Song> firstBatchOfSongs = songRepository.findAllByTitleAndAlternativeTitlesContainingIgnoreCase(searchTerm);
         Set<Song> secondBatchOfSongs = songRepository.findAllByAlbumsArtistStageNameContainingIgnoreCase(searchTerm);
