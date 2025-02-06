@@ -9,7 +9,7 @@
           type="email"
           placeholder="me@mydomain.com"
           required
-          pattern="^[-\w.]+@([-\w]+\.)+[-\w]{2,4}$"
+          pattern="[\-\w.]+@([\-\w]+\.)+[\-\w]{2,4}"
         >
         <span class="icon is-small is-left">
         <i class="fas fa-envelope"></i>
@@ -24,7 +24,7 @@
           Email is required
         </p>
         <p class="help is-danger" *ngIf="getFormControl['email'].errors?.['pattern']">
-          Invalid pattern, please use the following format (address@domain.topleveldomain)
+          Invalid pattern, please use the following format (address&#64;domain.topleveldomain)
         </p>
       </div>
     </div>
@@ -38,7 +38,7 @@
           type="password"
           placeholder="Password (Format: Abc@1r)"
           required
-          pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?\d)(?=.*[#$^+=!*()@%&]).{6,}$"
+          pattern="(?=.*?[A-Z])(?=.*?[a-z])(?=.*?\d)(?=.*[#$^+=!*\(\)@%&]).{6,}"
         >
       </div>
       <div class="notification"
@@ -47,7 +47,7 @@
           Password is required
         </p>
         <p class="help is-danger" *ngIf="getFormControl['password'].errors?.['pattern']">
-          Invalid pattern, please use the following format (Abc@1r)
+          Invalid pattern, please use the following format (Abc&#64;1r)
         </p>
       </div>
     </div>
